@@ -1,0 +1,96 @@
+.Login{
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+  height:inherit;
+  background-image: url("../../assets/img/登录背景2.jpg");
+  background-position: bottom;
+  background-repeat: no-repeat;
+  background-size: cover;
+  .title{
+    font-size: 35px;
+    // text-align: center;
+    color:#0099CC;
+    padding-bottom: 10px;
+    border-bottom: 2px #663366 solid;
+  }
+  .log{
+    position: absolute;
+    margin: auto;
+    top: 15%;
+    left: 0;right: 0;
+    width: 100px;
+    height: 80px;
+    background-image: url("../../assets/img/Log.png");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+  // 输入框和按钮容器
+  .input_container{
+    transform: translateY(60%);
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    & li{
+      width: 100%;
+      text-align: center;
+    }
+    // 勾选框
+    .checkbox{
+      transform: translateX(-25%);
+      margin-bottom: 15%;
+    }
+    // 输入账号框
+    .input_account{
+      outline: none;
+      border: 0;
+      width: 80%;
+      height: 50px;
+      box-sizing: border-box;
+      background-color: #FFFFFF;
+      font-size: 16px;
+      padding-left: 20px;
+      border-radius: 25px;
+      margin-bottom: 5%;
+      background: {
+        image: url("../../assets/img/账号.png");
+        position: right;
+        position-x: 97%;
+        repeat: no-repeat;
+        size: 40px;
+      }
+    }
+    // 输入密码框
+    .input_password{
+     @extend .input_account;
+     background: {
+      image: url("../../assets/img/密码.png");
+    }
+    }
+    // 登录按钮
+    .btn_login{
+      width: 70%;
+      height: 40px;
+      outline: none;
+      border: none;
+      border-radius: 20px;
+      margin-bottom: 5%;
+      background-color: #66CC99;
+      font: {
+        size: 18px;
+        weight: bold;
+      }
+      transition: all .2s linear;
+      &:active{
+        background-color: #CCFFFF;
+      }
+    }
+    .btn_register{
+      @extend .btn_login;
+      background-color: #FF6666;
+    }
+  }
+}
