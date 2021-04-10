@@ -1,11 +1,21 @@
-// 点击时的样式
-.active{
-  color: #FF6600;
-}
-.link{
+// 每个list
+.list_item{
   width: 70px;
   line-height: 40px;
-  color: black;
-  font-weight: bold;
-  text-decoration: none; //文本装饰
+  .link{
+    display: inline-block;
+    width: 70px;
+    line-height: 40px;
+    color: black;
+    font-weight: bold;
+    text-decoration: none; //文本装饰
+    transition: all .2s linear;
+    border-radius: 10px;
+  }
+    // 点击时的样式
+  .active{
+    color: #FF6600;
+    background-color: skyblue;
+    border-radius: 10px;
+  }
 }

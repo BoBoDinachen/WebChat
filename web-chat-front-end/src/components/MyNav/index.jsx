@@ -5,10 +5,10 @@ export default class MyNav extends Component {
   render() {
     const { id } = this.props;
     return (
-      <>
+      <li className={style.list_item}>
         <NavLink {...this.props} activeClassName={style.active} className={style.link} >
         </NavLink>
-      </> 
+      </li> 
     )
   }
 }

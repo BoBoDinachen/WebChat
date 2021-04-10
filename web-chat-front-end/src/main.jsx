@@ -14,7 +14,7 @@ const user_info = localStorage.getItem("user_info");
 if (user_info !== "") {
   ReactDOM.render(
     <React.StrictMode>
-      <BrowserRouter>
+      <BrowserRouter basename="/WebChat">
         <App />
       </BrowserRouter>
     </React.StrictMode>,

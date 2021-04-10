@@ -10,7 +10,7 @@ class Footer extends Component {
   }
   render() {
     const Navs = [
-      { id: "001", path: "/chatRoom", name: "大厅" },
+      { id: "001", path: "/home", name: "大厅" },
       { id: "002", path: "/friend", name: "朋友" },
       { id: "003", path: "/share", name: "" },
       { id: "004", path: "/message", name: "消息" },
