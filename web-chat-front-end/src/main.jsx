@@ -7,7 +7,7 @@ import Login from './pages/Login'  // 登录组件
 
 // 获取本地的登录状态
 let { localStorage } = window;
-localStorage.setItem("user_info", "fdsfds");
+// localStorage.setItem("user_info", "");
 const user_info = localStorage.getItem("user_info");
 
 // 判断本地存储中是否存在用户信息，如果有则进入APP，没有则进入登录界面

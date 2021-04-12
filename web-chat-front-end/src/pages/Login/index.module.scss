@@ -18,18 +18,19 @@
     padding-bottom: 10px;
   }
   h2:nth-of-type(2){
-    transform: translateY(150px);
+    transform: translateY(180px);
     text-align: center;
   }
   // log图标
   .log{
     position: absolute;
     margin: auto;
-    top: 15%;
+    top: 12%;
     left: 0;right: 0;
-    width: 100px;
-    height: 80px;
-    background-image: url("../../assets/img/Log.png");
+    width: 150px;
+    height: 140px;
+    border-radius: 25px;
+    background-image: url("../../assets/img/Log.jpg");
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
@@ -62,6 +63,11 @@
       padding-left: 20px;
       border-radius: 25px;
       margin-bottom: 5%;
+      transition: all .15s linear;
+      &:focus{
+        border: 4px solid #0099CC;
+        border-radius: 10px;
+      }
       background: {
         image: url("../../assets/img/账号.png");
         position: right;
