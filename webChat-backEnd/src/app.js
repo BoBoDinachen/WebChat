@@ -2,6 +2,7 @@ const express = require("express");
 const app = express();
 const path = require('path');
 //body-parser - node.js 中间件，用于处理 JSON, Raw, Text 和 URL 编码的数据。
+const bodyParser = require('body-parser')
 app.use(express.json());
 
 app.use((req, res, next) => {

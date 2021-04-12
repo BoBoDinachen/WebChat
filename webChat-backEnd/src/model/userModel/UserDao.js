@@ -1,4 +1,5 @@
 const connect = require("../../utils/db_utils");
+
 // 查询用户-用户名和账号
 async function findUserByNameOrAccount(params) {
   // 1.连接数据库
@@ -8,8 +9,9 @@ async function findUserByNameOrAccount(params) {
   const { userName, account } = params;
   // or 条件查询 用户名或者账号
   return new Promise((resolve, reject) => {
-    collection.findOne({ $or: [{ "account": account }, { "userName": userName }] }, (err, res) => {
+    collection.findOne({ $or: [{ "account": account }, { "user_name": userName }] }, (err, res) => {
       if (err) throw err;
+      console.log(res);
       resolve(res);
       connect.close();
     });
@@ -33,16 +35,18 @@ async function findUserByAccountAndPassword(params) {
 }
 
 // 添加用户
-async function addUser(User, callback) {
+async function addUser(User) {
   // 1.连接数据库
   const db = await connect.createDB();
   const collection = db.collection("users");
-  const { account, userName, age } = User;
-  collection.insertOne({ "account": account, "userName": userName, "age": age }, (err, res) => {
-    if (err) throw err;
-    callback(res);
-    connect.close();
+  const { account, password, age, sex } = User;
+  return new Promise((resolve, reject) => {
+    collection.insertOne({ account, password, age, sex }, (err, res) => {
+      if (err) throw err;
+      resolve(res);
+      connect.close();
+    })
   })
 }
 
-module.exports = { findUserByNameOrAccount, addUser,findUserByAccountAndPassword};
+module.exports = { findUserByNameOrAccount, addUser, findUserByAccountAndPassword };
