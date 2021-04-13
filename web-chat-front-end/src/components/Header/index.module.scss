@@ -1,0 +1,16 @@
+.title{
+  background-color: #99CCFF;
+  line-height: 45px;
+  font-family: "微软雅黑";
+  .back{
+    width: 45px;
+    height: 45px;
+    display: inline-block;
+    position: absolute;
+    left: 0;
+    background-image: url("../../assets/img/返回.png");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 35px;
+  }
+}
