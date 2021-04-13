@@ -4,10 +4,21 @@ import Register from '../../components/Register'
 import { request } from '../../utils/request'
 export default class Login extends Component {
   state = {
-    isShowRegister: false
+    isShowRegister: false,
+    isRemember: false,
   }
   componentDidMount() {
-    // this.container.style.display = "none";
+    // 读取本地存储的账号和密码
+    const { localStorage } = window;
+    console.log(localStorage.getItem("user_login"));
+    if (localStorage.getItem("user_login")) {
+      const user = JSON.parse(localStorage.getItem("user_login"));
+      // 设置输入框的值
+      this.accountElem.value = user.account;
+      this.passwordElem.value = user.password;
+    } else {
+      console.log("没有读取到本地的登录信息...");
+    }
   }
 
   // 登录请求
@@ -26,9 +37,12 @@ export default class Login extends Component {
           if (res.data.isLogin) {
             alert("OK!");
             // 将用户信息保存在本地
-            let { localStorage } = window;
-            localStorage.setItem("user_info", res.data.data);
+            let { sessionStorage } = window;
+            sessionStorage.setItem("user_info", JSON.stringify(res.data.data));
             // 判断是否需要记住密码
+            if (this.state.isRemember) {
+              localStorage.setItem("user_login", JSON.stringify({ account, password }));
+            }
             window.location.reload(); //刷新网页
           } else {
             alert("请检查账号和密码~");
@@ -65,6 +79,14 @@ export default class Login extends Component {
       this.container.style.display = "none";
     }, 200);
   }
+  changeRemember = (e) => {
+    // 是否记住密码
+    this.setState((state) => ({
+      isRemember: !state.isRemember
+    }), () => {
+      console.log(this.state.isRemember);
+    })
+  }
   render() {
     return (
       <>
@@ -78,7 +100,7 @@ export default class Login extends Component {
           <ul className={style.input_container}>
             <li><input type="text" ref={c => { this.accountElem = c }} className={style.input_account} placeholder="请输入邮箱账号" /></li>
             <li><input type="text" ref={c => { this.passwordElem = c }} className={style.input_password} placeholder="请输入密码" /></li>
-            <li className={style.checkbox}><input type="checkbox" name="remember" value="0" />&nbsp;记住密码</li>
+            <li className={style.checkbox}><input type="checkbox" name="remember" value="0" onChange={this.changeRemember} />&nbsp;记住密码</li>
             <li><button className={style.btn_login} onTouchEnd={this.handleLogin}>登录</button></li>
             <li><button className={style.btn_register} onTouchEnd={this.goToRegister}>注册</button></li>
           </ul>
