@@ -41,7 +41,7 @@ async function addUser(User) {
   const collection = db.collection("users");
   const { account, password, age, sex } = User;
   return new Promise((resolve, reject) => {
-    collection.insertOne({ account, password, age, sex }, (err, res) => {
+    collection.insertOne({ account, password, age, sex,user_name:"",avatar_url:"" }, (err, res) => {
       if (err) throw err;
       resolve(res);
       connect.close();
