@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import style from './index.module.scss'
-import Register from '../../components/Register'
+import Register from '../../pages/Register'
 import { request } from '../../utils/request'
 export default class Login extends Component {
   state = {

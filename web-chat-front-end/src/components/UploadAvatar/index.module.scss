@@ -1,7 +1,9 @@
 .upload_container{
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   // 头像显示
   img{
     width: 100px;
