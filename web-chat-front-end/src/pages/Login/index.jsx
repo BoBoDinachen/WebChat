@@ -30,8 +30,12 @@ export default class Login extends Component {
       console.log("true");
       if (password !== "") {
         // 发送登录请求
-        request().post("/user/login", {
-          account, password
+        request({
+          url: "/user/login",
+          method: "post",
+          data: {
+            account, password
+          }
         }).then((res) => {
           console.log(res);
           if (res.data.isLogin) {
@@ -79,6 +83,7 @@ export default class Login extends Component {
       this.container.style.display = "none";
     }, 200);
   }
+  // 记住密码
   changeRemember = (e) => {
     // 是否记住密码
     this.setState((state) => ({

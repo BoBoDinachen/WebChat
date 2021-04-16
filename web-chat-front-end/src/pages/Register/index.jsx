@@ -32,8 +32,10 @@ export default class Register extends Component {
         alert("两次输入的密码不一致~");
       } else {
         // 所有的验证通过后，发送注册请求
-        request().post("/user/register", {
-          account, password, sex, age
+        request({
+          url: "/user/register",
+          method: "post",
+          data: { account, password, sex, age}
         }).then((res) => {
           if (res.data.isRegister) {
             alert("注册成功!");

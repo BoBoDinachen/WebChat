@@ -16,43 +16,72 @@ export default class Profile extends Component {
     // 模态框是否关闭
     showPopup: false
   }
-  // 上传头像
-  // HandleUpload = () => {
-  //   setTimeout(() => {
-  //     this.openUploadPopup();
-  //   }, 200)
-  // }
+  // 组件加载
   componentDidMount() {
-    // 组件加载的时候，获取用户信息
+    // 组件加载的时候，获取用户信息和头像
     const user_info = JSON.parse(window.sessionStorage.getItem("user_info"));
-    this.setState({
-      user: {
-        uid: user_info._id,
-        account: user_info.account,
-        user_name: user_info.user_name,
-        age: user_info.age,
-        sex: user_info.sex,
-        avatar_url: user_info.avatar_url
-      }
-    })
-    //
-    console.log(this.uploadElemt);
+    if (user_info.avatar_url !== "") {
+      // 获取新头像
+      this.getAvatar(user_info._id);
+      this.setState({
+        user: {
+          uid: user_info._id,
+          account: user_info.account,
+          user_name: user_info.user_name,
+          age: user_info.age,
+          sex: user_info.sex,
+          avatar_url: user_info.avatar_url
+        }
+      })
+    } else {
+      // 默认头像
+      this.setState({
+        user: {
+          uid: user_info._id,
+          account: user_info.account,
+          user_name: user_info.user_name,
+          age: user_info.age,
+          sex: user_info.sex,
+          avatar_url: ""
+        }
+      })
+    }
+    console.log(this.state);
   }
   // 触摸头像
   HandleAvatar = () => {
     alert("喵呜~");
   }
+  // 获取头像
+  getAvatar(uid) {
+    // 发送设置用户请求
+    request({
+      url: "/user/avatar",
+      method: "get",
+      params: {
+        uid
+      },
+      responseType: "blob"
+    }).then((res) => {
+      console.log(res);
+      const avatar_url = window.URL.createObjectURL(res.data);
+      // 设置头像
+      this.avatarElem.src = avatar_url;
+    }).catch(err => {
+      console.log(err);
+    })
+  }
   // 上传头像
   uploadAvatar = () => {
     // 拿到文件信息
-    const img = this.uploadElemt.files[0];
+    const img = this.uploadElem.files[0];
     if (img.type === "image/jpeg" || img.type === "image/png") {
       const { user } = this.state;
+      console.log(user);
       // 封装表单数据
       const formData = new FormData();
       formData.append("avatar", img);
-      formData.append("uid",user.uid);
-      console.log(img);
+      formData.append("uid", user.uid);
       // 发送请求
       request({
         url: "/user/upload/profile",
@@ -60,7 +89,26 @@ export default class Profile extends Component {
         headers: { 'Content-Type': 'multipart/form-data' },
         data: formData
       }).then((result) => {
+        // 上传成功
         console.log(result.data);
+        if (result.data.setAvatar) {
+          alert("设置成功!");
+          // 更新sessionStorage
+          const user_info = JSON.parse(window.sessionStorage.getItem("user_info"));
+          user_info.avatar_url = result.data.url;
+          window.sessionStorage.setItem("user_info", JSON.stringify(user_info));
+          // 更新state
+          this.setState({
+            user: {
+              uid: user_info._id,
+              account: user_info.account,
+              user_name: user_info.user_name,
+              age: user_info.age,
+              sex: user_info.sex,
+              avatar_url: result.data.url
+            }
+          })
+        }
       }).catch((err) => {
         console.log(err);
       });
@@ -88,6 +136,14 @@ export default class Profile extends Component {
       showPopup: true
     })
   }
+  componentDidUpdate() {
+    const { user } = this.state; // 用户信息
+    console.log(user);
+    if (user.avatar_url !== "") {
+      // 获取新头像
+      this.getAvatar(user.uid);
+    }
+  }
   render() {
     const { user } = this.state; // 用户信息
     return (
@@ -97,9 +153,10 @@ export default class Profile extends Component {
           <div className={style.showInfo}>
             {/* 头像上传 */}
             <span onTouchEnd={this.HandleUpload}>
-              <input type="file" ref={c => { this.uploadElemt = c }} onChange={this.uploadAvatar} />
+              <input type="file" ref={c => { this.uploadElem = c }} onChange={this.uploadAvatar} />
             </span>
-            <img src={avatarUrl} alt="" onTouchEnd={this.HandleAvatar} />
+            {/* 头像图片 */}
+            <img src={avatarUrl} ref={c => { this.avatarElem = c }} alt="" onTouchEnd={this.HandleAvatar} />
             <span>{user.user_name === "" ? user.account : user.user_name}</span>
           </div>
           <ul className={style.recordList}>
