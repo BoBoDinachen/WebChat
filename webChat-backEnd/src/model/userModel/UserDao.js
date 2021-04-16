@@ -11,7 +11,6 @@ async function findUserByNameOrAccount(params) {
   return new Promise((resolve, reject) => {
     collection.findOne({ $or: [{ "account": account }, { "user_name": userName }] }, (err, res) => {
       if (err) throw err;
-      console.log(res);
       resolve(res);
       connect.close();
     });

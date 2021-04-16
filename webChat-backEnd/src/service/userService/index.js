@@ -1,3 +1,5 @@
+const { Binary } = require("bson");
+const fs = require("fs");
 const {
   addUser,
   findUserByNameOrAccount,
@@ -10,7 +12,7 @@ const {
 // 用户注册
 async function userRegister(params) {
   const { account } = params;
-  const user = await findUserByNameOrAccount({ account, "userName": "" });
+  const user = await findUserByNameOrAccount({ account, "userName": null });
   if (user !== null) {
     // 如果查找的账号不为空,则返回false
     console.log("该账号已存在");
@@ -47,10 +49,19 @@ async function saveAvatar(params) {
 
 // 获取用户头像
 async function getAvatar(params) {
+  // 拿到用户头像地址
   const CommandResult = await getUserAvatar(params);
-  return CommandResult
+  console.log(CommandResult.avatar_url);
+  if (CommandResult != null) {
+    return CommandResult.avatar_url
+  }
 }
-getAvatar({ uid: "6072a0a56407193a4029409e" }).then((res) => {
-  console.log(res);
-})
-module.exports = { userRegister, userLogin,saveAvatar }
+// getAvatar({ uid: "6072a0a56407193a4029409e" }).then((res) => {
+//   console.log(res);
+// })
+module.exports = {
+  userRegister,
+  userLogin,
+  saveAvatar,
+  getAvatar
+}

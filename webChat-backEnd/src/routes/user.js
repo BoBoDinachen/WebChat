@@ -1,7 +1,14 @@
 const express = require("express");
 const multer = require('multer');
-const upload = multer({ dest:"uploads/img/userAvatar" });  // 文件上传
-const { userLogin, userRegister,saveAvatar } = require("../service/userService/index");  // 导入业务操作模块
+const path = require("path");
+const multer = require('multer');
+var upload = multer({ dest: 'uploads/img/userAvatar' })
+const {
+  userLogin,
+  userRegister,
+  saveAvatar,
+  getAvatar
+} = require("../service/userService/index");  // 导入业务操作模块
 
 // 1.创建路由
 const router = express.Router();
@@ -33,21 +40,32 @@ router.post("/register", (request, response) => {
 })
 
 // 上传头像
-router.post("/upload/profile", upload.single("avatar"), function (request,response,next) {
-  // 将文件名字设置为用户id
-  console.log(request.file);
-  console.log("uid:", request.body.uid);
+router.post("/upload/profile",upload.single("avatar"), function (request, response, next) {
   // 保存头像地址
   const uid = request.body.uid;
+  // 将文件名字设置为用户id
+  console.log("uid:", request.body.uid);
+  console.log(request.file);
   const path = request.file.path;
   saveAvatar({ "uid": uid, "avatar_url": path }).then((res) => {
     if (res) {
-      response.json({"status": 200, "setAvatar": true, "msg": "设置头像成功"})
+      response.json({ "status": 200, "setAvatar": true, "msg": "设置头像成功", "url": path });
     } else {
-      response.json({"status": 200, "setAvatar": false, "msg": "设置失败，服务器错误.."})
+      response.json({ "status": 200, "setAvatar": false, "msg": "设置失败，服务器错误.." })
     }
   })
 });
 
+// 获取用户头像
+router.get("/avatar", (request, response, next) => {
+  // 拿到uid
+  const { uid } = request.query;
+  getAvatar({ uid }).then((result) => {
+    const rootPath = path.join(__dirname, "../");
+    response.sendFile(rootPath + result);
+    // response.send(result);
+  });
+
+})
 // 3. 导出路由
 module.exports = router;
