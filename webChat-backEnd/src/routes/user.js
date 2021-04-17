@@ -1,8 +1,7 @@
 const express = require("express");
-const multer = require('multer');
 const path = require("path");
 const multer = require('multer');
-var upload = multer({ dest: 'uploads/img/userAvatar' })
+var upload = multer();
 const {
   userLogin,
   userRegister,
@@ -44,12 +43,13 @@ router.post("/upload/profile",upload.single("avatar"), function (request, respon
   // 保存头像地址
   const uid = request.body.uid;
   // 将文件名字设置为用户id
-  console.log("uid:", request.body.uid);
-  console.log(request.file);
-  const path = request.file.path;
-  saveAvatar({ "uid": uid, "avatar_url": path }).then((res) => {
-    if (res) {
-      response.json({ "status": 200, "setAvatar": true, "msg": "设置头像成功", "url": path });
+  request.file.filename = uid;
+  const fileBuffer = request.file.buffer;
+  // console.log("uid:", request.body.uid);
+  // console.log(request.file);
+  saveAvatar({ "uid": uid, fileBuffer }).then((res) => {
+    if (res !== null) {
+      response.json({ "status": 200, "setAvatar": true, "msg": "设置头像成功", "url": res.path });
     } else {
       response.json({ "status": 200, "setAvatar": false, "msg": "设置失败，服务器错误.." })
     }

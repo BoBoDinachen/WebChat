@@ -1,5 +1,5 @@
-const { Binary } = require("bson");
 const fs = require("fs");
+const path = require("path");
 const {
   addUser,
   findUserByNameOrAccount,
@@ -39,11 +39,21 @@ async function userLogin(params) {
 
 // 设置用户头像
 async function saveAvatar(params) {
-  const CommandResult = await setUserAvatar(params);
-  if (CommandResult.result.n === 1 && CommandResult.result.ok === 1) {
-    return true;
-  } else {
-    return false;
+  const { uid, fileBuffer } = params;
+  const rootPath = path.join(__dirname, "../../");
+  const avatar_url = "uploads/img/userAvatar/" + uid+".png";
+  // console.log("头像地址:", rootPath + avatar_url);
+  try {
+    // 保存文件到磁盘中
+    fs.writeFileSync(rootPath + avatar_url, fileBuffer);
+    const CommandResult = await setUserAvatar({ uid, avatar_url });
+    if (CommandResult.result.n === 1 && CommandResult.result.ok === 1) {
+      return {path:avatar_url};
+    } else {
+      return null;
+    }
+  } catch (err) {
+    console.log(err);
   }
 }
 
