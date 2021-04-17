@@ -26,7 +26,7 @@ export default function PopupBox(WrappedComponent) {
         <div ref={c => {this.popupBox = c}} className={style.popup}>
           <div className={style.content}>
             {/* 传入的组件 */}
-            <WrappedComponent/>
+            {WrappedComponent}
           </div>
           <a className={style.close} onTouchEnd={this.colsePopup}>
             <img src={close_url}/>

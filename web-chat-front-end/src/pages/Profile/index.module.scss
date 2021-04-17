@@ -16,10 +16,10 @@
     height: 200px;
     // background-color: aquamarine;
     img{
+      box-sizing: border-box;
       background-color: aqua;
       border-radius: 50%;
-      width: 140px;
-      height: 140px;
+      max-width: 35%;
       // border: 2px solid palevioletred;
       transition: all .1s linear;
       &:active{

@@ -4,6 +4,7 @@ import avatarUrl from '../../assets/img/默认头像.png'
 import PopupBox from '../../components/PopupBox'
 import { request } from '../../utils/request'
 export default class Profile extends Component {
+  // 组件状态
   state = {
     user: {
       uid: "",
@@ -16,8 +17,21 @@ export default class Profile extends Component {
     // 模态框是否关闭
     showPopup: false
   }
+  // 组件state更新的时候
+  componentDidUpdate(prevProps,prevState) {
+    console.log("Profile组件更新...");
+    const { user } = this.state; // 用户信息
+    // console.log("原来的头像", prevState);
+    // console.log("现在的头像",user.avatar_url);
+    // console.log(user);
+    if (user.avatar_url !== prevState.user.avatar_url) {
+      // 获取新头像
+      this.getAvatar(user.uid);
+    }
+  }
   // 组件加载
   componentDidMount() {
+    console.log("Profile组件加载...");
     // 组件加载的时候，获取用户信息和头像
     const user_info = JSON.parse(window.sessionStorage.getItem("user_info"));
     if (user_info.avatar_url !== "") {
@@ -46,7 +60,6 @@ export default class Profile extends Component {
         }
       })
     }
-    console.log(this.state);
   }
   // 触摸头像
   HandleAvatar = () => {
@@ -63,7 +76,7 @@ export default class Profile extends Component {
       },
       responseType: "blob"
     }).then((res) => {
-      console.log(res);
+      // 创建头像的url
       const avatar_url = window.URL.createObjectURL(res.data);
       // 设置头像
       this.avatarElem.src = avatar_url;
@@ -77,7 +90,7 @@ export default class Profile extends Component {
     const img = this.uploadElem.files[0];
     if (img.type === "image/jpeg" || img.type === "image/png") {
       const { user } = this.state;
-      console.log(user);
+      // console.log(user);
       // 封装表单数据
       const formData = new FormData();
       formData.append("avatar", img);
@@ -130,24 +143,24 @@ export default class Profile extends Component {
       }
     }, 200);
   }
-  // 打开模态框
-  openUploadPopup() {
+
+  // 打开设置昵称模态框
+  openPopup = ()=> {
     this.setState({
       showPopup: true
     })
   }
-  componentDidUpdate() {
-    const { user } = this.state; // 用户信息
-    console.log(user);
-    if (user.avatar_url !== "") {
-      // 获取新头像
-      this.getAvatar(user.uid);
-    }
-  }
+
   render() {
     const { user } = this.state; // 用户信息
+    const SetNameBox = PopupBox(
+      <>
+        <input type="text"/>
+      </>
+    );
     return (
       <div>
+        <SetNameBox showPopup={this.state.showPopup}/>
         <div className={style.container}>
           {/* 展示用户名和头像 */}
           <div className={style.showInfo}>
@@ -174,7 +187,7 @@ export default class Profile extends Component {
             </li>
           </ul>
           <ul className={style.menuList}>
-            <li><span></span>设置昵称</li>
+            <li onTouchEnd={this.openPopup}><span></span>设置昵称</li>
             <li><span></span>编辑资料</li>
             <li><span></span>设置背景</li>
             <li><span></span>修改密码</li>
