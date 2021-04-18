@@ -6,7 +6,8 @@ const {
   userLogin,
   userRegister,
   saveAvatar,
-  getAvatar
+  getAvatar,
+  setName
 } = require("../service/userService/index");  // 导入业务操作模块
 
 // 1.创建路由
@@ -66,6 +67,20 @@ router.get("/avatar", (request, response, next) => {
     // response.send(result);
   });
 
+})
+
+// 设置用户名
+router.post("/profile/setName", (request, response) => {
+  const { uid, user_name } = request.body;
+  setName({uid, user_name}).then((result) => {
+    if (result !== "") {
+      response.json({ "status": 200, "isSet": true, "msg": "设置成功", user_name: result });
+    } else {
+      response.json({"status": 200, "isSet": false, "msg": "设置失败"})
+    }
+  }).catch((err) => {
+    console.log(err);
+  })
 })
 // 3. 导出路由
 module.exports = router;

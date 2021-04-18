@@ -77,10 +77,26 @@ async function getUserAvatar(params) {
     })
   })
 }
+
+// 修改用户昵称
+async function setUserName(params) {
+  // 1.连接数据库
+  const db = await connect.createDB();
+  const collection = db.collection("users");
+  const { uid, user_name } = params;
+  return new Promise((resolve, reject) => {
+    collection.updateOne({ _id: ObjectId(uid) }, { $set: { user_name } }, (err, result) => {
+      if (err) throw err;
+      resolve(result);
+      connect.close();
+    });
+  })
+}
 module.exports = {
   findUserByNameOrAccount,
   addUser,
   findUserByAccountAndPassword,
   setUserAvatar,
-  getUserAvatar
+  getUserAvatar,
+  setUserName
 };

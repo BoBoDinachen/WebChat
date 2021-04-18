@@ -5,7 +5,8 @@ const {
   findUserByNameOrAccount,
   findUserByAccountAndPassword,
   setUserAvatar,
-  getUserAvatar
+  getUserAvatar,
+  setUserName
 } = require("../../model/userModel/UserDao");
 
 
@@ -69,9 +70,23 @@ async function getAvatar(params) {
 // getAvatar({ uid: "6072a0a56407193a4029409e" }).then((res) => {
 //   console.log(res);
 // })
+// 设置用户昵称，返回新的用户昵称
+async function setName(params) {
+  const CommandResult = await setUserName(params);
+  if (CommandResult.result.n === 1 && CommandResult.result.ok === 1) {
+    return params.user_name;
+  } else {
+    return "";
+  }
+}
+
+// setName({ uid: "6078fe9de247f24538cfcb38", user_name: "JHHHH" }).then((res) => {
+//   console.log(res);
+// })
 module.exports = {
   userRegister,
   userLogin,
   saveAvatar,
-  getAvatar
+  getAvatar,
+  setName
 }
