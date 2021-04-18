@@ -1,7 +1,10 @@
 import React, { Component } from 'react'
 import style from './index.module.scss'
 import avatarUrl from '../../assets/img/默认头像.png'
+import SexMan_url from '../../assets/img/性别男.png';
+import SexWoman_url from '../../assets/img/性别女.png';
 import PopupBox from '../../components/PopupBox'
+import Button from '../../components/Button'
 import { request } from '../../utils/request'
 export default class Profile extends Component {
   // 组件状态
@@ -15,16 +18,18 @@ export default class Profile extends Component {
       avatar_url: ""
     },
     // 模态框是否关闭
-    showPopup: false
+    showSetName: false
   }
   // 组件state更新的时候
-  componentDidUpdate(prevProps,prevState) {
+  componentDidUpdate(prevProps, prevState) {
     console.log("Profile组件更新...");
     const { user } = this.state; // 用户信息
+    // 更新sessionStorage
+    
     // console.log("原来的头像", prevState);
     // console.log("现在的头像",user.avatar_url);
     // console.log(user);
-    if (user.avatar_url !== prevState.user.avatar_url) {
+    if (user.avatar_url !== "") {
       // 获取新头像
       this.getAvatar(user.uid);
     }
@@ -129,6 +134,35 @@ export default class Profile extends Component {
       alert("请选择jpg或者png格式的图片~");
     }
   }
+  // 设置用户名
+  setUserName = () => {
+    // 获取输入框内容
+    const inputValue = this.inputNameElem.value;
+    if (inputValue === "") {
+      alert("没有输入~");
+    } else {
+      // 发送请求
+      request({
+        url: "/user/profile/setName",
+        method: "post",
+        data: {
+          uid: this.state.user.uid,
+          user_name: inputValue
+        }
+      }).then((res) => {
+        const { isSet, user_name } = res.data;
+        // 如果设置成功,更新state
+        if (isSet) {
+          alert("设置成功!");
+        } else {
+          alert("设置失败!");
+        }
+      }).catch((err) => {
+        console.log(err);
+      })
+    }
+
+  }
   // 退出登录
   backLogin = () => {
     setTimeout(() => {
@@ -145,22 +179,25 @@ export default class Profile extends Component {
   }
 
   // 打开设置昵称模态框
-  openPopup = ()=> {
-    this.setState({
-      showPopup: true
-    })
+  openPopup = () => {
+    setTimeout(() => {
+      this.setState({
+        showSetName: true
+      })
+    }, 200)
   }
 
   render() {
     const { user } = this.state; // 用户信息
     const SetNameBox = PopupBox(
       <>
-        <input type="text"/>
+        <input ref={c => { this.inputNameElem = c }} type="text" className={style.input_box} placeholder="输入你的新名字吧..." />
+        <Button type="success" click={this.setUserName}>确定修改</Button>
       </>
     );
     return (
       <div>
-        <SetNameBox showPopup={this.state.showPopup}/>
+        <SetNameBox showPopup={this.state.showSetName} />
         <div className={style.container}>
           {/* 展示用户名和头像 */}
           <div className={style.showInfo}>
@@ -171,7 +208,10 @@ export default class Profile extends Component {
             {/* 头像图片 */}
             <img src={avatarUrl} ref={c => { this.avatarElem = c }} alt="" onTouchEnd={this.HandleAvatar} />
             <span>{user.user_name === "" ? user.account : user.user_name}</span>
+            <label><img src={user.sex === "男" ? SexMan_url : SexWoman_url}></img> {user.age}岁</label>
+            <p>喜欢音乐、游戏、编程、美食爱好者</p>
           </div>
+          {/* 显示用户的记录 */}
           <ul className={style.recordList}>
             <li>
               {111}
@@ -186,6 +226,7 @@ export default class Profile extends Component {
               <label>点赞</label>
             </li>
           </ul>
+          {/*菜单项  */}
           <ul className={style.menuList}>
             <li onTouchEnd={this.openPopup}><span></span>设置昵称</li>
             <li><span></span>编辑资料</li>

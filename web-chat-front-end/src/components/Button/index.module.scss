@@ -1,0 +1,15 @@
+.btn{
+  margin-top: 20px;
+  padding: 3px 10px 3px;
+  line-height: 30px;
+  border-radius: 5px;
+  transition: all .2s;
+  font-weight: bold;
+  text-indent: 5px;
+  letter-spacing: 5px;
+  &:active{
+    text-indent: 10px;
+    letter-spacing: 10px;
+    background-color: #FFFFFF;
+  }
+}
