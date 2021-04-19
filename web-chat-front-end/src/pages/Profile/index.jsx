@@ -5,6 +5,7 @@ import SexMan_url from '../../assets/img/性别男.png';
 import SexWoman_url from '../../assets/img/性别女.png';
 import PopupBox from '../../components/PopupBox'
 import Button from '../../components/Button'
+import MessageBox from '../../components/MessageBox'
 import { request } from '../../utils/request'
 export default class Profile extends Component {
   // 组件状态
@@ -18,14 +19,14 @@ export default class Profile extends Component {
       avatar_url: ""
     },
     // 模态框是否关闭
-    showSetName: false
+    showSetName: false,
+    showMessageSetAvatar: false,
+    showMessageSetName: false
   }
   // 组件state更新的时候
   componentDidUpdate(prevProps, prevState) {
     console.log("Profile组件更新...");
     const { user } = this.state; // 用户信息
-    // 更新sessionStorage
-    
     // console.log("原来的头像", prevState);
     // console.log("现在的头像",user.avatar_url);
     // console.log(user);
@@ -100,40 +101,44 @@ export default class Profile extends Component {
       const formData = new FormData();
       formData.append("avatar", img);
       formData.append("uid", user.uid);
-      // 发送请求
-      request({
-        url: "/user/upload/profile",
-        method: "post",
-        headers: { 'Content-Type': 'multipart/form-data' },
-        data: formData
-      }).then((result) => {
-        // 上传成功
-        console.log(result.data);
-        if (result.data.setAvatar) {
-          alert("设置成功!");
-          // 更新sessionStorage
-          const user_info = JSON.parse(window.sessionStorage.getItem("user_info"));
-          user_info.avatar_url = result.data.url;
-          window.sessionStorage.setItem("user_info", JSON.stringify(user_info));
-          // 更新state
-          this.setState({
-            user: {
-              uid: user_info._id,
-              account: user_info.account,
-              user_name: user_info.user_name,
-              age: user_info.age,
-              sex: user_info.sex,
-              avatar_url: result.data.url
-            }
-          })
-        }
-      }).catch((err) => {
-        console.log(err);
-      });
+      // 确认框
+      if (confirm("确定选择这张头像吗")) {
+        // 发送请求
+        request({
+          url: "/user/upload/profile",
+          method: "post",
+          headers: { 'Content-Type': 'multipart/form-data' },
+          data: formData
+        }).then((result) => {
+          // 上传成功
+          console.log(result.data);
+          if (result.data.setAvatar) {
+            this.openMessageSetAvatarBox();
+            // 更新sessionStorage
+            let user_info = JSON.parse(window.sessionStorage.getItem("user_info"));
+            user_info.avatar_url = result.data.url;
+            window.sessionStorage.setItem("user_info", JSON.stringify(user_info));
+            // 更新state
+            this.setState({
+              user: {
+                uid: user_info._id,
+                account: user_info.account,
+                user_name: user_info.user_name,
+                age: user_info.age,
+                sex: user_info.sex,
+                avatar_url: result.data.url
+              }
+            })
+          }
+        }).catch((err) => {
+          console.log(err);
+        });
+      }
     } else {
       alert("请选择jpg或者png格式的图片~");
     }
   }
+
   // 设置用户名
   setUserName = () => {
     // 获取输入框内容
@@ -153,7 +158,20 @@ export default class Profile extends Component {
         const { isSet, user_name } = res.data;
         // 如果设置成功,更新state
         if (isSet) {
-          alert("设置成功!");
+          // 关闭模态框,打开消息框
+          this.openMessageSetNameBox();
+          const user_info = JSON.parse(window.sessionStorage.getItem("user_info"));
+          // 更新state
+          this.setState({
+            user: {
+              uid: user_info._id,
+              account: user_info.account,
+              user_name: user_name,
+              age: user_info.age,
+              sex: user_info.sex,
+              avatar_url: user_info.avatar_url
+            }
+          })
         } else {
           alert("设置失败!");
         }
@@ -182,11 +200,28 @@ export default class Profile extends Component {
   openPopup = () => {
     setTimeout(() => {
       this.setState({
-        showSetName: true
+        showSetName: true,
+        showMessageSetAvatar: false,
+        showMessageSetName: false,
       })
     }, 200)
   }
-
+  // 打开消息框设置头像
+  openMessageSetAvatarBox() {
+    this.setState({
+      showSetName: false,
+      showMessageSetName: false,
+      showMessageSetAvatar: true
+    })
+  }
+  // 打开消息框设置用户名
+  openMessageSetNameBox() {
+    this.setState({
+      showSetName: false,
+      showMessageSetAvatar: false,
+      showMessageSetName: true
+    })
+  }
   render() {
     const { user } = this.state; // 用户信息
     const SetNameBox = PopupBox(
@@ -197,6 +232,8 @@ export default class Profile extends Component {
     );
     return (
       <div>
+        <MessageBox time="1500" text="头像设置成功..." type="success" isShow={this.state.showMessageSetAvatar}></MessageBox>
+        <MessageBox time="1500" text="设置昵称成功..." type="success" isShow={this.state.showMessageSetName}></MessageBox>
         <SetNameBox showPopup={this.state.showSetName} />
         <div className={style.container}>
           {/* 展示用户名和头像 */}

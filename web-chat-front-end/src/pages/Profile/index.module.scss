@@ -99,6 +99,7 @@
     align-items: center;
     width: 100%;
     list-style: none;
+    transform: translateY(-5%);
     li{
       margin-top: 5%;
       width: 85%;
@@ -166,8 +167,7 @@
   .backLogin{
     outline: none;
     border: none;
-    margin-top: 8%;
-    margin-bottom: 40%;
+    margin-bottom: 33%;
     border-radius: 20px;
     width: 70%;
     font-size: 20px;
