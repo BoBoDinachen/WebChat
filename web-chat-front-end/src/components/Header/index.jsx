@@ -18,6 +18,13 @@ class Header extends Component {
         break;
       case "/profile":
         title = "个人中心";
+        break;
+      case "/friends":
+        title = "我的好友";
+        break;
+      case "/message":
+        title = "我的消息";
+        break;
     }
     return (
       <header>

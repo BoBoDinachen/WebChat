@@ -9,14 +9,15 @@ import MessageBox from '../../components/MessageBox'
 import { request } from '../../utils/request'
 export default class Profile extends Component {
   // 组件状态
+  userInfo = JSON.parse(sessionStorage.getItem("user_info"));
   state = {
     user: {
-      uid: "",
-      account: "",
-      user_name: "",
-      age: "",
-      sex: "",
-      avatar_url: ""
+      uid: this.userInfo._id,
+      account: this.userInfo.account,
+      user_name: this.userInfo.user_name,
+      age: this.userInfo.age,
+      sex: this.userInfo.sex,
+      avatar_url: this.userInfo.avatar_url
     },
     // 模态框是否关闭
     showSetName: false,
@@ -41,8 +42,6 @@ export default class Profile extends Component {
     // 组件加载的时候，获取用户信息和头像
     const user_info = JSON.parse(window.sessionStorage.getItem("user_info"));
     if (user_info.avatar_url !== "") {
-      // 获取新头像
-      this.getAvatar(user_info._id);
       this.setState({
         user: {
           uid: user_info._id,
@@ -64,6 +63,8 @@ export default class Profile extends Component {
           sex: user_info.sex,
           avatar_url: ""
         }
+      }, () => {
+        this.avatarElem.src = avatarUrl;
       })
     }
   }
@@ -243,7 +244,7 @@ export default class Profile extends Component {
               <input type="file" ref={c => { this.uploadElem = c }} onChange={this.uploadAvatar} />
             </span>
             {/* 头像图片 */}
-            <img src={avatarUrl} ref={c => { this.avatarElem = c }} alt="" onTouchEnd={this.HandleAvatar} />
+            <img ref={c => { this.avatarElem = c }} alt="" onTouchEnd={this.HandleAvatar} />
             <span>{user.user_name === "" ? user.account : user.user_name}</span>
             <label><img src={user.sex === "男" ? SexMan_url : SexWoman_url}></img> {user.age}岁</label>
             <p>喜欢音乐、游戏、编程、美食爱好者</p>

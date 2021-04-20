@@ -2,6 +2,8 @@ import React, { useState,useEffect } from 'react'
 import Footer from './components/Footer'
 import Header from './components/Header';
 import Profile from './pages/Profile';
+import Friends from './pages/Friends';
+import MessageList from './pages/MessageList'
 import Home from './pages/Home'
 import { Route, Switch, Redirect } from 'react-router-dom'
 import './App.css'
@@ -19,6 +21,8 @@ function App() {
       <>
         <Switch>
           <Route path="/home" component={Home}></Route>
+          <Route path="/friends" component={Friends}></Route>
+          <Route path="/message" component={MessageList}></Route>
           <Route path="/profile" component={Profile}/>
           <Redirect to="/home"/>
         </Switch>
