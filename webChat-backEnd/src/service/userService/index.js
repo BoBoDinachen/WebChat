@@ -62,7 +62,7 @@ async function saveAvatar(params) {
 async function getAvatar(params) {
   // 拿到用户头像地址
   const CommandResult = await getUserAvatar(params);
-  console.log(CommandResult.avatar_url);
+  // console.log(CommandResult.avatar_url);
   if (CommandResult != null) {
     return CommandResult.avatar_url
   }
