@@ -7,7 +7,9 @@ const {
   userRegister,
   saveAvatar,
   getAvatar,
-  setName
+  setName,
+  getFriends,
+  addFriend
 } = require("../service/userService/index");  // 导入业务操作模块
 
 // 1.创建路由
@@ -81,6 +83,38 @@ router.post("/profile/setName", (request, response) => {
   }).catch((err) => {
     console.log(err);
   })
+})
+
+// 获取好友列表
+router.get("/getFriends", (request,response) => {
+  const { uid } = request.query;
+  getFriends({ uid }).then((friends) => {
+    console.log("好友列表", friends);
+    response.send({ "status": 200, "success": true, "msg": "获取好友列表成功", "data": friends });
+  })
+})
+
+// 添加好友接口
+router.post("/addFriend", (request, response) => {
+  const { uid, incr_uid } = request.body; //请求数据
+  // 调用接口
+  if (uid !== "" && incr_uid !== "") {
+    addFriend({ uid, incr_uid }).then((res) => {
+      let flag = res.data;
+      switch (flag) {
+        case "exist":
+          response.send({ "status": 200, "success": false, "msg": "该好友已添加"})
+          break;
+        case "success":
+          response.send({ "status": 200, "success": true, "msg": "好友添加成功"});
+          break;
+        case "fail":
+          response.send({ "status": 200, "success": false, "msg": "好友添加失败,数据库错误"});
+          break;
+      }
+    })
+  }
+  
 })
 // 3. 导出路由
 module.exports = router;

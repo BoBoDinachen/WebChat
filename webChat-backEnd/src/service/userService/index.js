@@ -6,7 +6,9 @@ const {
   findUserByAccountAndPassword,
   setUserAvatar,
   getUserAvatar,
-  setUserName
+  setUserName,
+  getFriendList,
+  setFriendList
 } = require("../../model/userModel/UserDao");
 
 
@@ -83,10 +85,57 @@ async function setName(params) {
 // setName({ uid: "6078fe9de247f24538cfcb38", user_name: "JHHHH" }).then((res) => {
 //   console.log(res);
 // })
+
+// 获取用户好友列表
+async function getFriends(params) {
+  // 返回的数据
+  const CommandResult = await getFriendList(params);
+  if (CommandResult !== null) {
+    return CommandResult.friend_list;
+  }
+}
+
+// 添加好友
+async function addFriend(params) {
+  let isExist; // 返回结果
+  const { uid, incr_uid } = params;
+  const friends = await getFriends({ uid }); // 获取好友列表
+  //拿到该用户的好友列表 去除空字符串 和 重复的uid
+  // 判断重复的uid
+  friends.forEach((item,index) => {
+    if (item === incr_uid) {
+      isExist = true;
+    } else {
+      isExist = false;
+    }
+  });
+  // 如果好友存在
+  if (isExist) {
+    return {data: "exist"}
+  } else {
+    friends.push(incr_uid); // 往数组里面添加uid
+    let friend_list = friends.filter(item => item !== ""); //过滤数组
+    console.log(friend_list);
+    const CommandResult = await setFriendList({ uid, friend_list }); // 设置好友列表
+    if (CommandResult.result.n === 1 && CommandResult.result.ok === 1) {
+      return {data: "success"}
+    } else {
+      return {data: "fail"}
+    }
+  }
+}
+// getFriends({ uid: "6072a0a56407193a4029409e" }).then((res) => {
+//   console.log(res);
+// })
+// addFriend({uid:"6072a0a56407193a4029409e",incr_uid:"608159d52f158f0588b1dbf5"}).then((res) => {
+//   console.log(res);
+// })
 module.exports = {
   userRegister,
   userLogin,
   saveAvatar,
   getAvatar,
-  setName
+  setName,
+  getFriends,
+  addFriend
 }
