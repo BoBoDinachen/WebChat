@@ -1,24 +1,28 @@
 import io from 'socket.io-client';
 const URL = "http://172.21.231.28:5000"; // 服务器地址
-const uid = JSON.parse(sessionStorage["user_info"])._id; //用户id
 export default {
-  currSocket: null,
   // 创建连接
-  createSocket: function () {
+  currSocket: null,
+  createSocket: function (uid) {
     const socket = io(URL, {
       path: "/WebChat/chat"
     });
-    this.createSocket = socket;
-    // 上线通知
-    this.createSocket.emit("online", {uid});
+    this.currSocket = socket;
+    socket.emit("online", { uid });
+    return socket;
   },
+
   // 关闭连接
-  closeSocket: function () {
-    this.currSocket.emit("closeSocket",uid);
+  closeSocket: function (uid) {
+    this.currSocket.emit("closeSocket", uid);
   },
-  // 开启连接
-  openSocket: function () {
+  // 打开连接
+  openSocket: function (uid) {
     this.currSocket.open();
-    this.createSocket.emit("online", {uid});
-  }
+    this.currSocket.emit("online", { uid });
+  },
+  // 发送私聊信息
+  privateChat: function (params) {
+    this.currSocket.emit("private_chat", params);
+  },
 }

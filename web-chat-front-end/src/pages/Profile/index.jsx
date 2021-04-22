@@ -7,6 +7,7 @@ import PopupBox from '../../components/PopupBox'
 import Button from '../../components/Button'
 import MessageBox from '../../components/MessageBox'
 import { request } from '../../utils/request'
+import socketIO from '../../utils/socket'
 export default class Profile extends Component {
   // 组件状态
   userInfo = JSON.parse(sessionStorage.getItem("user_info"));
@@ -157,11 +158,13 @@ export default class Profile extends Component {
         }
       }).then((res) => {
         const { isSet, user_name } = res.data;
-        // 如果设置成功,更新state
+        // 如果设置成功,更新state和sessionStorage
         if (isSet) {
           // 关闭模态框,打开消息框
           this.openMessageSetNameBox();
           const user_info = JSON.parse(window.sessionStorage.getItem("user_info"));
+          user_info.user_name = user_name;
+          window.sessionStorage.setItem("user_info",JSON.stringify(user_info));
           // 更新state
           this.setState({
             user: {
@@ -184,15 +187,15 @@ export default class Profile extends Component {
   }
   // 退出登录
   backLogin = () => {
+    const { _id, account } = this.userInfo;
     setTimeout(() => {
       if (confirm("确定要退出吗?")) {
         // 清除本地sessionStorage,设置本地存储密码为空
-        const account = JSON.parse(window.sessionStorage.getItem("user_info")).account;
-        window.localStorage.setItem("user_login", JSON.stringify({ account, password: "" }));
-        window.sessionStorage.clear();
+        socketIO.closeSocket(_id); //断开socket连接
+        window.localStorage.setItem("user_login", JSON.stringify({_id,account, password: "" }));
+        window.sessionStorage.clear(); // 清除session
         window.location.reload(); // 刷新页面
       } else {
-        // 取消
       }
     }, 200);
   }

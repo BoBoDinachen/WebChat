@@ -40,12 +40,15 @@ export default class Login extends Component {
           console.log(res);
           if (res.data.isLogin) {
             alert("OK!");
+            const {_id} = res.data.data;
             // 将用户信息保存在本地
             let { sessionStorage } = window;
             sessionStorage.setItem("user_info", JSON.stringify(res.data.data));
             // 判断是否需要记住密码
             if (this.state.isRemember) {
-              localStorage.setItem("user_login", JSON.stringify({ account, password }));
+              localStorage.setItem("user_login", JSON.stringify({ _id, account, password }));
+            } else {
+              localStorage.setItem("user_login", JSON.stringify({ _id, account,password:""}));
             }
             window.location.reload(); //刷新网页
           } else {
