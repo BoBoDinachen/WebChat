@@ -3,7 +3,7 @@ import Footer from './components/Footer'
 import Header from './components/Header';
 import Profile from './pages/Profile';
 import Friends from './pages/Friends';
-import MessageList from './pages/MessageList'
+import MessageList from './pages/Message'
 import Home from './pages/Home'
 import socketIO from './utils/socket';
 import { Route, Switch, Redirect } from 'react-router-dom'
