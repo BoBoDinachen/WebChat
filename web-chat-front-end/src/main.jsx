@@ -5,8 +5,10 @@ import socketIO from './utils/socket'
 import './index.css'
 import App from './App'
 import Login from './pages/Login'  // 登录组件
-
-const uid = JSON.parse(localStorage["user_login"])._id; //用户id
+var uid = "";
+if (localStorage["user_login"]) {
+  uid= JSON.parse(localStorage["user_login"])._id; //用户id
+}
 // 获取本地的登录状态
 let { sessionStorage } = window;
 const user_info = sessionStorage.getItem("user_info");
@@ -28,6 +30,7 @@ if (user_info !== null) {
     document.getElementById('root')
   )
 }
+
 window.onload = function () {
   console.log("页面加载");
   window.onunload = function () {

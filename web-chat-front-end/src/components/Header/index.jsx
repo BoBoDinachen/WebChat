@@ -25,6 +25,15 @@ class Header extends Component {
       case "/message":
         title = "我的消息";
         break;
+      case "/message/friendMsg":
+        title = "好友消息";
+        break;
+      case "/message/likeMsg":
+        title = "收到的喜欢";
+        break;
+      case "/message/tagsMsg":
+        title = "收到的点赞";
+        break;
     }
     return (
       <header>

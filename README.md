@@ -2,8 +2,8 @@
 >* web上面的聊天应用
 >* 🍉作者: XDEcat
 >* 包含前端和服务端
->* ✨前端技术栈：JavaSript、WebSocket、React、Sass
->* ✨后端技术栈: Node、Express、Nodejs-websocket
+>* ✨前端技术栈：JavaSript、WebSocket、React、Sass、socket.io-client
+>* ✨后端技术栈: Node、Express、Nodejs-websocket、socket.io
 >* ✨数据库: MongoDB
 
 ### 开发日志
@@ -45,3 +45,6 @@
 * **2021/4/23**:<br/>
   1.界面主题色变换、个人资料页优化🍗<br/>
   2.消息页面、消息标题栏🍗
+* **2021/4/25**:<br/>
+  1.我的消息，消息栏切换🍗<br/>
+  2.获取好友列表接口优化🍗

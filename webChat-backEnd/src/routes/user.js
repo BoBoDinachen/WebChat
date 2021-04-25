@@ -8,7 +8,7 @@ const {
   saveAvatar,
   getAvatar,
   setName,
-  getFriends,
+  getFriendsInfo,
   addFriend
 } = require("../service/userService/index");  // 导入业务操作模块
 
@@ -48,15 +48,17 @@ router.post("/upload/profile",upload.single("avatar"), function (request, respon
   // 将文件名字设置为用户id
   request.file.filename = uid;
   const fileBuffer = request.file.buffer;
+  if (fileBuffer) {
+    saveAvatar({ "uid": uid, fileBuffer }).then((res) => {
+      if (res !== null) {
+        response.json({ "status": 200, "setAvatar": true, "msg": "设置头像成功", "url": res.path });
+      } else {
+        response.json({ "status": 200, "setAvatar": false, "msg": "设置失败，服务器错误.." })
+      }
+    })
+  }
   // console.log("uid:", request.body.uid);
   // console.log(request.file);
-  saveAvatar({ "uid": uid, fileBuffer }).then((res) => {
-    if (res !== null) {
-      response.json({ "status": 200, "setAvatar": true, "msg": "设置头像成功", "url": res.path });
-    } else {
-      response.json({ "status": 200, "setAvatar": false, "msg": "设置失败，服务器错误.." })
-    }
-  })
 });
 
 // 获取用户头像
@@ -85,10 +87,10 @@ router.post("/profile/setName", (request, response) => {
   })
 })
 
-// 获取好友列表
+// 获取好友列表信息
 router.get("/getFriends", (request,response) => {
   const { uid } = request.query;
-  getFriends({ uid }).then((friends) => {
+  getFriendsInfo({ uid }).then((friends) => {
     console.log("好友列表", friends);
     response.send({ "status": 200, "success": true, "msg": "获取好友列表成功", "data": friends });
   })

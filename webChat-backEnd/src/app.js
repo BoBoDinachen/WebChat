@@ -14,6 +14,9 @@ app.use((req, res, next) => {
   // console.log('请求地址', req.url);
   next();
 })
+
+// 处理静态资源
+app.use("/WebChat/home", express.static("static/"));
 //设置允许跨域访问
 app.all('*', function (req, res, next) {
   res.header('Access-Control-Allow-Origin', '*');
@@ -24,9 +27,6 @@ app.all('*', function (req, res, next) {
   next();
 });
 
-
-// 处理静态资源
-app.use("/WebChat/home", express.static("static/"));
 // 处理路由
 const userRouter = require("./routes/user");
 app.use("/WebChat/user", userRouter);

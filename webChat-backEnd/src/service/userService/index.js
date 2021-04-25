@@ -2,6 +2,7 @@ const fs = require("fs");
 const path = require("path");
 const {
   addUser,
+  findUserById,
   findUserByNameOrAccount,
   findUserByAccountAndPassword,
   setUserAvatar,
@@ -44,14 +45,14 @@ async function userLogin(params) {
 async function saveAvatar(params) {
   const { uid, fileBuffer } = params;
   const rootPath = path.join(__dirname, "../../");
-  const avatar_url = "uploads/img/userAvatar/" + uid+".png";
+  const avatar_url = "uploads/img/userAvatar/" + uid + ".png";
   // console.log("头像地址:", rootPath + avatar_url);
   try {
     // 保存文件到磁盘中
-    fs.writeFileSync(rootPath + avatar_url, fileBuffer);
+    fs.writeFileSync(rootPath + avatar_url, fileBuffer)
     const CommandResult = await setUserAvatar({ uid, avatar_url });
     if (CommandResult.result.n === 1 && CommandResult.result.ok === 1) {
-      return {path:avatar_url};
+      return { path: avatar_url };
     } else {
       return null;
     }
@@ -86,12 +87,17 @@ async function setName(params) {
 //   console.log(res);
 // })
 
-// 获取用户好友列表
-async function getFriends(params) {
+// 获取用户好友列表信息
+async function getFriendsInfo(params) {
   // 返回的数据
   const CommandResult = await getFriendList(params);
   if (CommandResult !== null) {
-    return CommandResult.friend_list;
+    let { friend_list } = CommandResult;
+    // 遍历好友列表id,返回数组，使用promise.all处理
+    const infos = await Promise.all(friend_list.map(async (uid) => {
+     return await findUserById({uid});
+    }))
+    return infos;
   }
 }
 
@@ -102,7 +108,7 @@ async function addFriend(params) {
   const friends = await getFriends({ uid }); // 获取好友列表
   //拿到该用户的好友列表 去除空字符串 和 重复的uid
   // 判断重复的uid
-  friends.forEach((item,index) => {
+  friends.forEach((item, index) => {
     if (item === incr_uid) {
       isExist = true;
     } else {
@@ -111,20 +117,20 @@ async function addFriend(params) {
   });
   // 如果好友存在
   if (isExist) {
-    return {data: "exist"}
+    return { data: "exist" }
   } else {
     friends.push(incr_uid); // 往数组里面添加uid
     let friend_list = friends.filter(item => item !== ""); //过滤数组
     console.log(friend_list);
     const CommandResult = await setFriendList({ uid, friend_list }); // 设置好友列表
     if (CommandResult.result.n === 1 && CommandResult.result.ok === 1) {
-      return {data: "success"}
+      return { data: "success" }
     } else {
-      return {data: "fail"}
+      return { data: "fail" }
     }
   }
 }
-// getFriends({ uid: "6072a0a56407193a4029409e" }).then((res) => {
+// getFriendsInfo({ uid: "6072a0a56407193a4029409e" }).then((res) => {
 //   console.log(res);
 // })
 // addFriend({uid:"6072a0a56407193a4029409e",incr_uid:"608159d52f158f0588b1dbf5"}).then((res) => {
@@ -136,6 +142,6 @@ module.exports = {
   saveAvatar,
   getAvatar,
   setName,
-  getFriends,
+  getFriendsInfo,
   addFriend
 }

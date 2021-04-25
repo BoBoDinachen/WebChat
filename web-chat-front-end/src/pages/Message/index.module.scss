@@ -36,9 +36,8 @@
         display: block;
         content: "好友消息";
       }
-      
     }
-    .titleItem.active{
+    .active{
       border-bottom: 3px solid black;
     }
     .titleItem2{
@@ -61,11 +60,5 @@
         content: "收到的点赞";
       }
     }
-  }
-  .messageList{
-    width: 100%;
-    min-height: 74vh;
-    // max-height: 74vh;
-    background-color: #FFFFFF;
   }
 }

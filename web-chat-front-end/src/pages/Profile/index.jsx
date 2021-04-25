@@ -96,7 +96,9 @@ export default class Profile extends Component {
   uploadAvatar = () => {
     // 拿到文件信息
     const img = this.uploadElem.files[0];
-    if (img.type === "image/jpeg" || img.type === "image/png") {
+    console.log(img);
+    // 限制头像的大小小于2MB以下
+    if ((img.type === "image/jpeg" || img.type === "image/png") && img.size <= 2000000) {
       const { user } = this.state;
       // console.log(user);
       // 封装表单数据
@@ -121,23 +123,25 @@ export default class Profile extends Component {
             user_info.avatar_url = result.data.url;
             window.sessionStorage.setItem("user_info", JSON.stringify(user_info));
             // 更新state
-            this.setState({
-              user: {
-                uid: user_info._id,
-                account: user_info.account,
-                user_name: user_info.user_name,
-                age: user_info.age,
-                sex: user_info.sex,
-                avatar_url: result.data.url
-              }
-            })
+            setTimeout(() => {
+              this.setState({
+                user: {
+                  uid: user_info._id,
+                  account: user_info.account,
+                  user_name: user_info.user_name,
+                  age: user_info.age,
+                  sex: user_info.sex,
+                  avatar_url: result.data.url
+                }
+              })
+            }, 500);
           }
         }).catch((err) => {
           console.log(err);
         });
       }
     } else {
-      alert("请选择jpg或者png格式的图片~");
+      alert("请选择jpg或者png格式的图片,并且不大于2MB噢~");
     }
   }
 
@@ -164,7 +168,7 @@ export default class Profile extends Component {
           this.openMessageSetNameBox();
           const user_info = JSON.parse(window.sessionStorage.getItem("user_info"));
           user_info.user_name = user_name;
-          window.sessionStorage.setItem("user_info",JSON.stringify(user_info));
+          window.sessionStorage.setItem("user_info", JSON.stringify(user_info));
           // 更新state
           this.setState({
             user: {
@@ -192,7 +196,7 @@ export default class Profile extends Component {
       if (confirm("确定要退出吗?")) {
         // 清除本地sessionStorage,设置本地存储密码为空
         socketIO.closeSocket(_id); //断开socket连接
-        window.localStorage.setItem("user_login", JSON.stringify({_id,account, password: "" }));
+        window.localStorage.setItem("user_login", JSON.stringify({ _id, account, password: "" }));
         window.sessionStorage.clear(); // 清除session
         window.location.reload(); // 刷新页面
       } else {

@@ -1,6 +1,23 @@
 const connect = require("../../utils/db_utils");
 const ObjectId = require('mongodb').ObjectId
 
+// 查询用户-id
+async function findUserById(params) {
+  // 1.连接数据库
+  const db = await connect.createDB();
+  // 使用数据库对象，获取集合对象
+  const collection = db.collection('users');
+  const {uid} = params;
+  // or 条件查询 用户名或者账号
+  return new Promise((resolve, reject) => {
+    collection.find({ _id: ObjectId(uid) }).project({ password: 0, friend_list: 0 }).toArray((err,result) => {
+      if (err) throw err;
+      resolve(result[0]);
+      connect.close();
+    });
+  })
+}
+
 // 查询用户-用户名和账号
 async function findUserByNameOrAccount(params) {
   // 1.连接数据库
@@ -109,6 +126,7 @@ async function getFriendList(params) {
     })
   })
 }
+
 // 修改好友列表
 async function setFriendList(params) {
   const { friend_list,uid } = params;
@@ -124,6 +142,7 @@ async function setFriendList(params) {
   })
 }
 module.exports = {
+  findUserById,
   findUserByNameOrAccount,
   addUser,
   findUserByAccountAndPassword,
