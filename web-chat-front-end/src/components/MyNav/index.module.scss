@@ -11,12 +11,12 @@
     font-weight: bold;
     text-decoration: none; //文本装饰
     transition: all .2s linear;
-    border-radius: 10px;
+    border-radius: 5px;
   }
     // 点击时的样式
   .active{
     color: #FF6600;
     background-color: skyblue;
-    border-radius: 10px;
+    border-radius: 5px;
   }
 }

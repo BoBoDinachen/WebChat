@@ -1,4 +1,5 @@
-import React, { useState,useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
+import PrivateChat from './components/PrivateChat'
 import Footer from './components/Footer'
 import Header from './components/Header';
 import Profile from './pages/Profile';
@@ -27,10 +28,11 @@ function App() {
   },[])
   return (
     <div className="App">
-      <Header />
+      <Header/>
       <>
         <Switch>
           <Route path="/home" component={Home}></Route>
+          <Route path="/privateChat" component={PrivateChat}/>
           <Route path="/friends" component={Friends}></Route>
           <Route path="/message" component={MessageList}></Route>
           <Route path="/profile" component={Profile}/>

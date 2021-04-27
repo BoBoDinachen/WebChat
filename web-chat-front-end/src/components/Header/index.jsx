@@ -22,6 +22,9 @@ class Header extends Component {
       case "/friends":
         title = "我的好友";
         break;
+      case "/privateChat":
+        title = "";
+        break;
       case "/message":
         title = "我的消息";
         break;
@@ -38,7 +41,7 @@ class Header extends Component {
     return (
       <header>
         <h2 className={style.title}>
-          <span className={style.back} onTouchEnd={this.handleBack}></span>
+          {pathname=="" ? <span className={style.back} onTouchEnd={this.handleBack}></span> : ""}
           {title}
         </h2>
       </header>
