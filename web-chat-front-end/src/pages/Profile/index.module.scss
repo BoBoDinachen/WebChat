@@ -1,10 +1,11 @@
 .container{
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
+  // justify-content: space-around;
   align-items: center;
   position: absolute;
   width: 100%;
+  padding-top: 2%;
   min-height: 82vh;
   // background-color: #CCCCCC;
   // 信息展示框
@@ -14,7 +15,6 @@
     justify-content: center;
     align-items: center;
     width: 100%;
-    height: 250px;
     // background-color: aquamarine;
     img{
       background-color: aqua;
@@ -26,6 +26,10 @@
       transition: all .1s linear;
       &:active{
         background-color: black;
+      }
+      @media screen and(max-height:750px){
+        width: 95px;
+        height: 95px;
       }
     }
     // 上传头像
@@ -43,6 +47,12 @@
       background-repeat: no-repeat;
       background-size: 50px;
       background-position: left;
+      @media screen and(max-height:750px){
+        right: 30%;
+        width: 30px;
+        height: 30px;
+        background-size: 30px;
+      }
       &:active{
         background-color: #CCCCCC;
       }
@@ -61,6 +71,9 @@
       margin-top: 5px;
       font-weight: bold;
       font-size: 35px;
+      @media screen and(max-height:750px){
+        font-size: 25px;
+      }
     }
     label{
       display: flex;
@@ -68,6 +81,11 @@
       align-items: center;
       font-size: 15px;
       width: 100px;
+      @media screen and(max-height:750px){
+        position: absolute;
+        right: 19%;
+        top: 22.5%;
+      }
       img{
         margin-right: 5%;
         width: 25px;
@@ -90,10 +108,13 @@
     display: flex;
     justify-content: space-around;
     align-items: center;
-    margin-top: 3%;
+    margin-top: 5%;
     width: 100%;
     height: 60px;
     border-radius: 5px;
+    @media screen and(max-height:750px){
+      margin-top: 1%;
+    }
     background-color: rgba($color: #CCCCCC, $alpha: 0.6);
     li{
       display: flex;
@@ -101,6 +122,7 @@
       justify-content: center;
       width: 100px;
       height: 50px;
+     
       label{
         font-weight: bold;
         font-size: 15px;
@@ -127,6 +149,9 @@
     width: 100%;
     list-style: none;
     transform: translateY(-5%);
+    @media screen and(max-height:750px){
+      width: 95%;
+    }
     li{
       margin-top: 5%;
       width: 80%;
@@ -207,6 +232,14 @@
     transition: all .2s linear;
     &:active{
       background-color: rgba($color: #000000, $alpha: 0.3);
+    }
+    @media screen and(max-height:750px){
+      position: absolute;
+      top: 2px;
+      right: 10px;
+      width: 20%;
+      font-size: 15px;
+      height: 40px;
     }
   }
 }

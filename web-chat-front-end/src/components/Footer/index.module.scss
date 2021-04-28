@@ -1,9 +1,10 @@
 .footer{
   position: fixed;
   bottom: 0;
-  height: 60px;
+  height: 68px;
   width: 100%;
   background-color: #363749;
+  box-sizing: border-box;
   text-align: center;
   .navList{
     display: flex;
@@ -12,19 +13,9 @@
     justify-content: space-between;
     align-items: center;
     list-style: none;
+    padding-top: 4px;
+    padding-bottom: 4px;
     padding-left: 8px;
     padding-right: 8px;
-  }
-  .increment{
-    position: absolute;
-    display: block;
-    width: 80px;
-    height: 80px;
-    left: 50%;
-    transform: translate(-50%,-40%);
-    background-image: url("../../assets/img/加号.png");
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: 80px;
   }
 }

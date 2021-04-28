@@ -1,6 +1,6 @@
 .container{
   min-height: 100vh;
-  background-color: #f5f5fa;
+  background-color: #FFFFFF;
   display: flex;
   flex-direction: column;
   justify-content: start;
@@ -8,7 +8,7 @@
   // 搜索框
   .searchBox{
     width: 100%;
-    height: 60px;
+    height: 10vh;
     background-color: #FFFFFF;
     box-sizing: border-box;
     display: flex;
@@ -37,15 +37,21 @@
       background-size: 30px;
     }
   }
+  hr{
+    height: 10px;
+    width: 100%;
+    border: none;
+    background-color:rgba($color: #CCCCCC, $alpha: .3);
+  }
   // 好友列表盒子
   .listBox{
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     align-items: flex-start;
-    margin-top: 10px;
+    margin-top: 3%;
     width: 100%;
-    height: 74vh;
+    height: 70vh;
     background-color:#FFFFFF;
     // overflow: auto;
     // 状态盒子
@@ -68,7 +74,7 @@
     // 好友列表
     .friendList{
       width: 100%;
-      height: 91%;
+      height: 70vh;
       // max-height: 91%;
       // background-color: #66CC99;
       margin-top: 10px;

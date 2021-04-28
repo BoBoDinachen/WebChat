@@ -33,6 +33,7 @@ export default class Friends extends Component {
             <input type="text" placeholder="请输入好友名称" />
             <span></span>
           </div>
+          <hr/>
           {/* 好友列表盒子 */}
           <div className={style.listBox}>
             {/* 状态栏 */}
