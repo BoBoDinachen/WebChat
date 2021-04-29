@@ -21,7 +21,7 @@ class Footer extends Component {
           <ul className={style.navList}>
             {
               Navs.map((Nav, index) => {
-                return <MyNav to={Nav.path} id={Nav.id} activeName={Nav.name} key={Nav.id} />
+                return <MyNav to={Nav.path} id={Nav.id} menu={Nav.name} key={Nav.id} />
               })
             }
           </ul>

@@ -33,22 +33,25 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 15px 0 15px;
+    padding: 10px 0 10px;
     width: 100%;
     box-sizing: border-box;
     position: fixed;
-    bottom: 60px;
+    bottom: 65px;
     background-color: #FFFFFF;
     // box-shadow:0 0 5px 3px #6666CC;
     input{
       width: 60%;
-      height: 50px;
+      height: 45px;
       border-radius: 5px;
-      border:2px solid #666666;
+      border:1px solid #666666;
       // box-shadow:0 0 10px 1px #3399CC;
       outline: none;
-      font-size: 18px;
+      font-size: 16px;
       padding-left: 3%;
+      &:focus{
+        border: 2px solid #3399CC;
+      }
     }
     a{
       margin-left: 3%;

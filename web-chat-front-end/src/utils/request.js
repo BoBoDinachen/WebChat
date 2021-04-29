@@ -1,10 +1,15 @@
 // 封装axios请求
 import axios from 'axios';
-export function request(config) {
+const baseImgURL = "http://172.21.231.28:5000/WebChat";
+function request(config) {
   let newAxios = axios.create({
     // 对每个请求进行全局配置
-    baseURL: "http://172.21.231.28:5000/WebChat",
-    // timeout: 1000,
+    baseURL:"http://172.21.231.28:5000/WebChat",
+    timeout: 1000,
   });
   return newAxios(config);
 };
+export {
+  request,
+  baseImgURL
+}

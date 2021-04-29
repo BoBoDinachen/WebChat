@@ -18,7 +18,8 @@ export default class Profile extends Component {
       user_name: this.userInfo.user_name,
       age: this.userInfo.age,
       sex: this.userInfo.sex,
-      avatar_url: this.userInfo.avatar_url
+      avatar_url: this.userInfo.avatar_url,
+      signature:this.userInfo.signature
     },
     // 模态框是否关闭
     showSetName: false,
@@ -50,7 +51,8 @@ export default class Profile extends Component {
           user_name: user_info.user_name,
           age: user_info.age,
           sex: user_info.sex,
-          avatar_url: user_info.avatar_url
+          avatar_url: user_info.avatar_url,
+          signature: user_info.signature
         }
       })
     } else {
@@ -62,7 +64,8 @@ export default class Profile extends Component {
           user_name: user_info.user_name,
           age: user_info.age,
           sex: user_info.sex,
-          avatar_url: ""
+          avatar_url: "",
+          signature: user_info.signature
         }
       }, () => {
         this.avatarElem.src = avatarUrl;
@@ -131,7 +134,8 @@ export default class Profile extends Component {
                   user_name: user_info.user_name,
                   age: user_info.age,
                   sex: user_info.sex,
-                  avatar_url: result.data.url
+                  avatar_url: result.data.url,
+                  signature: user_info.signature
                 }
               })
             }, 500);
@@ -177,7 +181,8 @@ export default class Profile extends Component {
               user_name: user_name,
               age: user_info.age,
               sex: user_info.sex,
-              avatar_url: user_info.avatar_url
+              avatar_url: user_info.avatar_url,
+              signature: user_info.signature
             }
           })
         } else {
@@ -254,7 +259,7 @@ export default class Profile extends Component {
             <img ref={c => { this.avatarElem = c }} alt="" onTouchEnd={this.HandleAvatar} />
             <span>{user.user_name === "" ? user.account : user.user_name}</span>
             <label><img src={user.sex === "男" ? SexMan_url : SexWoman_url}></img> {user.age}岁</label>
-            <p>喜欢音乐、游戏、编程、美食爱好者</p>
+            <p>{this.state.user.signature}</p>
           </div>
           {/* 显示用户的记录 */}
           <ul className={style.recordList}>

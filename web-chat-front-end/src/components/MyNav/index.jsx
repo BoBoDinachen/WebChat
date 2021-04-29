@@ -30,7 +30,7 @@ export default class MyNav extends Component {
       <li className={style.list_item}>
         <NavLink {...this.props} activeClassName={style.active} className={style.link} >
           <img ref={c => { this.imgElem = c }} />
-          <span>{this.props.activeName}</span>
+          <span>{this.props.menu}</span>
         </NavLink>
       </li>
     )
