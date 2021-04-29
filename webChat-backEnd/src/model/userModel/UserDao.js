@@ -59,7 +59,7 @@ async function addUser(User) {
   const collection = db.collection("users");
   const { account, password, age, sex } = User;
   return new Promise((resolve, reject) => {
-    collection.insertOne({ account, password, age, sex, user_name: "", avatar_url: "",friend_list:[]}, (err, res) => {
+    collection.insertOne({ account, password, age, sex, user_name: "", avatar_url: "",signature:"",friend_list:[]}, (err, res) => {
       if (err) throw err;
       resolve(res);
       connect.close();
@@ -141,6 +141,22 @@ async function setFriendList(params) {
     })
   })
 }
+
+// 修改用户性别、年龄、签名
+async function setUserInfo(params) {
+  const { uid, sex,age,signature } = params;
+  // 1.连接数据库
+  const db = await connect.createDB();
+  const collection = db.collection("users");
+  return new Promise((resolve, reject) => {
+    collection.updateOne({ _id: ObjectId(uid) }, { $set: { sex, age, signature } }, (err,result) => {
+      if (err) throw err;
+      resolve(result);
+      connect.close(); //关闭连接
+    })
+  })
+}
+
 module.exports = {
   findUserById,
   findUserByNameOrAccount,
@@ -150,5 +166,6 @@ module.exports = {
   getUserAvatar,
   setUserName,
   getFriendList,
-  setFriendList
+  setFriendList,
+  setUserInfo
 };

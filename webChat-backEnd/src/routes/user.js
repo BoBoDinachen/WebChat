@@ -9,7 +9,8 @@ const {
   getAvatar,
   setName,
   getFriendsInfo,
-  addFriend
+  addFriend,
+  updateProfile
 } = require("../service/userService/index");  // 导入业务操作模块
 
 // 1.创建路由
@@ -91,7 +92,7 @@ router.post("/profile/setName", (request, response) => {
 router.get("/getFriends", (request,response) => {
   const { uid } = request.query;
   getFriendsInfo({ uid }).then((friends) => {
-    console.log("好友列表", friends);
+    // console.log("好友列表", friends);
     response.send({ "status": 200, "success": true, "msg": "获取好友列表成功", "data": friends });
   })
 })
@@ -117,6 +118,20 @@ router.post("/addFriend", (request, response) => {
     })
   }
   
+})
+
+// 修改用户资料接口
+router.post("/updateProfile", (request,response) => {
+  // 拿到请求数据
+  const { uid, sex, age, signature } = request.body;
+  // 调用业务层
+  updateProfile({ uid, sex, age, signature }).then((res) => {
+    if (res) {
+      response.send({ "status": 200, "success": true, "msg": "更新用户资料成功", "isUpdate": true });
+    } else {
+      response.send({ "status": 200, "success": true, "msg": "更新用户资料失败", "isUpdate": false });
+    }
+  })
 })
 // 3. 导出路由
 module.exports = router;

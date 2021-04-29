@@ -9,7 +9,8 @@ const {
   getUserAvatar,
   setUserName,
   getFriendList,
-  setFriendList
+  setFriendList,
+  setUserInfo
 } = require("../../model/userModel/UserDao");
 
 
@@ -136,6 +137,17 @@ async function addFriend(params) {
 // addFriend({uid:"6072a0a56407193a4029409e",incr_uid:"608159d52f158f0588b1dbf5"}).then((res) => {
 //   console.log(res);
 // })
+
+// 更新个人资料
+async function updateProfile(params) {
+  const CommandResult = await setUserInfo(params);
+  if (CommandResult.result.n === 1 && CommandResult.result.ok === 1) {
+    return true;
+  } else {
+    return false;
+  }
+}
+// updateProfile({uid:"6072a0a56407193a4029409e",age:18,sex:"男",signature:"hhhhhh"})
 module.exports = {
   userRegister,
   userLogin,
@@ -143,5 +155,6 @@ module.exports = {
   getAvatar,
   setName,
   getFriendsInfo,
-  addFriend
+  addFriend,
+  updateProfile
 }
