@@ -17,7 +17,7 @@
     width: 100%;
     // background-color: aquamarine;
     img{
-      background-color: aqua;
+      background-color: #ffff;
       border-radius: 50%;
       width: 150px;
       height: 150px;
@@ -96,10 +96,22 @@
         background: none;
       }
     }
-    p{
+    span:nth-of-type(3){
+      display: inline-block;
+      width: 70%;
+      height: 90px;
       border-bottom: 1px solid black;
       padding: 0 40px 0;
+      max-height: 45px;
       padding-bottom: 1px;
+      overflow: hidden;
+      font-size: 15px;
+      text-indent: 2px;
+      letter-spacing: 2px;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
     }
   }
   // 记录卡片样式
@@ -111,11 +123,11 @@
     margin-top: 5%;
     width: 100%;
     height: 60px;
-    border-radius: 5px;
+    // border-radius: 5px;
     @media screen and(max-height:750px){
       margin-top: 1%;
     }
-    background-color: rgba($color: #CCCCCC, $alpha: 0.6);
+    background-color: rgba($color: #0000, $alpha: 0.6);
     li{
       display: flex;
       flex-direction: column;
@@ -252,5 +264,59 @@
   height: 35px;
   font-size: 20px;
   padding-left: 5%;
+  box-sizing: border-box;
   border-radius: 5px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+// 设置年龄的输入框
+.age_box{
+  width: 80%;
+  display: flex;
+  justify-content: start;
+  label{
+    margin: 0;
+    padding: 0;
+    text-align: start;
+    font-weight: bold;
+    margin-right: 8%;
+  }
+  .input_box_age{
+    width:40%;
+    border-radius: 5px;
+    outline: none;
+    border: none;
+    padding-left: 5%;
+    font-size: 16px;
+    &:focus{
+      border: #99CCFF solid 3px;
+    }
+  }
+}
+.radio_box{
+  margin-top: 10px;
+  width: 80%;
+  display: flex;
+  justify-content: start;
+  text-align: start;
+  font-weight: bold;
+  label{
+    color: #ffff;
+    margin-left: 8%;
+  }
+}
+.textarea_box{
+  outline: none;
+  border-radius: 5px;
+  border: none;
+  padding: 2% 5% 5%;
+  // padding-left: 5%;
+  box-sizing: border-box;
+  margin-top: 10px;
+  width: 100%;
+  height: 80px;
+  font-size: 15px;
+  &:focus{
+    border: #99CCFF solid 3px;
+  }
 }

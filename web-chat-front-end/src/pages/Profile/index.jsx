@@ -19,12 +19,14 @@ export default class Profile extends Component {
       age: this.userInfo.age,
       sex: this.userInfo.sex,
       avatar_url: this.userInfo.avatar_url,
-      signature:this.userInfo.signature
+      signature: this.userInfo.signature
     },
     // 模态框是否关闭
     showSetName: false,
     showMessageSetAvatar: false,
-    showMessageSetName: false
+    showMessageSetName: false,
+    showEditProfile: false,
+    showMessageEditProfile: false
   }
   // 组件state更新的时候
   componentDidUpdate(prevProps, prevState) {
@@ -170,19 +172,20 @@ export default class Profile extends Component {
         if (isSet) {
           // 关闭模态框,打开消息框
           this.openMessageSetNameBox();
-          const user_info = JSON.parse(window.sessionStorage.getItem("user_info"));
-          user_info.user_name = user_name;
-          window.sessionStorage.setItem("user_info", JSON.stringify(user_info));
+          const {userInfo} = this;
+          // const user_info = JSON.parse(window.sessionStorage.getItem("user_info"));
+          userInfo.user_name = user_name;
+          window.sessionStorage.setItem("user_info", JSON.stringify(userInfo));
           // 更新state
           this.setState({
             user: {
-              uid: user_info._id,
-              account: user_info.account,
+              uid: userInfo._id,
+              account: userInfo.account,
               user_name: user_name,
-              age: user_info.age,
-              sex: user_info.sex,
-              avatar_url: user_info.avatar_url,
-              signature: user_info.signature
+              age: userInfo.age,
+              sex: userInfo.sex,
+              avatar_url: userInfo.avatar_url,
+              signature: userInfo.signature
             }
           })
         } else {
@@ -193,6 +196,55 @@ export default class Profile extends Component {
       })
     }
 
+  }
+
+  // 保存用户资料
+  saveProfile = () => {
+    // 获取修改资料框里面的值
+    const age = this.inputAgeElem.value;
+    const sex = this.radioSexElem.value;
+    const signature = this.textareaElem.value;
+    console.log(age, sex, signature);
+    // 判断年龄是否为空
+    if (age === "") {
+      alert("你还没有设置年龄")
+    } else {
+      // 发起请求
+      request({
+        url: "/user/updateProfile",
+        method: "post",
+        data: {
+          "uid": this.state.user.uid,
+          sex,
+          age,
+          signature
+        }
+      }).then((res) => {
+        const { isUpdate } = res.data;
+        console.log(res.data);
+        if (isUpdate) {
+          // 如果设置成功，则刷新sessionstorage和打开消息框
+          const { userInfo } = this;
+          userInfo.age = age;
+          userInfo.sex = sex;
+          userInfo.signature = signature;
+          window.sessionStorage.setItem("user_info", JSON.stringify(userInfo));
+          // 更新state
+          this.setState({
+            user: {
+              uid: userInfo._id,
+              account: userInfo.account,
+              user_name: userInfo.user_name,
+              age: age,
+              sex: sex,
+              avatar_url: userInfo.avatar_url,
+              signature: signature
+            }
+          })
+          this.openMessageEditProfile();
+        }
+      })
+    }
   }
   // 退出登录
   backLogin = () => {
@@ -216,6 +268,21 @@ export default class Profile extends Component {
         showSetName: true,
         showMessageSetAvatar: false,
         showMessageSetName: false,
+        showEditProfile: false,
+        showMessageEditProfile: false,
+      })
+    }, 200)
+  }
+
+  // 打开编辑资料模态框
+  openPopupEditProfile = () => {
+    setTimeout(() => {
+      this.setState({
+        showSetName: false,
+        showMessageSetAvatar: false,
+        showMessageSetName: false,
+        showEditProfile: true,
+        showMessageEditProfile: false,
       })
     }, 200)
   }
@@ -224,7 +291,9 @@ export default class Profile extends Component {
     this.setState({
       showSetName: false,
       showMessageSetName: false,
-      showMessageSetAvatar: true
+      showMessageSetAvatar: true,
+      showEditProfile: false,
+      showMessageEditProfile: false
     })
   }
   // 打开消息框设置用户名
@@ -232,22 +301,57 @@ export default class Profile extends Component {
     this.setState({
       showSetName: false,
       showMessageSetAvatar: false,
-      showMessageSetName: true
+      showMessageSetName: true,
+      showEditProfile: false,
+      showMessageEditProfile: false
+    })
+  }
+  // 打开消息框编辑用户资料
+  openMessageEditProfile() {
+    this.setState({
+      showSetName: false,
+      showMessageSetAvatar: false,
+      showMessageSetName: false,
+      showEditProfile: false,
+      showMessageEditProfile: true
     })
   }
   render() {
     const { user } = this.state; // 用户信息
+    // 设置用户昵称的弹窗
     const SetNameBox = PopupBox(
       <>
         <input ref={c => { this.inputNameElem = c }} type="text" className={style.input_box} placeholder="输入你的新名字吧..." />
         <Button type="success" click={this.setUserName}>确定修改</Button>
       </>
     );
+    // 编辑用户资料
+    const EditProfile = PopupBox(
+      <>
+        <div className={style.age_box}>
+          <label>设置年龄:</label>
+          <input ref={c => { this.inputAgeElem = c }} type="number" className={style.input_box_age} placeholder="输入年龄..." defaultValue={user.age}/>
+        </div>
+        <div className={style.radio_box}>
+          选择性别:
+          <label>
+            <input ref={c => { this.radioSexElem = c }} type="radio" name="sex" defaultChecked={this.state.user.sex === "男"} onChange={(e) => {console.log("11111"); this.radioSexElem.value="男"}}/>&nbsp;男
+          </label>
+          <label>
+            <input ref={c => { this.radioSexElem = c }} type="radio" name="sex" defaultChecked={this.state.user.sex === "女"} onChange={(e) => {console.log("22222"); this.radioSexElem.value="女"}}/>&nbsp;女
+          </label>
+        </div>
+        <textarea ref={c => { this.textareaElem = c }} name="signature" id="" className={style.textarea_box} placeholder="这里输入你的个性签名..."></textarea>
+        <Button type="success" click={this.saveProfile}>保存</Button>
+      </>
+    )
     return (
       <div>
         <MessageBox time="1500" text="头像设置成功..." type="success" isShow={this.state.showMessageSetAvatar}></MessageBox>
         <MessageBox time="1500" text="设置昵称成功..." type="success" isShow={this.state.showMessageSetName}></MessageBox>
+        <MessageBox time="1500" text="保存资料成功..." type="success" isShow={this.state.showMessageEditProfile}></MessageBox>
         <SetNameBox showPopup={this.state.showSetName} />
+        <EditProfile showPopup={this.state.showEditProfile} />
         <div className={style.container}>
           {/* 展示用户名和头像 */}
           <div className={style.showInfo}>
@@ -259,7 +363,7 @@ export default class Profile extends Component {
             <img ref={c => { this.avatarElem = c }} alt="" onTouchEnd={this.HandleAvatar} />
             <span>{user.user_name === "" ? user.account : user.user_name}</span>
             <label><img src={user.sex === "男" ? SexMan_url : SexWoman_url}></img> {user.age}岁</label>
-            <p>{this.state.user.signature}</p>
+            <span>{user.signature === "" ? "在编辑资料里面设置自己的签名吧" : user.signature}</span>
           </div>
           {/* 显示用户的记录 */}
           <ul className={style.recordList}>
@@ -279,7 +383,7 @@ export default class Profile extends Component {
           {/*菜单项  */}
           <ul className={style.menuList}>
             <li onTouchEnd={this.openPopup}><span></span>设置昵称</li>
-            <li><span></span>编辑资料</li>
+            <li onTouchEnd={this.openPopupEditProfile}><span></span>编辑资料</li>
             <li><span></span>设置背景</li>
             <li><span></span>修改密码</li>
           </ul>

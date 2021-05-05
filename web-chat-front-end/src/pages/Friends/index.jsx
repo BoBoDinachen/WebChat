@@ -34,6 +34,7 @@ export default class Friends extends Component {
     })
     // 
   }
+  // 并行加载图片的方法
   
   // 显示好友信息
   showInfoBox() {
@@ -73,9 +74,9 @@ export default class Friends extends Component {
               {
                 this.state.friends.map((friend, index) => {
                   return (
-                    <li onClickCapture={this.selectFriend.bind()} key={index}>
+                    <li onClickCapture={this.selectFriend.bind()} key={friend._id}>
                       {/* 头像和用户昵称 */}
-                      <img src={baseImgURL+"/user/avatar?uid="+friend._id}/>
+                      <img src={baseImgURL + "/user/avatar?uid=" + friend._id}/>
                       <div className={style.rightBox}>
                         <h3>{friend.user_name}</h3>
                         <p>喵呜~</p>
