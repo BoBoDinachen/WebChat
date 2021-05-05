@@ -1,5 +1,6 @@
 const connect = require("../../utils/db_utils");
 const ObjectId = require('mongodb').ObjectId
+const {DB_NAME} = require("../../config/db_config");
 
 // 查询用户-id
 async function findUserById(params) {
@@ -85,14 +86,15 @@ async function setUserAvatar(userAvatar) {
 // 获取用户头像
 async function getUserAvatar(params) {
   // 1.连接数据库
-  const db = await connect.createDB();
+  const con = await connect.createConect();
+  const db = con.db(DB_NAME);
   const collection = db.collection("users");
   const { uid } = params;
   return new Promise((resolve, reject) => {
     collection.find({ _id: ObjectId(uid) }).project({ avatar_url: 1 }).toArray(function (err, result) {
       if (err) throw err;
       resolve(result[0]);
-      connect.close();
+      con.close();
     })
   })
 }
