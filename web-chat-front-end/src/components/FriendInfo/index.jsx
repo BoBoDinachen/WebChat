@@ -4,10 +4,26 @@ import avatarUrl from '../../assets/img/默认头像.png'
 import SexMan_url from '../../assets/img/性别男.png';
 import { withRouter } from 'react-router-dom'
 import SexWoman_url from '../../assets/img/性别女.png';
+import {baseImgURL} from '../../utils/request'
+import PubSub from "pubsub-js"
 class FriendInfo extends Component {
-
+  state = {
+    friendInfo:{ }
+  }
+  // 组件加载后
   componentDidMount() {
-
+    // 获取当前好友信息
+    this.token = PubSub.subscribe("currSelectFriend", (msg, data) => {
+      const friend = JSON.parse(data);
+      this.setState({
+        friendInfo: friend
+      })
+      // console.log("接收到了：",friend);
+    })
+  }
+  componentWillUnmount() {
+    // 取消订阅
+    PubSub.unsubscribe(this.token);
   }
   // 去聊天
   goToChat = () => {
@@ -23,17 +39,18 @@ class FriendInfo extends Component {
   }
   render() {
     let { isShow } = this.props;
+    const { friendInfo } = this.state;
     return (
       <>
         {/* 好友资料卡片 */}
         <div className={style.container} style={{ "display": isShow ? "flex" : "none" }} ref={c => { this.boxElem = c }}>
           {/* 资料卡 */}
           <div className={style.infoBox}>
-            <img src={avatarUrl} />
+            <img src={friendInfo.avatar_url === undefined?avatarUrl:baseImgURL+"/user/avatar?uid=" + friendInfo._id} />
             <div className={style.rightBox}>
-              <h1>XDEcat</h1>
-              <label><img src={SexMan_url}></img>20岁</label>
-              <span>喜欢音乐、游戏、编程、美食爱好者</span>
+              <h1>{friendInfo.user_name}</h1>
+              <label><img src={friendInfo.sex==="男"?SexMan_url:SexWoman_url}></img>{friendInfo.age}岁</label>
+              <span>{friendInfo.signature===""?"这个好友还没有设置签名噢~":friendInfo.signature}</span>
             </div>
           </div>
           {/* 操作选项 */}

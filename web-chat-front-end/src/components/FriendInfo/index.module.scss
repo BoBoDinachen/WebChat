@@ -23,6 +23,8 @@
     & > img{
       width: 100px;
       height: 100px;
+      object-fit: cover;
+      border-radius: 50%;
     }
     .rightBox{
       display: flex;
@@ -47,6 +49,7 @@
         width: 95%;
         margin-top: 5px;
         font-size: 14px;
+        text-align: start;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;

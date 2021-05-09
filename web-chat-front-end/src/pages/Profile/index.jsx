@@ -341,7 +341,7 @@ export default class Profile extends Component {
             <input ref={c => { this.radioSexElem = c }} type="radio" name="sex" defaultChecked={this.state.user.sex === "女"} onChange={(e) => {console.log("22222"); this.radioSexElem.value="女"}}/>&nbsp;女
           </label>
         </div>
-        <textarea ref={c => { this.textareaElem = c }} name="signature" id="" className={style.textarea_box} placeholder="这里输入你的个性签名..."></textarea>
+        <textarea ref={c => { this.textareaElem = c }} defaultValue={this.userInfo.signature} name="signature" id="" className={style.textarea_box} placeholder="这里输入你的个性签名..."></textarea>
         <Button type="success" click={this.saveProfile}>保存</Button>
       </>
     )

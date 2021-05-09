@@ -12,6 +12,11 @@ class MessageList extends Component {
   }
   //组件加载
   componentDidMount() {
+    // 根据屏幕高度自动改变列表高度
+    const bodyHeight = document.body.offsetHeight;
+    console.log("网页可视高度", bodyHeight);
+    // 减去header和footer高度
+    this.containerElem.style.height = (bodyHeight - 45 - 68) + "px";
     this.props.history.push("/message/friendMsg");
   }
   // 选择消息标题
@@ -43,7 +48,7 @@ class MessageList extends Component {
   }
   render() {
     return (
-      <div className={style.container}>
+      <div className={style.container} ref={c => {this.containerElem = c}}>
         {/* 消息标题栏 */}
         <div className={style.messageTitle}>
           <div className={`${style.titleItem } ${"title1"===this.state.currentIndex?style.active:null}`}>

@@ -81,11 +81,6 @@
       align-items: center;
       font-size: 15px;
       width: 100px;
-      @media screen and(max-height:750px){
-        position: absolute;
-        right: 19%;
-        top: 22.5%;
-      }
       img{
         margin-right: 5%;
         width: 25px;
