@@ -37,13 +37,13 @@ const initChat = function (http) {
 
     // 私聊
     socket.on("private_chat", (data,saveData) => {
-      const { send_uid, message, sendTime, receiver_uid } = data; // 拿到发送方的数据
+      const {uid,uname,message, time, receiver_uid,status} = data; // 拿到发送方的数据
       const receiver = users[receiver_uid];
       console.log(data);
       // 判断接收者的状态
       if (receiver && receiver.status === "ON_LINE") {
         // 如果接收用户在线，则发送数据
-        socket.to(receiver.socketID).emit("reply_private_chat", { send_uid, message, sendTime });
+        socket.to(receiver.socketID).emit("reply_private_chat", {uid, uname,message,time,status:"0"});
       } else {
         // 如果不在线,则将待发送数据离线处理
       }
