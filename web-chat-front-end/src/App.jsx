@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import PrivateChat from './components/PrivateChat'
+import PrivateChat from './container/PrivateChat'
 import Footer from './components/Footer'
 import Header from './components/Header';
 import Profile from './pages/Profile';

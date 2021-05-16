@@ -321,7 +321,7 @@ export default class Profile extends Component {
     // 设置用户昵称的弹窗
     const SetNameBox = PopupBox(
       <>
-        <input ref={c => { this.inputNameElem = c }} type="text" className={style.input_box} placeholder="输入你的新名字吧..." />
+        <input ref={c => { this.inputNameElem = c }} type="text" className={style.input_box} placeholder="给自己取个新名字吧..." />
         <Button type="success" click={this.setUserName}>确定修改</Button>
       </>
     );

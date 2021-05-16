@@ -3,7 +3,7 @@ import style from './index.module.scss'
 import FriendInfo from '../../components/FriendInfo'
 import avatarUrl from '../../assets/img/默认头像.png'
 import PubSub from 'pubsub-js'
-import {request,baseImgURL} from '../../utils/request'
+import { request, baseImgURL } from '../../utils/request'
 export default class Friends extends Component {
   // 当前用户id
   uid = JSON.parse(sessionStorage['user_info'])._id;
@@ -41,7 +41,7 @@ export default class Friends extends Component {
     // 
   }
   // 并行加载图片的方法
-  
+
   // 显示好友信息
   showInfoBox() {
     this.setState({ isShowInfo: true });
@@ -62,14 +62,14 @@ export default class Friends extends Component {
     return (
       <>
         {/* 好友信息页 */}
-        <FriendInfo isShow={this.state.isShowInfo}  close={this.closeInfoBox}></FriendInfo>
-        <div className={style.container} ref={c => {this.containerElem = c}}>
+        <FriendInfo isShow={this.state.isShowInfo} close={this.closeInfoBox}></FriendInfo>
+        <div className={style.container} ref={c => { this.containerElem = c }}>
           {/* 搜索框 */}
           <div className={style.searchBox}>
             <input type="text" placeholder="请输入好友名称" />
             <span></span>
           </div>
-          <hr/>
+          <hr />
           {/* 好友列表盒子 */}
           <div className={style.listBox}>
             {/* 状态栏 */}
@@ -94,12 +94,12 @@ export default class Friends extends Component {
                 // })
                 this.state.friends.map((friend, index) => {
                   return (
-                    <li onClickCapture={this.selectFriend.bind(this,friend)} key={friend._id}>
+                    <li onClickCapture={this.selectFriend.bind(this, friend)} key={friend._id}>
                       {/* 头像和用户昵称 */}
-                      <img src={friend.avatar_url===""?avatarUrl:baseImgURL + "/user/avatar?uid=" + friend._id}/>
+                      <img src={friend.avatar_url === "" ? avatarUrl : baseImgURL + "/user/avatar?uid=" + friend._id} />
                       <div className={style.rightBox}>
                         <h3>{friend.user_name}</h3>
-                        <p>{friend.signature === ""?"这个好友还没有签名噢~":friend.signature}</p>
+                        <p>{friend.signature === "" ? "这个好友还没有签名噢~" : friend.signature}</p>
                       </div>
                     </li>
                   )

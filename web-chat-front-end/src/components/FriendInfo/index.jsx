@@ -48,7 +48,7 @@ class FriendInfo extends Component {
           <div className={style.infoBox}>
             <img src={friendInfo.avatar_url === undefined?avatarUrl:baseImgURL+"/user/avatar?uid=" + friendInfo._id} />
             <div className={style.rightBox}>
-              <h1>{friendInfo.user_name}</h1>
+              <h2>{friendInfo.user_name}</h2>
               <label><img src={friendInfo.sex==="男"?SexMan_url:SexWoman_url}></img>{friendInfo.age}岁</label>
               <span>{friendInfo.signature===""?"这个好友还没有设置签名噢~":friendInfo.signature}</span>
             </div>
