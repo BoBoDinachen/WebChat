@@ -23,8 +23,8 @@ code {
 /*整体部分*/ 
 ::-webkit-scrollbar
 {
-	width: 10px;
-	height: 10px;
+	width: 5px;
+	height: 5px;
 }
 /*滑动轨道*/ 
 ::-webkit-scrollbar-track

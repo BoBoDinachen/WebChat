@@ -27,8 +27,12 @@ class FriendInfo extends Component {
   }
   // 去聊天
   goToChat = () => {
+    const {_id,user_name} = this.state.friendInfo;
     setTimeout(() => {
-      this.props.history.push("/privateChat");
+      this.props.history.push("/privateChat", {
+        uid: _id,
+        user_name
+      });
     }, 200);
   }
   // 关闭信息盒子

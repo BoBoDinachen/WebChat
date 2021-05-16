@@ -39,18 +39,19 @@
       height: 50px;
       // background-color: aqua;
       position: absolute;
-      transform: translateY(17%);
+      // transform: translateY(5%);
       border-radius: 20px;
       transition: all .2s linear;
       right: 23%;
       background-image: url("../../assets/img/上传头像.png");
       background-repeat: no-repeat;
-      background-size: 50px;
-      background-position: left;
+      background-size: 40px;
+      background-position: center;
       @media screen and(max-height:750px){
         right: 30%;
         width: 30px;
         height: 30px;
+        transform: translateY(-50%);
         background-size: 30px;
       }
       &:active{

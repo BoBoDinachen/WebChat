@@ -5,7 +5,11 @@ function createSendMessageAction(data) {
 function createInitMessageAction(data) {
   return { type: "initMessage", data };
 }
+function createAppendMessageAction(data) {
+  return { type: "appendMessage", data };
+}
 export {
   createSendMessageAction,
-  createInitMessageAction
+  createInitMessageAction,
+  createAppendMessageAction
 }

@@ -17,7 +17,7 @@ export default class Friends extends Component {
   componentDidMount() {
     // 根据屏幕高度自动改变列表高度
     const bodyHeight = document.body.offsetHeight;
-    console.log("网页可视高度", bodyHeight);
+    // console.log("网页可视高度", bodyHeight);
     // 减去header和footer高度
     this.containerElem.style.height = (bodyHeight - 45 - 68) + "px";
     // 加载用户信息
@@ -30,7 +30,7 @@ export default class Friends extends Component {
     }).then((res) => {
       const { data } = res.data;
       const friends = data;
-      console.log(friends);
+      // console.log(friends);
       // 更新state
       this.setState({
         friends

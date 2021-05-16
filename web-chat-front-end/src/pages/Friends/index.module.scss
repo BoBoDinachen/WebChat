@@ -95,12 +95,12 @@
         padding-left: 5%;
         margin-bottom: 22px;
         transition: all .2s;
-        border-radius: 5px;
+        border-left: 5px solid palevioletred;
         // background-color: aqua;
         img{
           width: 50px;
           height: 50px;
-          border-radius: 25px;
+          border-radius: 50%;
           object-fit: cover;
           margin-right: 5%;
         }

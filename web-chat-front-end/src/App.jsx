@@ -7,10 +7,11 @@ import Friends from './pages/Friends';
 import MessageList from './pages/Message'
 import Home from './pages/Home'
 import socketIO from './utils/socket';
+import {createAppendMessageAction} from './redux/action/chat_action'
+import { connect } from 'react-redux';
 import { Route, Switch, Redirect } from 'react-router-dom'
 import './App.css'
-function App() {
-
+function App(props) {
   // 执行副作用操作
   useEffect(() => {
     // 组件加载和state更新
@@ -19,11 +20,12 @@ function App() {
     const socket = socketIO.createSocket(uid);
     // 接收私聊信息
     socket.on("reply_private_chat", (data) => {
-      console.log("接收的数据",data);
+      props.appendMessage(data);
+      console.log("接收到的聊天数据",data);
     })
     return () => {
       // 当APP组件卸载前，将本地存储的用户信息清除
-      console.log("组件卸载");
+      // console.log("组件卸载");
     }
   },[])
   return (
@@ -44,4 +46,12 @@ function App() {
   )
 }
 
-export default App
+export default connect(
+  state => ({
+    chatInfo: state.chatInfo
+  }),
+  // 映射action中的方法，自动调用dispatch
+  {
+    appendMessage: createAppendMessageAction
+  }
+)(App);
