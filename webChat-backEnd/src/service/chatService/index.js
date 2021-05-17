@@ -1,6 +1,8 @@
+const {writeInfo,writeUserRecord} = require("../../service/messageService");
 var io;
 const users = []; //线上的用户列表
 const user_status = ["ON_LINE", "OFF_LINE"]; //用户在在线状态
+
 const initChat = function (http) {
   io = require("socket.io")(http, {
     path: "/WebChat/chat",
@@ -20,6 +22,8 @@ const initChat = function (http) {
         socketID: socket.id,
         status: user_status[0]
       }
+      // 添加一条用户记录到json文件中
+      writeUserRecord({ "uid":uid });
       console.log("当前用户列表:",users);
     })
 
@@ -43,9 +47,11 @@ const initChat = function (http) {
       // 判断接收者的状态
       if (receiver && receiver.status === "ON_LINE") {
         // 如果接收用户在线，则发送数据
-        socket.to(receiver.socketID).emit("reply_private_chat", {uid, uname,message,time,status:"0"});
+        socket.to(receiver.socketID).emit("reply_private_chat", { uid, uname, message, time, status: "0" });
+        writeInfo({uid,uname,message, time, receiver_uid,status});
       } else {
         // 如果不在线,则将待发送数据离线处理
+        writeInfo({uid,uname,message, time, receiver_uid,status});
       }
     })
 

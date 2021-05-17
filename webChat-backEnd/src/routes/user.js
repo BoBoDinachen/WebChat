@@ -12,6 +12,10 @@ const {
   addFriend,
   updateProfile
 } = require("../service/userService/index");  // 导入业务操作模块
+const {
+  getMessagesById,
+  getMessageTotalById
+} = require("../service/messageService/index");
 
 // 1.创建路由
 const router = express.Router();
@@ -89,7 +93,7 @@ router.post("/profile/setName", (request, response) => {
 })
 
 // 获取好友列表信息
-router.get("/getFriends", (request,response) => {
+router.get("/getFriends", (request, response) => {
   const { uid } = request.query;
   getFriendsInfo({ uid }).then((friends) => {
     // console.log("好友列表", friends);
@@ -133,5 +137,16 @@ router.post("/updateProfile", (request,response) => {
     }
   })
 })
+
+// 根据用户uid获取对应的消息记录
+router.get("/getMessages", (request,response) => {
+  const { uid } = request.query;
+  if (uid) {
+    getMessagesById({ uid }).then((result) => {
+      response.send({ "status": 200, "success": true, "msg": "获取消息列表成功", "data": result });
+    })
+  }
+})
+
 // 3. 导出路由
 module.exports = router;
