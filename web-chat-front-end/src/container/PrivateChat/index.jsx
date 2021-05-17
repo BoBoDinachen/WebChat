@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import style from './index.module.scss'
 import { connect } from 'react-redux';
-import {baseImgURL} from '../../utils/request'
+import {baseImgURL,request} from '../../utils/request'
 import {
   createSendMessageAction,
   createInitMessageAction,
@@ -19,8 +19,20 @@ class PrivateChat extends Component {
     // console.log("网页可视高度", bodyHeight);
     // 减去header和footer高度
     this.listBoxElem.style.height = (bodyHeight - 50 - 60 - 68) + "px";
+    const { uid } = this.props.location.state;
+    // 根据用户id加载对应的聊天信息,请求后端
+    request({
+      url: "/user/getMessages",
+      method: "get",
+      params: {
+        "uid": uid
+      }
+    }).then((res) => {
+      console.log(res);
+    })
+    let messages = [];
     // 从store中加载聊天信息
-    this.props.initMessage({ uid: this.state.uid });
+    this.props.initMessage({messages});
     // console.log("所有的聊天信息:", this.props.chatInfo);
     this.scrollToBottom();
   }
@@ -74,13 +86,19 @@ class PrivateChat extends Component {
           {/* 消息框 */}
           {
             chatInfo.map((item, index) => {
+              if (this.messageBox !== undefined && this.messageBox !== null) {
+                let boxHeight = this.messageBox.clientHeight;
+                // console.log("消息盒子高度:" + boxHeight);
+                // 设置每个盒子的margin-bottom
+                this.listBox.style.marginBottom = boxHeight+10+"px";
+              }
               return (
-                <li className={item.status==="1"?style.rightMessageBox:style.leftMessageBox} key={index}>
+                <li ref={c => {this.listBox = c}} className={item.status==="1"?style.rightMessageBox:style.leftMessageBox} key={index}>
                   {/* <img src="https://www.keaidian.com/uploads/allimg/190415/15110727_19.jpg"></img> */}
                   <img src={baseImgURL+"/user/avatar?uid=" + (item.status==="1"?item.uid:uid)} alt=""/>
                   <div className={style.infoBox}>
                     <label><span>{item.uname}</span>{item.time}</label>
-                    <div>{item.message}</div>
+                    <div ref={c => {this.messageBox = c}}>{item.message}</div>
                   </div>
                 </li>
               )

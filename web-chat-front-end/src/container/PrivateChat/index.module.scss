@@ -59,13 +59,16 @@
     overflow: scroll;
     background-color: #363749;
     padding-top: 10px;
+    box-sizing: border-box;
+    padding-bottom: 10px;
     // 左边消息框
     .leftMessageBox{
       display: flex;
       justify-content: flex-start;
       box-sizing: border-box;
       padding-left: 10px;
-      margin: 5px 0 55px;
+      padding-right: 10px;
+      margin-top: 5px;
       position: relative;
       img{
         position: absolute;
@@ -78,17 +81,31 @@
       .infoBox{
         margin-left: 60px;
         position: relative;
+        width: 100%;
         // 信息框的头信息
         label{
           color: #FFFFFF;
+          width: 100%;
           display: inline-block;
-          text-align: left;
+          text-align: center;
           font-size: 13px;
-          line-height: 20px;
+          line-height: 16px;
+          position: relative;
+          display: inline-block;
+          box-sizing: border-box;
           span{
+            position: absolute;
+            width: 95px;
+            height: 16px;
+            display: inline-block;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            left: 0;
+            text-align: left;
             font-weight: bold;
             font-size: 16px;
-            margin-right: 10px;
+            line-height: 16px;
           }
           margin-bottom: 5px;
         }
@@ -96,6 +113,7 @@
           position: absolute;
           line-height: 25px;
           padding: 10px 20px 10px;
+          width:auto;
           // height: 30px;
           text-align: left;
           font-weight: bold;
@@ -118,14 +136,11 @@
         margin: 0 10px 0;
         // 信息框的头信息
         label{
-          position: relative;
-          text-align: right;
-          padding-right: 60px;
+          
           span{
-            line-height: 20px;
-            position: absolute;
+            left: unset;
             right: 0;
-            margin: 0;
+            text-align: right;
           }
           margin-bottom: 5px;
         }
