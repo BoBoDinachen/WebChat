@@ -14,16 +14,14 @@ const initChat = function (http) {
     // console.log(socket.handshake.query.uid); // 查询参数
     // 上线通知
     socket.on("online", (data) => {
-      const uid = data.uid;
+      const {_id,user_name} = data;
       // console.log("uid", data.uid);
       // console.log("socketID:", socket.id);
       // 保存用户状态和socketID到用户列表中
-      users[uid] = {
+      users[_id] = {
         socketID: socket.id,
         status: user_status[0]
       }
-      // 添加一条用户记录到json文件中
-      writeUserRecord({ "uid":uid });
       console.log("当前用户列表:",users);
     })
 
@@ -41,17 +39,17 @@ const initChat = function (http) {
 
     // 私聊
     socket.on("private_chat", (data,saveData) => {
-      const {uid,uname,message, time, receiver_uid,status} = data; // 拿到发送方的数据
+      const {uid,uname,message, time, receiver_uid,receiver_name,status} = data; // 拿到发送方的数据
       const receiver = users[receiver_uid];
       console.log(data);
       // 判断接收者的状态
       if (receiver && receiver.status === "ON_LINE") {
-        // 如果接收用户在线，则发送数据
+        // 如果接收用户在线，则发送数据并将信息写入到文件中
         socket.to(receiver.socketID).emit("reply_private_chat", { uid, uname, message, time, status: "0" });
-        writeInfo({uid,uname,message, time, receiver_uid,status});
+        writeInfo({uid,uname,message, time, receiver_uid,receiver_name,status});
       } else {
         // 如果不在线,则将待发送数据离线处理
-        writeInfo({uid,uname,message, time, receiver_uid,status});
+        writeInfo({uid,uname,message, time, receiver_uid,receiver_name,status});
       }
     })
 

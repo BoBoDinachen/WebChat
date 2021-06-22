@@ -12,6 +12,7 @@ const {
   addFriend,
   updateProfile
 } = require("../service/userService/index");  // 导入业务操作模块
+
 const {
   getMessagesById,
   getMessageTotalById
@@ -140,9 +141,9 @@ router.post("/updateProfile", (request,response) => {
 
 // 根据用户uid获取对应的消息记录
 router.get("/getMessages", (request,response) => {
-  const { uid } = request.query;
-  if (uid) {
-    getMessagesById({ uid }).then((result) => {
+  const { uid,fid } = request.query;
+  if (uid && fid) {
+    getMessagesById({ uid,fid }).then((result) => {
       response.send({ "status": 200, "success": true, "msg": "获取消息列表成功", "data": result });
     })
   }

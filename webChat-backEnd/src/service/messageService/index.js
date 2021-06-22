@@ -1,101 +1,189 @@
 const fs = require("fs");
 const path = require("path");
 const rootPath = path.join(__dirname, "../../");
-const FILE_PATH = rootPath+"data/chat_data.json";
+const FILE_PATH = rootPath + "data/chat_info_data";
+const { getFriendsInfo } = require("../userService/index")
 
-// 添加一个用户记录
-function writeUserRecord(params) {
-  const { uid } = params;
-  fs.readFile(FILE_PATH, (err, data) => {
-    const chatInfo = JSON.parse(data.toString());
-    // 判断有没有记录存在
-    const isExist = chatInfo.findIndex((item) => {
-      return item.uid === uid;
-    })
-    if (isExist === -1) {
-        chatInfo.push({
-          uid,
-          data: [],
-          total: 0
-        });
-        const str = JSON.stringify(chatInfo);
-        fs.writeFile(FILE_PATH, str, (err) => {
-          console.log("添加记录成功!");
+// 初始化消息记录文件
+function initSendMessageFile(params) {
+  return new Promise((resolve, reject) => {
+    const { uid, uname } = params;
+    fs.access(`${FILE_PATH}/${uid}.json`, fs.constants.F_OK, async (err) => {
+      if (err) {
+        // 文件不存在，则创建对应用户的消息记录文件
+        let messageData = {
+          "uid": uid,
+          "uname": uname,
+          "friendList": [
+
+          ]
+        }
+        getFriendsInfo({ uid }).then((friendList) => {
+          friendList.map((item) => {
+            console.log(item);
+            messageData.friendList.push({
+              "fid": item._id + '',
+              "fname": item.user_name,
+              "messageList": [
+
+              ]
+            })
+          })
+          // 创建文件
+          fs.writeFile(`${FILE_PATH}/${uid}.json`, JSON.stringify(messageData, null, '\t'), () => {
+            console.log("创建成功...");
+            resolve(messageData);
+          })
         })
-    } else {
-      console.log("已经有记录存在");
-    }
+      } else {
+        // 如果文件存在，返回文件内容
+        let messageData = await fs.readFileSync(`${FILE_PATH}/${uid}.json`);
+        resolve(JSON.parse(messageData));
+      }
+    })
   })
 }
 
+function initReceiverMessageFile(params) {
+  return new Promise((resolve, reject) => {
+    const { receiver_uid, receiver_name } = params;
+    fs.access(`${FILE_PATH}/${receiver_uid}.json`, fs.constants.F_OK, async (err) => {
+      if (err) {
+        // 文件不存在，则创建对应用户的消息记录文件
+        let messageData = {
+          "uid": receiver_uid,
+          "uname": receiver_name,
+          "friendList": [
+
+          ]
+        }
+        getFriendsInfo({ uid: receiver_uid }).then((friendList) => {
+          friendList.map((item) => {
+            messageData.friendList.push({
+              "fid": item._id + '',
+              "fname": item.user_name,
+              "messageList": [
+
+              ]
+            })
+          })
+          // 创建文件
+          fs.writeFile(`${FILE_PATH}/${receiver_uid}.json`, JSON.stringify(messageData, null, '\t'), () => {
+            console.log("创建成功...");
+            resolve(messageData);
+          })
+        })
+      } else {
+        // 如果文件存在，返回文件内容
+        let messageData = await fs.readFileSync(`${FILE_PATH}/${receiver_uid}.json`);
+        resolve(JSON.parse(messageData));
+      }
+    })
+  })
+}
 // 写入信息
 function writeInfo(params) {
-  const { uid, receiver_uid, uname, message, time, status } = params;
-  // 读取json文件
-  fs.readFile(FILE_PATH, (err, data) => {
-    let chatInfo = JSON.parse(data.toString());
-    chatInfo.forEach(item => {
-      // console.log(item);
-      // 将数据分别保存到发送者和接收者中
-      if (uid === item.uid) {
-        item.data.push({ uid, uname, message, time, status });
-        // 统计status为1的条数，将total加1
-        item.total += 1;
-      } else if (receiver_uid === item.uid) {
-        item.data.push({ uid, uname, message, time, "status": "0" });
+  const { uid, receiver_uid, receiver_name, uname, message, time, status } = params;
+  // 创建并写入指定用户的消息记录json文件
+  initSendMessageFile({ uid, uname }).then((res) => {
+    // 先拿到json文件中的内容
+    res.friendList.forEach(item => {
+      if (item.fid === receiver_uid) {
+        item.messageList.push({
+          uid,
+          uname,
+          receiver_uid,
+          receiver_name,
+          message,
+          time,
+          status
+        })
       }
     });
-    // 然后在将数据序列化到文件中
-    let str = JSON.stringify(chatInfo);
-    fs.writeFile(FILE_PATH, str, (err) => {
-      console.log("增加成功....");
+    console.log(res);
+    // 将追加的信息内容重新写入文件中
+    fs.writeFile(`${FILE_PATH}/${uid}.json`, JSON.stringify(res, null, '\t'), () => {
+      console.log("追加成功...");
     })
-    // console.log(chatInfo[0].data);
-    // console.log(chatInfo[1].data);
-  })
+  });
+  // 创建接收者的消息文件
+  setTimeout(() => {
+    initReceiverMessageFile({ receiver_uid, receiver_name }).then((res) => {
+      res.friendList.forEach(item => {
+        if (item.fid === uid) {
+          item.messageList.push({
+            uid,
+            uname,
+            receiver_uid,
+            receiver_name,
+            message,
+            time,
+            status: "0"
+          })
+        }
+      });
+      console.log(res);
+      // 将追加的信息内容重新写入文件中
+      fs.writeFile(`${FILE_PATH}/${receiver_uid}.json`, JSON.stringify(res, null, '\t'), () => {
+        console.log("追加成功...");
+      })
+    })
+  }, 500);
+  // let sendData = {
+  //   "sid": uid,
+  //   "sname": uname,
+  //   "rid": receiver_uid,
+  //   "rname": receiver_name,
+  //   "message": message,
+  //   time,
+  //   status
+  // }
+  // let receiverData = {
+  //   "uid": uid,
+  //   "uname": uname,
+  //   "receiver_uid": receiver_uid,
+  //   "receiver_name": receiver_name,
+  //   "message": message,
+  //   status: 0
+  // }
+  // fs.appendFile(`${FILE_PATH}/${uid}.json`, message, () => {
+  //   console.log("创建成功....");
+  // })
+
 }
 
 // 根据用户的uid,获取聊天数据
-async function getMessagesById(params) {
-  const { uid } = params;
-  const data = await fs.readFileSync(FILE_PATH);
-  // console.log(data.toString());
-  const chatInfo = JSON.parse(data.toString());
-  var result = [];
-  chatInfo.forEach((item) => {
-    if (item.uid === uid) {
-      result = item.data;
-    }
+function getMessagesById(params) {
+  const { uid, fid } = params;
+  // 读取相应用户的文件
+  return new Promise(async(resolve, reject) => {
+    const data = await fs.readFileSync(`${FILE_PATH}/${uid}.json`);
+    JSON.parse(data).friendList.forEach(item => {
+      if (item.fid === fid) {
+        resolve(item.messageList);
+        // return item.messageList;
+      }
+    });
   })
-  return result;
+
 }
 
 // 根据用户uid，获取发送的消息条数，total
 async function getMessageTotalById(params) {
-  const { uid } = params;
-  const data = await fs.readFileSync(FILE_PATH)
-  // console.log(data.toString());
-  const chatInfo = JSON.parse(data.toString());
-  var result = [];
-  chatInfo.forEach((item) => {
-    if (item.uid === uid) {
-      result = item.total;
-    }
-  })
-  return result;
+
 }
 
 // 改变用户状态
 
 module.exports = {
-  writeUserRecord,
   writeInfo,
   getMessagesById,
   getMessageTotalById
 }
 // let params = {
-//   uid: "444",
-//   receiver_uid: "333",
+//   uid: "6072a0a56407193a4029409e",
+//   receiver_uid: "608159d52f158f0588b1dbf5",
+//   receiver_name: "XDEcat",
 //   uname: "小柚酱",
 //   message: "你过得还好嘛",
 //   time: "2021/5/17",
