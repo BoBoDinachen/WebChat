@@ -7,7 +7,6 @@ import {
   createInitMessageAction,
   createAppendMessageAction
 } from '../../redux/action/chat_action'
-import img_url from '../../assets/img/酒吞童子.png'
 class PrivateChat extends Component {
   state = {
     
@@ -19,20 +18,20 @@ class PrivateChat extends Component {
     // console.log("网页可视高度", bodyHeight);
     // 减去header和footer高度
     this.listBoxElem.style.height = (bodyHeight - 50 - 60 - 68) + "px";
-    const { uid } = this.props.location.state;
+    const { uid,fid } = this.props.location.state;
     // 根据用户id加载对应的聊天信息,请求后端
     request({
       url: "/user/getMessages",
       method: "get",
       params: {
-        "uid": uid
+        "uid": uid,
+        "fid":fid
       }
     }).then((res) => {
       console.log(res);
+      // 从store中加载聊天信息
+      this.props.initMessage({"messages":res.data.data});
     })
-    let messages = [];
-    // 从store中加载聊天信息
-    this.props.initMessage({messages});
     // console.log("所有的聊天信息:", this.props.chatInfo);
     this.scrollToBottom();
   }
@@ -42,7 +41,7 @@ class PrivateChat extends Component {
   back = () => {
     setTimeout(() => {
       this.props.history.goBack();
-    },200)
+    },100)
   }
   // 滚动条到底部的方法
   scrollToBottom = () => {
@@ -58,11 +57,12 @@ class PrivateChat extends Component {
     // 获取输入框的内容、本地用户信息，路由中的用户id
     const content = this.inputElem.value;
     const { _id, user_name } = JSON.parse(sessionStorage["user_info"]);
-    const {uid} = this.props.location.state;
+    const { fid, friend_name } = this.props.location.state;
     // 改变store状态
     this.props.sendMessage({
       uid: _id,  //用户id
-      receiver_uid: uid,
+      receiver_uid: fid,
+      receiver_name: friend_name,
       uname: user_name,
       message: content===""?"emmm...":content, // 信息
       time: new Date().toLocaleString(), //  时间
@@ -73,29 +73,29 @@ class PrivateChat extends Component {
   }
   render() {
     const { chatInfo } = this.props;
-    const { uid, user_name } = this.props.location.state;
+    const { fid, friend_name } = this.props.location.state;
     return (
       <div className={style.container}>
         {/* 顶部栏 */}
         <div className={style.topBar}>
           <span className={style.close} onTouchEnd={this.back}></span>
-          {user_name}
+          {friend_name}
           <span className={style.iconMore}></span>
         </div>
         <ul className={style.messageList} ref={c => { this.listBoxElem = c }}>
           {/* 消息框 */}
           {
             chatInfo.map((item, index) => {
-              if (this.messageBox !== undefined && this.messageBox !== null) {
-                let boxHeight = this.messageBox.clientHeight;
-                // console.log("消息盒子高度:" + boxHeight);
-                // 设置每个盒子的margin-bottom
-                this.listBox.style.marginBottom = boxHeight+10+"px";
-              }
+              // if (this.messageBox !== undefined && this.messageBox !== null) {
+              //   let boxHeight = this.messageBox.clientHeight;
+              //   // console.log("消息盒子高度:" + boxHeight);
+              //   // 设置每个盒子的margin-bottom
+              //   this.listBox.style.marginBottom = boxHeight+10+"px";
+              // }
               return (
                 <li ref={c => {this.listBox = c}} className={item.status==="1"?style.rightMessageBox:style.leftMessageBox} key={index}>
                   {/* <img src="https://www.keaidian.com/uploads/allimg/190415/15110727_19.jpg"></img> */}
-                  <img src={baseImgURL+"/user/avatar?uid=" + (item.status==="1"?item.uid:uid)} alt=""/>
+                  <img src={baseImgURL+"/user/avatar?uid=" + (item.status==="1"?item.uid:fid)} alt=""/>
                   <div className={style.infoBox}>
                     <label><span>{item.uname}</span>{item.time}</label>
                     <div ref={c => {this.messageBox = c}}>{item.message}</div>

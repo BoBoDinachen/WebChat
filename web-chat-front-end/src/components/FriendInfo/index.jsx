@@ -30,8 +30,9 @@ class FriendInfo extends Component {
     const {_id,user_name} = this.state.friendInfo;
     setTimeout(() => {
       this.props.history.push("/privateChat", {
-        uid: _id,
-        user_name
+        uid: JSON.parse(sessionStorage['user_info'])._id,
+        fid: _id,
+        "friend_name":user_name
       });
     }, 200);
   }

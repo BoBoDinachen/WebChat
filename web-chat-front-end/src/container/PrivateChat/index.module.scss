@@ -27,10 +27,6 @@
       background-position: left;
       background-size: 25px;
       transition: all .2s;
-      &:active{
-        border-radius: 20px;
-        background-color: #666666;
-      }
     }
     .iconMore{
       position: absolute;
@@ -61,6 +57,9 @@
     padding-top: 10px;
     box-sizing: border-box;
     padding-bottom: 10px;
+    li{
+      margin-bottom: 55px;
+    }
     // 左边消息框
     .leftMessageBox{
       display: flex;

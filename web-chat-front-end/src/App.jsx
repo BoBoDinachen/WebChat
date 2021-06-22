@@ -15,9 +15,9 @@ function App(props) {
   // 执行副作用操作
   useEffect(() => {
     // 组件加载和state更新
-    const uid = JSON.parse(window.sessionStorage["user_info"])._id;
+    const {_id,user_name} = JSON.parse(window.sessionStorage["user_info"]);
     // 创建socket连接
-    const socket = socketIO.createSocket(uid);
+    const socket = socketIO.createSocket(_id,user_name);
     // 接收私聊信息
     socket.on("reply_private_chat", (data) => {
       props.appendMessage(data);
