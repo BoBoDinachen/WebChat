@@ -382,8 +382,8 @@ export default class Profile extends Component {
           </ul>
           {/*菜单项  */}
           <ul className={style.menuList}>
-            <li onTouchEnd={this.openPopup}><span></span>设置昵称</li>
-            <li onTouchEnd={this.openPopupEditProfile}><span></span>编辑资料</li>
+            <li onClick={this.openPopup}><span></span>设置昵称</li>
+            <li onClick={this.openPopupEditProfile}><span></span>编辑资料</li>
             <li><span></span>设置背景</li>
             <li><span></span>修改密码</li>
           </ul>

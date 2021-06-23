@@ -4,7 +4,7 @@ const rootPath = path.join(__dirname, "../../");
 const FILE_PATH = rootPath + "data/chat_info_data";
 const { getFriendsInfo } = require("../userService/index")
 
-// 初始化消息记录文件
+// 初始化发送者消息记录文件
 function initSendMessageFile(params) {
   return new Promise((resolve, reject) => {
     const { uid, uname } = params;
@@ -31,7 +31,7 @@ function initSendMessageFile(params) {
           })
           // 创建文件
           fs.writeFile(`${FILE_PATH}/${uid}.json`, JSON.stringify(messageData, null, '\t'), () => {
-            console.log("创建成功...");
+            console.log("创建消息记录文件成功...");
             resolve(messageData);
           })
         })
@@ -43,7 +43,7 @@ function initSendMessageFile(params) {
     })
   })
 }
-
+// 创建接收者文件
 function initReceiverMessageFile(params) {
   return new Promise((resolve, reject) => {
     const { receiver_uid, receiver_name } = params;
@@ -69,7 +69,7 @@ function initReceiverMessageFile(params) {
           })
           // 创建文件
           fs.writeFile(`${FILE_PATH}/${receiver_uid}.json`, JSON.stringify(messageData, null, '\t'), () => {
-            console.log("创建成功...");
+            console.log("创建消息记录文件成功...");
             resolve(messageData);
           })
         })
@@ -100,10 +100,10 @@ function writeInfo(params) {
         })
       }
     });
-    console.log(res);
+    // console.log(res);
     // 将追加的信息内容重新写入文件中
     fs.writeFile(`${FILE_PATH}/${uid}.json`, JSON.stringify(res, null, '\t'), () => {
-      console.log("追加成功...");
+      console.log("保存消息记录成功...");
     })
   });
   // 创建接收者的消息文件
@@ -122,37 +122,16 @@ function writeInfo(params) {
           })
         }
       });
-      console.log(res);
+      // console.log(res);
       // 将追加的信息内容重新写入文件中
       fs.writeFile(`${FILE_PATH}/${receiver_uid}.json`, JSON.stringify(res, null, '\t'), () => {
-        console.log("追加成功...");
+        console.log("保存消息记录成功...");
       })
     })
   }, 500);
-  // let sendData = {
-  //   "sid": uid,
-  //   "sname": uname,
-  //   "rid": receiver_uid,
-  //   "rname": receiver_name,
-  //   "message": message,
-  //   time,
-  //   status
-  // }
-  // let receiverData = {
-  //   "uid": uid,
-  //   "uname": uname,
-  //   "receiver_uid": receiver_uid,
-  //   "receiver_name": receiver_name,
-  //   "message": message,
-  //   status: 0
-  // }
-  // fs.appendFile(`${FILE_PATH}/${uid}.json`, message, () => {
-  //   console.log("创建成功....");
-  // })
-
 }
 
-// 根据用户的uid,获取聊天数据
+// 根据用户的uid和好友的id,获取聊天数据
 function getMessagesById(params) {
   const { uid, fid } = params;
   // 读取相应用户的文件
@@ -167,7 +146,24 @@ function getMessagesById(params) {
   })
 
 }
-
+//根据用户id和对应的好友id清除记录数据
+function clearMessage(params) {
+  const { uid, fid } = params;
+  return new Promise(async(resolve,reject) => {
+    let data = await fs.readFileSync(`${FILE_PATH}/${uid}.json`); // 读取对应用户的文件
+    let messageData = JSON.parse(data);
+    messageData.friendList.forEach(item => {
+      if (item.fid === fid) {
+        item.messageList = []; // 清空这个消息列表
+      }
+    });
+    // 重新写入到对应用户文件
+    fs.writeFile(`${FILE_PATH}/${uid}.json`, JSON.stringify(messageData, null, '\t'), () => {
+      console.log("清除消息记录成功...");
+      resolve({ msg: "清除成功...", isOk: true });
+    });
+  })
+}
 // 根据用户uid，获取发送的消息条数，total
 async function getMessageTotalById(params) {
 
@@ -178,7 +174,8 @@ async function getMessageTotalById(params) {
 module.exports = {
   writeInfo,
   getMessagesById,
-  getMessageTotalById
+  getMessageTotalById,
+  clearMessage
 }
 // let params = {
 //   uid: "6072a0a56407193a4029409e",

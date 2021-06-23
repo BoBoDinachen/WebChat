@@ -1,15 +1,18 @@
 import React, { Component } from 'react'
 import style from './index.module.scss'
 import { connect } from 'react-redux';
-import {baseImgURL,request} from '../../utils/request'
+import { baseImgURL, request } from '../../utils/request'
+import Confirm from '../../components/ConfirmBox/index'
+import Toast from '../../components/MessageBox/Toast'
 import {
   createSendMessageAction,
   createInitMessageAction,
-  createAppendMessageAction
+  createClearMessageAction
 } from '../../redux/action/chat_action'
+
 class PrivateChat extends Component {
   state = {
-    
+    showMenus: false
   }
   // 组件完成加载
   componentDidMount() {
@@ -18,30 +21,56 @@ class PrivateChat extends Component {
     // console.log("网页可视高度", bodyHeight);
     // 减去header和footer高度
     this.listBoxElem.style.height = (bodyHeight - 50 - 60 - 68) + "px";
-    const { uid,fid } = this.props.location.state;
+    const { uid, fid } = this.props.location.state;
     // 根据用户id加载对应的聊天信息,请求后端
     request({
       url: "/user/getMessages",
       method: "get",
       params: {
         "uid": uid,
-        "fid":fid
+        "fid": fid
       }
     }).then((res) => {
       console.log(res);
       // 从store中加载聊天信息
-      this.props.initMessage({"messages":res.data.data});
+      this.props.initMessage({ "messages": res.data.data });
     })
     // console.log("所有的聊天信息:", this.props.chatInfo);
     this.scrollToBottom();
   }
-
-
+  // 菜单按钮1  清除聊天消息记录
+  handleMenu1 = () => {
+    const { uid, fid } = this.props.location.state;
+    setTimeout(() => {
+      Confirm.open({
+        title: "清除", content: "确定要清除聊天记录吗", hanleConfirm: () => {
+          // 发送清除消息请求
+          request({
+            url: "/user/clearMessages",
+            method: "get",
+            params: {
+              uid,
+              fid,
+            }
+          }).then((res) => {
+            console.log(res);
+            if (res.data.success === true) {
+              this.setState({
+                showMenus: !this.state.showMenus
+              })
+              this.props.clearMessage(); //清除消息记录
+              Toast({type:"success",time:"3000",text:"清除成功..."})
+            }
+          })
+        }
+      });
+    }, 200);
+  }
   // 返回
   back = () => {
     setTimeout(() => {
       this.props.history.goBack();
-    },100)
+    }, 100)
   }
   // 滚动条到底部的方法
   scrollToBottom = () => {
@@ -64,7 +93,7 @@ class PrivateChat extends Component {
       receiver_uid: fid,
       receiver_name: friend_name,
       uname: user_name,
-      message: content===""?"emmm...":content, // 信息
+      message: content === "" ? "emmm..." : content, // 信息
       time: new Date().toLocaleString(), //  时间
       status: "1" // 0-发送者   1-接受者
     });
@@ -75,14 +104,20 @@ class PrivateChat extends Component {
     const { chatInfo } = this.props;
     const { fid, friend_name } = this.props.location.state;
     return (
-      <div className={style.container}>
+      <div className={style.container} >
         {/* 顶部栏 */}
         <div className={style.topBar}>
           <span className={style.close} onTouchEnd={this.back}></span>
           {friend_name}
-          <span className={style.iconMore}></span>
+          <span className={style.iconMore} onClick={() => { this.setState({ showMenus: !this.state.showMenus }) }}></span>
+          {/* 顶部菜单栏 */}
+          <ul className={`${style.floatMenus} ${this.state.showMenus ? '' : style.menusHide}`}>
+            <li onClick={this.handleMenu1}>清除消息记录</li>
+            <li>特别关心</li>
+            <li>聊天背景</li>
+          </ul>
         </div>
-        <ul className={style.messageList} ref={c => { this.listBoxElem = c }}>
+        <ul className={style.messageList} ref={c => { this.listBoxElem = c }} onClick={() => { this.setState({ showMenus: false }) }}>
           {/* 消息框 */}
           {
             chatInfo.map((item, index) => {
@@ -93,12 +128,12 @@ class PrivateChat extends Component {
               //   this.listBox.style.marginBottom = boxHeight+10+"px";
               // }
               return (
-                <li ref={c => {this.listBox = c}} className={item.status==="1"?style.rightMessageBox:style.leftMessageBox} key={index}>
+                <li ref={c => { this.listBox = c }} className={item.status === "1" ? style.rightMessageBox : style.leftMessageBox} key={index}>
                   {/* <img src="https://www.keaidian.com/uploads/allimg/190415/15110727_19.jpg"></img> */}
-                  <img src={baseImgURL+"/user/avatar?uid=" + (item.status==="1"?item.uid:fid)} alt=""/>
+                  <img src={baseImgURL + "/user/avatar?uid=" + (item.status === "1" ? item.uid : fid)} alt="" />
                   <div className={style.infoBox}>
                     <label><span>{item.uname}</span>{item.time}</label>
-                    <div ref={c => {this.messageBox = c}}>{item.message}</div>
+                    <div ref={c => { this.messageBox = c }}>{item.message}</div>
                   </div>
                 </li>
               )
@@ -115,7 +150,7 @@ class PrivateChat extends Component {
         {/* 底部栏 */}
         <div className={style.bottomBar}>
           <span></span>
-          <input type="text" ref={c => {this.inputElem = c}} placeholder="和ta聊聊吧~" />
+          <input type="text" ref={c => { this.inputElem = c }} placeholder="和ta聊聊吧~" />
           <span></span>
           <span onTouchEnd={this.send}></span>
         </div>
@@ -132,6 +167,6 @@ export default connect(
   {
     sendMessage: createSendMessageAction,
     initMessage: createInitMessageAction,
-    appendMessage: createAppendMessageAction
+    clearMessage: createClearMessageAction
   }
 )(PrivateChat);

@@ -4,7 +4,7 @@ function chatInfoReducer(preState = initState,action) {
   const { type, data } = action;
   // 根据type类型加工state
   switch (type) {
-    // 向状态中添加数据
+    // 追加消息，用于接收消息
     case "appendMessage":
       return [...preState, data];
     // 添加数据的同时，向后端发送
@@ -17,6 +17,9 @@ function chatInfoReducer(preState = initState,action) {
     case "initMessage":
       //....
       preState = data.messages;
+      return preState;
+    case "clearMessage":
+      preState = [];
       return preState;
     default:
       return preState;

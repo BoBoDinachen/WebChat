@@ -48,6 +48,31 @@
         border-radius: 10px;
       }
     }
+    // 悬浮菜单
+    .floatMenus{
+      position: absolute;
+      right: 0px;
+      top: 90%;
+      background-color: whitesmoke;
+      z-index: 1000;
+      font-size: 16px;
+      border-radius: 10px;
+      padding: 5px;
+      li{
+        padding: 5px 5px 5px;
+        letter-spacing: 3px;
+        text-indent: 3px;
+        border-radius: 10px;
+        font-weight: bold;
+        &:active{
+          background-color: #666666;
+          color: white;
+        }
+      }
+    }
+    .menusHide{
+      display: none;
+    }
   }
   // 消息列表
   .messageList{
@@ -58,7 +83,7 @@
     box-sizing: border-box;
     padding-bottom: 10px;
     li{
-      margin-bottom: 55px;
+      margin-bottom: 60px;
     }
     // 左边消息框
     .leftMessageBox{

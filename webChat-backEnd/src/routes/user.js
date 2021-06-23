@@ -15,7 +15,8 @@ const {
 
 const {
   getMessagesById,
-  getMessageTotalById
+  clearMessage,
+  getMessageTotalById,
 } = require("../service/messageService/index");
 
 // 1.创建路由
@@ -148,6 +149,17 @@ router.get("/getMessages", (request,response) => {
     })
   }
 })
-
+// 根据用户的uid和好友的fid清除对应的消息历史记录
+router.get("/clearMessages", (request, response) => {
+  const { uid, fid } = request.query;
+  if (uid && fid) {
+    clearMessage({ uid, fid }).then((res) => {
+      let { msg,isOk } = res;
+      if (isOk) {
+        response.send({ "status": 200, "success": true, "msg": "清除消息列表成功..." })
+      }      
+    })
+  }
+})
 // 3. 导出路由
 module.exports = router;
