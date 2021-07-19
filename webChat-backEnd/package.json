@@ -4,6 +4,9 @@
   "main": "index.js",
   "author": "XDEcat",
   "license": "MIT",
+  "scripts": {
+    "dev": "node ./src/app.js"
+  },
   "dependencies": {
     "express": "^4.17.1",
     "mongodb": "^3.6.6",
