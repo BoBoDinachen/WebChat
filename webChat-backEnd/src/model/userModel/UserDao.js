@@ -29,11 +29,11 @@ async function findUserByNameOrAccount(params) {
 
   // or 条件查询 用户名或者账号
   return new Promise((resolve, reject) => {
-    collection.findOne({ $or: [{ "account": account }, { "user_name": userName }] }, (err, res) => {
+    collection.find({ $or: [{ "account": new RegExp(account) }, { "user_name": new RegExp(userName) }] }).toArray((err,result) => {
       if (err) throw err;
-      resolve(res);
+      resolve(result);
       connect.close();
-    });
+    })
   })
 }
 
@@ -158,6 +158,8 @@ async function setUserInfo(params) {
     })
   })
 }
+
+// 查找用户 查找已有联系人的账号和昵称 和
 
 module.exports = {
   findUserById,

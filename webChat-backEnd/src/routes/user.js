@@ -10,7 +10,8 @@ const {
   setName,
   getFriendsInfo,
   addFriend,
-  updateProfile
+  updateProfile,
+  searchFriend
 } = require("../service/userService/index");  // 导入业务操作模块
 
 const {
@@ -158,6 +159,17 @@ router.get("/clearMessages", (request, response) => {
       if (isOk) {
         response.send({ "status": 200, "success": true, "msg": "清除消息列表成功..." })
       }      
+    })
+  }
+})
+
+// 搜索好友的接口
+router.get('/searchFriend', (request, response) => {
+  const { content, uid } = request.query;
+  if (content && uid) {
+    searchFriend({ content, uid }).then((res) => {
+      console.log(res);
+      response.send({ "status": 200, "success": true, "msg": "搜索的结果...","data":res })
     })
   }
 })

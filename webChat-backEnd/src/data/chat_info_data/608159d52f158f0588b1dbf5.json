@@ -5,26 +5,7 @@
 		{
 			"fid": "6072a0a56407193a4029409e",
 			"fname": "不负韶华",
-			"messageList": [
-				{
-					"uid": "6072a0a56407193a4029409e",
-					"uname": "不负韶华",
-					"receiver_uid": "608159d52f158f0588b1dbf5",
-					"receiver_name": "柚子",
-					"message": "无聊啊",
-					"time": "2021/7/12上午12:30:37",
-					"status": "0"
-				},
-				{
-					"uid": "608159d52f158f0588b1dbf5",
-					"uname": "柚子",
-					"receiver_uid": "6072a0a56407193a4029409e",
-					"receiver_name": "不负韶华",
-					"message": "为啥啊",
-					"time": "2021/7/12上午12:30:48",
-					"status": "1"
-				}
-			]
+			"messageList": []
 		}
 	]
 }

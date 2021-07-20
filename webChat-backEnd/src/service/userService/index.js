@@ -1,3 +1,4 @@
+const { ObjectId } = require("bson");
 const fs = require("fs");
 const path = require("path");
 const {
@@ -106,10 +107,11 @@ async function getFriendsInfo(params) {
 async function addFriend(params) {
   let isExist; // 返回结果
   const { uid, incr_uid } = params;
-  const friends = await getFriends({ uid }); // 获取好友列表
+  const CommandResult = await getFriendList({ uid }); // 获取好友列表
+  let { friend_list } = CommandResult;
   //拿到该用户的好友列表 去除空字符串 和 重复的uid
   // 判断重复的uid
-  friends.forEach((item, index) => {
+  friend_list.forEach((item, index) => {
     if (item === incr_uid) {
       isExist = true;
     } else {
@@ -120,9 +122,9 @@ async function addFriend(params) {
   if (isExist) {
     return { data: "exist" }
   } else {
-    friends.push(incr_uid); // 往数组里面添加uid
-    let friend_list = friends.filter(item => item !== ""); //过滤数组
-    console.log(friend_list);
+    friend_list.push(incr_uid); // 往数组里面添加uid
+    friend_list = friend_list.filter(item => item !== ""); //过滤数组
+    // console.log(friend_list);
     const CommandResult = await setFriendList({ uid, friend_list }); // 设置好友列表
     if (CommandResult.result.n === 1 && CommandResult.result.ok === 1) {
       return { data: "success" }
@@ -131,6 +133,25 @@ async function addFriend(params) {
     }
   }
 }
+// 搜索好友
+async function searchFriend(params) {
+  let { content,uid } = params;
+  let userList = await findUserByNameOrAccount({ userName: content, account: content });
+  const CommandResult = await getFriendList({ uid });
+  // 判断里面是否存在好友
+  userList.forEach((user) => {
+    user['isFriend'] = false
+    CommandResult.friend_list.forEach((fid) => {
+      if (user._id+'' === fid) {
+        user['isFriend'] = true
+      }
+    })
+  })
+  return userList;
+}
+// searchFriend({ content: "柚子",uid:"6072a0a56407193a4029409e" }).then((res) => {
+//   console.log(res);
+// })
 // getFriendsInfo({ uid: "6072a0a56407193a4029409e" }).then((res) => {
 //   console.log(res);
 // })
@@ -156,5 +177,6 @@ module.exports = {
   setName,
   getFriendsInfo,
   addFriend,
-  updateProfile
+  updateProfile,
+  searchFriend
 }
