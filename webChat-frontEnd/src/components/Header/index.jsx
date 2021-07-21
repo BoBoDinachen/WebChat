@@ -39,7 +39,7 @@ class Header extends Component {
         break;
     }
     return (
-      <header>
+      <header className={style.container}>
         <h2 className={style.title}>
           {pathname=="" ? <span className={style.back} onTouchEnd={this.handleBack}></span> : ""}
           {title}

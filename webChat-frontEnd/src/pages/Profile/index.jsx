@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import {adaptionContainerHeight} from '../../utils/dom_utils';
 import style from './index.module.scss'
 import avatarUrl from '../../assets/img/默认头像.png'
 import SexMan_url from '../../assets/img/性别男.png';
@@ -42,7 +43,7 @@ export default class Profile extends Component {
   }
   // 组件加载
   componentDidMount() {
-    console.log("Profile组件加载...");
+    adaptionContainerHeight(this.containerBox);
     // 组件加载的时候，获取用户信息和头像
     const user_info = JSON.parse(window.sessionStorage.getItem("user_info"));
     if (user_info.avatar_url !== "") {
@@ -346,13 +347,13 @@ export default class Profile extends Component {
       </>
     )
     return (
-      <div>
+      <div className={style.container}  ref={(c) => {this.containerBox = c}}>
         <MessageBox time="1500" text="头像设置成功..." type="success" isShow={this.state.showMessageSetAvatar}></MessageBox>
         <MessageBox time="1500" text="设置昵称成功..." type="success" isShow={this.state.showMessageSetName}></MessageBox>
         <MessageBox time="1500" text="保存资料成功..." type="success" isShow={this.state.showMessageEditProfile}></MessageBox>
         <SetNameBox showPopup={this.state.showSetName} />
         <EditProfile showPopup={this.state.showEditProfile} />
-        <div className={style.container}>
+        <div className={style.containerInfo}>
           {/* 展示用户名和头像 */}
           <div className={style.showInfo}>
             {/* 头像上传 */}

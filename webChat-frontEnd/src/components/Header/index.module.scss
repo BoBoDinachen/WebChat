@@ -1,24 +1,27 @@
-.title{
-  position: relative;
-  background-color: #363749;
-  color: lavender;
-  font-size: 20px;
-  line-height: 45px;
-  font-family: "微软雅黑";
-  .back{
-    width: 35px;
-    height: 35px;
-    display: inline-block;
-    position: absolute;
-    background-color: #CCCCCC;
-    border-radius: 25px;
-    margin: auto;
-    top: 50%;
-    transform: translateY(-50%);
-    left: 10px;
-    background-image: url("../../assets/img/icon_返回.png");
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: 40px;
+.container {
+  width: 100%;
+  .title {
+    position: relative;
+    background-color: #363749;
+    color: lavender;
+    font-size: 20px;
+    line-height: 45px;
+    font-family: "微软雅黑";
+    .back {
+      width: 35px;
+      height: 35px;
+      display: inline-block;
+      position: absolute;
+      background-color: #CCCCCC;
+      border-radius: 25px;
+      margin: auto;
+      top: 50%;
+      transform: translateY(-50%);
+      left: 10px;
+      background-image: url("../../assets/img/icon_返回.png");
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: 40px;
+    }
   }
 }

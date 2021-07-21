@@ -1,10 +1,13 @@
 import React, { Component } from 'react'
+import { withRouter, Switch, Route } from 'react-router-dom'
+import { adaptionContainerHeight } from '../../utils/dom_utils'
 import style from './index.module.scss'
 import FriendInfo from '../../components/FriendInfo'
+import SearchFriend from '../../pages/SearchFriend'
 import avatarUrl from '../../assets/img/默认头像.png'
 import PubSub from 'pubsub-js'
 import { request, baseImgURL } from '../../utils/request'
-export default class Friends extends Component {
+class Friends extends Component {
   // 当前用户id
   uid = JSON.parse(sessionStorage['user_info'])._id;
   state = {
@@ -15,11 +18,9 @@ export default class Friends extends Component {
   }
   // 组件加载前
   componentDidMount() {
-    // 根据屏幕高度自动改变列表高度
-    const bodyHeight = document.body.offsetHeight;
-    // console.log("网页可视高度", bodyHeight);
-    // 减去header和footer高度
-    this.containerElem.style.height = (bodyHeight - 45 - 68) + "px";
+    console.log("触发了");
+    // 自适应高度变化
+    adaptionContainerHeight(this.containerElem);
     // 加载用户信息
     request({
       url: "/user/getFriends",
@@ -58,17 +59,28 @@ export default class Friends extends Component {
       PubSub.publish("currSelectFriend", JSON.stringify(friend));
     }, 300)
   }
+
+  // 进入搜索的页面
+  enterIntoSearch = () => {
+    console.log("获得焦点");
+    this.props.history.push("/friends/search");
+    this.searchElem.blur();
+  }
   render() {
     return (
       <>
+        <Switch>
+          <Route path="/friends/search" component={SearchFriend} />
+        </Switch>
         {/* 好友信息页 */}
         <FriendInfo isShow={this.state.isShowInfo} close={this.closeInfoBox}></FriendInfo>
         <div className={style.container} ref={c => { this.containerElem = c }}>
           {/* 搜索框 */}
-          <div className={style.searchBox}>
-            <input type="text" placeholder="请输入好友名称" />
+          <div className={style.searchBox} >
+            <input type="text" placeholder="请输入好友名称" ref={(c) => { this.searchElem = c }} onFocus={this.enterIntoSearch} />
             <span></span>
           </div>
+          
           <hr />
           {/* 好友列表盒子 */}
           <div className={style.listBox}>
@@ -112,3 +124,4 @@ export default class Friends extends Component {
     )
   }
 }
+export default withRouter(Friends);

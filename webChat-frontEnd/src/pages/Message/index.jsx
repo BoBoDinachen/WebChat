@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import style from './index.module.scss'
 import { Switch, Route, withRouter } from 'react-router-dom'
+import {adaptionContainerHeight} from '../../utils/dom_utils'
 import FriendMessage from '../../components/MessageList/FriendMessage'
 import LikeMessage from '../../components/MessageList/LikeMessage'
 import TagsMessage from '../../components/MessageList/TagsMessage'
@@ -13,10 +14,7 @@ class MessageList extends Component {
   //组件加载
   componentDidMount() {
     // 根据屏幕高度自动改变列表高度
-    const bodyHeight = document.body.offsetHeight;
-    console.log("网页可视高度", bodyHeight);
-    // 减去header和footer高度
-    this.containerElem.style.height = (bodyHeight - 45 - 68) + "px";
+    adaptionContainerHeight(this.containerElem);
     this.props.history.push("/message/friendMsg");
   }
   // 选择消息标题

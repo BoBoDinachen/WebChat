@@ -1,12 +1,10 @@
 .footer{
-  position: fixed;
-  bottom: 0;
   height: 68px;
   width: 100%;
   background-color: #363749;
   box-sizing: border-box;
   text-align: center;
-  .navList{
+  .navList{                                        
     display: flex;
     // width: 100%;
     height: 60px;
