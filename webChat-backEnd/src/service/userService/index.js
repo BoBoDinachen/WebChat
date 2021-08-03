@@ -14,7 +14,6 @@ const {
   setUserInfo
 } = require("../../model/userModel/UserDao");
 
-
 // 用户注册
 async function userRegister(params) {
   const { account } = params;
@@ -97,7 +96,7 @@ async function getFriendsInfo(params) {
     let { friend_list } = CommandResult;
     // 遍历好友列表id,返回数组，使用promise.all处理
     const infos = await Promise.all(friend_list.map(async (uid) => {
-     return await findUserById({uid});
+      return await findUserById({ uid });
     }))
     return infos;
   }
@@ -106,7 +105,8 @@ async function getFriendsInfo(params) {
 // 添加好友
 async function addFriend(params) {
   let isExist; // 返回结果
-  const { uid, incr_uid } = params;
+  const { uid, incr_uid, fname } = params;
+  console.log(params);
   const CommandResult = await getFriendList({ uid }); // 获取好友列表
   let { friend_list } = CommandResult;
   //拿到该用户的好友列表 去除空字符串 和 重复的uid
@@ -135,19 +135,38 @@ async function addFriend(params) {
 }
 // 搜索好友
 async function searchFriend(params) {
-  let { content,uid } = params;
+  let { content, uid } = params;
   let userList = await findUserByNameOrAccount({ userName: content, account: content });
   const CommandResult = await getFriendList({ uid });
   // 判断里面是否存在好友
   userList.forEach((user) => {
     user['isFriend'] = false
     CommandResult.friend_list.forEach((fid) => {
-      if (user._id+'' === fid) {
+      if (user._id + '' === fid) {
         user['isFriend'] = true
       }
     })
   })
   return userList;
+}
+
+// 删除好友
+async function deleteFriend(params) {
+  let { uid, fid } = params;
+  // 1.获取好友列表，从列表中删除对应的id，然后将好友列表重新替换为删除后的列表
+  const CommandResult = await getFriendList({ uid }); // 获取好友列表
+  let { friend_list } = CommandResult;
+  console.log("uid："+uid+" 当前好友列表："+friend_list);
+  const new_friends = friend_list.filter((id) => {
+    return id !== fid
+  })
+  console.log("删除后的好友列表："+new_friends);
+  const CommandResult2 = await setFriendList({ uid, friend_list: new_friends }); // 设置好友列表
+  if (CommandResult2.result.n === 1 && CommandResult2.result.ok === 1) {
+    return { data: "success" }
+  } else {
+    return { data: "fail" }
+  }
 }
 // searchFriend({ content: "柚子",uid:"6072a0a56407193a4029409e" }).then((res) => {
 //   console.log(res);
@@ -177,6 +196,7 @@ module.exports = {
   setName,
   getFriendsInfo,
   addFriend,
+  deleteFriend,
   updateProfile,
   searchFriend
 }

@@ -1,0 +1,30 @@
+{
+	"uid": "6092b566ae1e8540bc95b178",
+	"uname": "薛定谔の猫2号",
+	"friendList": [
+		{
+			"fid": "6072a0a56407193a4029409e",
+			"fname": "薛定谔の猫",
+			"messageList": [
+				{
+					"uid": "6072a0a56407193a4029409e",
+					"uname": "薛定谔の猫",
+					"receiver_uid": "6092b566ae1e8540bc95b178",
+					"receiver_name": "薛定谔の猫2号",
+					"message": "222",
+					"time": "2021/7/21下午8:01:55",
+					"status": "0"
+				},
+				{
+					"uid": "6072a0a56407193a4029409e",
+					"uname": "薛定谔の猫",
+					"receiver_uid": "6092b566ae1e8540bc95b178",
+					"receiver_name": "薛定谔の猫2号",
+					"message": "晚上好呀",
+					"time": "2021/7/21下午8:02:42",
+					"status": "0"
+				}
+			]
+		}
+	]
+}

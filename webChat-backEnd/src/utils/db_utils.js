@@ -22,6 +22,7 @@ module.exports = {
     })
   },
   close() {
-    this.connect.close(); // 关闭连接
+    // this.connect.close(); // 关闭连接
+    // console.log("触发关闭");
   }
 }

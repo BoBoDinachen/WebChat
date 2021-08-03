@@ -103,7 +103,7 @@ function writeInfo(params) {
     // console.log(res);
     // 将追加的信息内容重新写入文件中
     fs.writeFile(`${FILE_PATH}/${uid}.json`, JSON.stringify(res, null, '\t'), () => {
-      console.log("保存消息记录成功...");
+      console.log("保存消息记录(发送者)成功...");
     })
   });
   // 创建接收者的消息文件
@@ -125,31 +125,38 @@ function writeInfo(params) {
       // console.log(res);
       // 将追加的信息内容重新写入文件中
       fs.writeFile(`${FILE_PATH}/${receiver_uid}.json`, JSON.stringify(res, null, '\t'), () => {
-        console.log("保存消息记录成功...");
+        console.log("保存消息记录(接收者)成功...");
       })
     })
-  }, 500);
+  }, 1000);
 }
 
 // 根据用户的uid和好友的id,获取聊天数据
 function getMessagesById(params) {
   const { uid, fid } = params;
-  // 读取相应用户的文件
-  return new Promise(async(resolve, reject) => {
-    const data = await fs.readFileSync(`${FILE_PATH}/${uid}.json`);
-    JSON.parse(data).friendList.forEach(item => {
-      if (item.fid === fid) {
-        resolve(item.messageList);
-        // return item.messageList;
+  return new Promise(async (resolve, reject) => {
+    // 检查文件是否存在
+    fs.access(`${FILE_PATH}/${uid}.json`, fs.constants.F_OK, async (err) => {
+      if (err) {
+        reject("找不到对应的消息文件");
+      } else {
+        // 读取相应用户的文件
+        const data = await fs.readFileSync(`${FILE_PATH}/${uid}.json`);
+        JSON.parse(data).friendList.forEach(item => {
+          if (item.fid === fid) {
+            resolve(item.messageList);
+          }
+        });
       }
-    });
+    })
+
   })
 
 }
 //根据用户id和对应的好友id清除记录数据
 function clearMessage(params) {
   const { uid, fid } = params;
-  return new Promise(async(resolve,reject) => {
+  return new Promise(async (resolve, reject) => {
     let data = await fs.readFileSync(`${FILE_PATH}/${uid}.json`); // 读取对应用户的文件
     let messageData = JSON.parse(data);
     messageData.friendList.forEach(item => {
@@ -164,6 +171,57 @@ function clearMessage(params) {
     });
   })
 }
+// 根据用户id和对应的好友id添加一个记录
+function insertFriendData(params) {
+  let { uid, fid, fname } = params;
+  return new Promise((resolve, reject) => {
+    fs.access(`${FILE_PATH}/${uid}.json`, fs.constants.F_OK, async (err) => {
+      if (err) {
+        reject("没有对应文件");
+      } else {
+        // 1.读取文件内容
+        let messageData = await fs.readFileSync(`${FILE_PATH}/${uid}.json`);
+        let data = JSON.parse(messageData);
+        data.friendList.push({
+          "fid": fid,
+          "fname": fname,
+          "messageList": [
+
+          ]
+        })
+        // 2.重新写入文件
+        fs.writeFile(`${FILE_PATH}/${uid}.json`, JSON.stringify(data, null, '\t'), () => {
+          resolve("添加好友记录成功...")
+        })
+      }
+    })
+
+  })
+
+}
+// 根据用户id和对应的好友id删除整个记录
+function deleteFriendData(params) {
+  let { uid, fid } = params;
+  return new Promise(async (resolve, reject) => {
+    fs.access(`${FILE_PATH}/${uid}.json`, fs.constants.F_OK, async (err) => {
+      if (err) {
+        reject("没有对应文件...")
+      } else {
+        // 1.读取文件内容
+        let messageData = await fs.readFileSync(`${FILE_PATH}/${uid}.json`);
+        let data = JSON.parse(messageData);
+        data.friendList = data.friendList.filter((friend) => {
+          return friend.fid !== fid
+        })
+        // 2.重新写入文件
+        fs.writeFile(`${FILE_PATH}/${uid}.json`, JSON.stringify(data, null, '\t'), () => {
+          resolve("删除好友记录成功...");
+        })
+      }
+    })
+
+  })
+}
 // 根据用户uid，获取发送的消息条数，total
 async function getMessageTotalById(params) {
 
@@ -175,7 +233,9 @@ module.exports = {
   writeInfo,
   getMessagesById,
   getMessageTotalById,
-  clearMessage
+  clearMessage,
+  insertFriendData,
+  deleteFriendData
 }
 // let params = {
 //   uid: "6072a0a56407193a4029409e",
