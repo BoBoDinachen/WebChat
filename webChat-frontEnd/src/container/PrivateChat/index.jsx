@@ -16,11 +16,6 @@ class PrivateChat extends Component {
   }
   // 组件完成加载
   componentDidMount() {
-    // 根据屏幕高度自动改变列表高度
-    const bodyHeight = document.body.offsetHeight;
-    // console.log("网页可视高度", bodyHeight);
-    // 减去header和footer高度
-    this.listBoxElem.style.height = (bodyHeight - 50 - 60 - 68) + "px";
     const { uid, fid } = this.props.location.state;
     // 根据用户id加载对应的聊天信息,请求后端
     request({
@@ -31,9 +26,17 @@ class PrivateChat extends Component {
         "fid": fid
       }
     }).then((res) => {
-      console.log(res);
-      // 从store中加载聊天信息
-      this.props.initMessage({ "messages": res.data.data });
+      console.log(res.data);
+      if (res.data.success) {
+        // 从store中加载聊天信息
+        this.props.initMessage({ "messages": res.data.data });
+      } else {
+        Toast({
+          type: "warning",
+          time: 2000,
+          text: "消息记录为空..."
+        })
+      }
     })
     // console.log("所有的聊天信息:", this.props.chatInfo);
     this.scrollToBottom();
@@ -59,7 +62,7 @@ class PrivateChat extends Component {
                 showMenus: !this.state.showMenus
               })
               this.props.clearMessage(); //清除消息记录
-              Toast({type:"success",time:"3000",text:"清除成功..."})
+              Toast({type:"success",time:"2000",text:"清除成功..."})
             }
           })
         }

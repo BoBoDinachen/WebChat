@@ -33,7 +33,7 @@ function MessageBox(props) {
     <div className={style.messageBox} ref={box}>
       <img src={successImg_url}></img>
       <div className={style.content}>
-        <h3>{type==="success"?"成功":"失败"}</h3>
+        <h3>{type==="success"?"成功":"提醒"}</h3>
         <p>{text}</p>
       </div>
       <img className={style.close} src={closeImg_url} onTouchEnd={closeBox}></img>

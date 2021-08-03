@@ -4,11 +4,13 @@ import avatarUrl from '../../assets/img/默认头像.png'
 import SexMan_url from '../../assets/img/性别男.png';
 import { withRouter } from 'react-router-dom'
 import SexWoman_url from '../../assets/img/性别女.png';
-import {baseImgURL} from '../../utils/request'
+import { baseImgURL, request } from '../../utils/request'
 import PubSub from "pubsub-js"
+import confirm from '../../components/ConfirmBox'
+import toast from '../../components/MessageBox/Toast'
 class FriendInfo extends Component {
   state = {
-    friendInfo:{ }
+    friendInfo: {}
   }
   // 组件加载后
   componentDidMount() {
@@ -27,14 +29,47 @@ class FriendInfo extends Component {
   }
   // 去聊天
   goToChat = () => {
-    const {_id,user_name} = this.state.friendInfo;
+    const { _id, user_name } = this.state.friendInfo;
     setTimeout(() => {
       this.props.history.push("/privateChat", {
         uid: JSON.parse(sessionStorage['user_info'])._id,
         fid: _id,
-        "friend_name":user_name
+        "friend_name": user_name
       });
-    }, 200);
+    }, 50);
+  }
+  // 删除好友
+  deleteFriend = () => {
+    const { handleDelete } = this.props;
+    const { friendInfo } = this.state;
+    setTimeout(() => {
+      confirm.open({
+        title: "删除好友",
+        content: "确定要删除此好友吗?",
+        hanleConfirm: () => {
+          request({
+            url: "/user/deleteFriend",
+            method: "post",
+            data: {
+              uid: JSON.parse(sessionStorage['user_info'])._id,
+              fid: friendInfo._id
+            }
+          }).then((res) => {
+            console.log(res);
+            if (res.data.success) {
+              handleDelete(friendInfo);
+              this.closeBox();
+              toast({
+                type: "success",
+                time: 2000,
+                text: "删除成功!"
+              })
+            }
+          })
+        }
+      })
+    }, 500)
+
   }
   // 关闭信息盒子
   closeBox = () => {
@@ -51,11 +86,11 @@ class FriendInfo extends Component {
         <div className={style.container} style={{ "display": isShow ? "flex" : "none" }} ref={c => { this.boxElem = c }}>
           {/* 资料卡 */}
           <div className={style.infoBox}>
-            <img src={friendInfo.avatar_url === undefined?avatarUrl:baseImgURL+"/user/avatar?uid=" + friendInfo._id} />
+            <img src={friendInfo.avatar_url === undefined ? avatarUrl : baseImgURL + "/user/avatar?uid=" + friendInfo._id} />
             <div className={style.rightBox}>
               <h2>{friendInfo.user_name}</h2>
-              <label><img src={friendInfo.sex==="男"?SexMan_url:SexWoman_url}></img>{friendInfo.age}岁</label>
-              <span>{friendInfo.signature===""?"这个好友还没有设置签名噢~":friendInfo.signature}</span>
+              <label><img src={friendInfo.sex === "男" ? SexMan_url : SexWoman_url}></img>{friendInfo.age}岁</label>
+              <span>{friendInfo.signature === "" ? "这个好友还没有设置签名噢~" : friendInfo.signature}</span>
             </div>
           </div>
           {/* 操作选项 */}
@@ -64,7 +99,7 @@ class FriendInfo extends Component {
               <span></span>
               <label>和他聊天</label>
             </li>
-            <li className={style.menu2}>
+            <li className={style.menu2} onClick={this.deleteFriend}>
               <span></span>
               <label>删除好友</label>
             </li>

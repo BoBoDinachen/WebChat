@@ -62,7 +62,7 @@ function SearchFriend(props) {
           </span>
           <input type="text" autoFocus placeholder="搜索好友/其他用户 账号/昵称" onInput={monitorInput} ref={inputElem} />
         </div>
-        <a href="#" onClick={back}>取消</a>
+        <a href="#" onClick={back}>返回</a>
       </div>
       <ul className={style.searchListBox}>
         <UserList userList={userList}></UserList>

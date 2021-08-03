@@ -1,10 +1,11 @@
 .container{
+  position: absolute;
   display: flex;
   flex-direction: column;
-  justify-content: start;
+  justify-content: space-between;
   align-items: center;
   width: 100%;
-  height: 100vh;
+  height: 100%;
   background-color: #CCCCCC;
   // 顶部栏
   .topBar{
@@ -76,12 +77,11 @@
   }
   // 消息列表
   .messageList{
+    flex: 1;
     width: 100%;
     overflow: scroll;
+    padding: 10px 0 10px;
     background-color: #363749;
-    padding-top: 10px;
-    box-sizing: border-box;
-    padding-bottom: 10px;
     li{
       margin-bottom: 60px;
     }
@@ -183,9 +183,8 @@
     align-items: center;
     padding: 10px 0 10px;
     width: 100%;
+    height: 65px;
     box-sizing: border-box;
-    position: fixed;
-    bottom: 68px;
     background-color: #FFFFFF;
     // box-shadow:0 0 5px 3px #6666CC;
     input{

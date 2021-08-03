@@ -4,7 +4,7 @@ import style from './index.module.scss'
 import profileUrl from '../../assets/img/个人中心.png'
 import friendUrl from '../../assets/img/好友.png'
 import messageUrl from '../../assets/img/消息.png'
-import homeUrl from '../../assets/img/主页.png'
+import homeUrl from '../../assets/img/广场.png'
 
 export default class MyNav extends Component {
   componentDidMount() {

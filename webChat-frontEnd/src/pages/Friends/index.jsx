@@ -18,7 +18,7 @@ class Friends extends Component {
   }
   // 组件加载前
   componentDidMount() {
-    console.log("触发了");
+    console.log("Friends组件触发");
     // 自适应高度变化
     adaptionContainerHeight(this.containerElem);
     // 加载用户信息
@@ -59,12 +59,30 @@ class Friends extends Component {
       PubSub.publish("currSelectFriend", JSON.stringify(friend));
     }, 300)
   }
-
+  // 添加好友
+  addFriend = (friend) => {
+    console.log(friend);
+    // console.log(this.state.friends);
+    this.setState((state, props) => {
+      return {
+        friends: [...state.friends, friend]
+      }
+    })
+  }
+  // 删除好友
+  deleteFriend = (friend) => {
+    console.log(friend);
+    let newFriends = this.state.friends.filter((item) => {
+      return item._id != friend._id;
+    })
+    this.setState({
+      friends: newFriends
+    })
+  }
   // 进入搜索的页面
   enterIntoSearch = () => {
-    console.log("获得焦点");
-    this.props.history.push("/friends/search");
-    this.searchElem.blur();
+    this.props.history.replace({ pathname: "/friends/search", state: {}, callback: this.addFriend });
+    this.searchElem.blur(); // 失去焦点
   }
   render() {
     return (
@@ -73,14 +91,14 @@ class Friends extends Component {
           <Route path="/friends/search" component={SearchFriend} />
         </Switch>
         {/* 好友信息页 */}
-        <FriendInfo isShow={this.state.isShowInfo} close={this.closeInfoBox}></FriendInfo>
+        <FriendInfo isShow={this.state.isShowInfo} close={this.closeInfoBox} handleDelete={this.deleteFriend}></FriendInfo>
         <div className={style.container} ref={c => { this.containerElem = c }}>
           {/* 搜索框 */}
           <div className={style.searchBox} >
             <input type="text" placeholder="请输入好友名称" ref={(c) => { this.searchElem = c }} onFocus={this.enterIntoSearch} />
             <span></span>
           </div>
-          
+
           <hr />
           {/* 好友列表盒子 */}
           <div className={style.listBox}>

@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import {adaptionContainerHeight} from '../../utils/dom_utils';
+import { adaptionContainerHeight } from '../../utils/dom_utils';
 import style from './index.module.scss'
 import avatarUrl from '../../assets/img/默认头像.png'
 import SexMan_url from '../../assets/img/性别男.png';
@@ -9,6 +9,7 @@ import Button from '../../components/Button'
 import MessageBox from '../../components/MessageBox'
 import { request } from '../../utils/request'
 import socketIO from '../../utils/socket'
+import confirm from '../../components/ConfirmBox/index'
 export default class Profile extends Component {
   // 组件状态
   userInfo = JSON.parse(sessionStorage.getItem("user_info"));
@@ -173,7 +174,7 @@ export default class Profile extends Component {
         if (isSet) {
           // 关闭模态框,打开消息框
           this.openMessageSetNameBox();
-          const {userInfo} = this;
+          const { userInfo } = this;
           // const user_info = JSON.parse(window.sessionStorage.getItem("user_info"));
           userInfo.user_name = user_name;
           window.sessionStorage.setItem("user_info", JSON.stringify(userInfo));
@@ -251,14 +252,17 @@ export default class Profile extends Component {
   backLogin = () => {
     const { _id, account } = this.userInfo;
     setTimeout(() => {
-      if (confirm("确定要退出吗?")) {
-        // 清除本地sessionStorage,设置本地存储密码为空
-        socketIO.closeSocket(_id); //断开socket连接
-        window.localStorage.setItem("user_login", JSON.stringify({ _id, account, password: "" }));
-        window.sessionStorage.clear(); // 清除session
-        window.location.reload(); // 刷新页面
-      } else {
-      }
+      confirm.open({
+        title: "退出登录",
+        content: "确定要退出登录吗?",
+        hanleConfirm: () => {
+          // 清除本地sessionStorage,设置本地存储密码为空
+          socketIO.closeSocket(_id); //断开socket连接
+          window.localStorage.setItem("user_login", JSON.stringify({ _id, account, password: "" }));
+          window.sessionStorage.clear(); // 清除session
+          window.location.reload(); // 刷新页面
+        }
+      })
     }, 200);
   }
 
@@ -331,15 +335,15 @@ export default class Profile extends Component {
       <>
         <div className={style.age_box}>
           <label>设置年龄:</label>
-          <input ref={c => { this.inputAgeElem = c }} type="number" className={style.input_box_age} placeholder="输入年龄..." defaultValue={user.age}/>
+          <input ref={c => { this.inputAgeElem = c }} type="number" className={style.input_box_age} placeholder="输入年龄..." defaultValue={user.age} />
         </div>
         <div className={style.radio_box}>
           选择性别:
           <label>
-            <input ref={c => { this.radioSexElem = c }} type="radio" name="sex" defaultChecked={this.state.user.sex === "男"} onChange={(e) => {console.log("11111"); this.radioSexElem.value="男"}}/>&nbsp;男
+            <input ref={c => { this.radioSexElem = c }} type="radio" name="sex" defaultChecked={this.state.user.sex === "男"} onChange={(e) => { console.log("11111"); this.radioSexElem.value = "男" }} />&nbsp;男
           </label>
           <label>
-            <input ref={c => { this.radioSexElem = c }} type="radio" name="sex" defaultChecked={this.state.user.sex === "女"} onChange={(e) => {console.log("22222"); this.radioSexElem.value="女"}}/>&nbsp;女
+            <input ref={c => { this.radioSexElem = c }} type="radio" name="sex" defaultChecked={this.state.user.sex === "女"} onChange={(e) => { console.log("22222"); this.radioSexElem.value = "女" }} />&nbsp;女
           </label>
         </div>
         <textarea ref={c => { this.textareaElem = c }} defaultValue={this.userInfo.signature} name="signature" id="" className={style.textarea_box} placeholder="这里输入你的个性签名..."></textarea>
@@ -347,7 +351,7 @@ export default class Profile extends Component {
       </>
     )
     return (
-      <div className={style.container}  ref={(c) => {this.containerBox = c}}>
+      <div className={style.container} ref={(c) => { this.containerBox = c }}>
         <MessageBox time="1500" text="头像设置成功..." type="success" isShow={this.state.showMessageSetAvatar}></MessageBox>
         <MessageBox time="1500" text="设置昵称成功..." type="success" isShow={this.state.showMessageSetName}></MessageBox>
         <MessageBox time="1500" text="保存资料成功..." type="success" isShow={this.state.showMessageEditProfile}></MessageBox>

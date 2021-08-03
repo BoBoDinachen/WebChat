@@ -14,7 +14,7 @@ class Header extends Component {
     const { pathname } = this.props.location;
     switch (pathname) {
       case "/home":
-        title = "大厅";
+        title = "广场";
         break;
       case "/profile":
         title = "个人中心";
