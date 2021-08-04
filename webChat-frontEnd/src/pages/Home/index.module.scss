@@ -1,3 +1,44 @@
 .container{
-  
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  background-color: white;
+  width: 100vw;
+  // 顶部栏
+  .topBar{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 5px 0 5px;
+    span{
+      display: inline-block;
+      width: 30px;
+      height: 30px;
+      svg{
+        width: 30px;
+        height: 30px;
+      }
+    }
+    ul{
+      display: flex;
+      a{
+        color: unset;
+        font-size: 18px;
+        margin: 0 15px 0;
+        border-radius: 5px;
+        padding-bottom: 5px;
+        // -webkit-tap-highlight-color: rgba(255, 255, 255, 0); 
+        // -webkit-user-select: none;
+        // -moz-user-focus: none;
+        // -moz-user-select: none;
+      }
+      .activeItem{
+        font-size: 20px;
+        font-weight: bold;
+        border-bottom: 2px solid #99CC66;
+      }
+    }
+  }
 }

@@ -12,8 +12,6 @@ class Friends extends Component {
   uid = JSON.parse(sessionStorage['user_info'])._id;
   state = {
     friends: [],
-    onlineNum: "1/2",
-    friendNum: 2,
     isShowInfo: false,
   }
   // 组件加载前
@@ -95,40 +93,23 @@ class Friends extends Component {
         <div className={style.container} ref={c => { this.containerElem = c }}>
           {/* 搜索框 */}
           <div className={style.searchBox} >
-            <input type="text" placeholder="请输入好友名称" ref={(c) => { this.searchElem = c }} onFocus={this.enterIntoSearch} />
+            <input type="text" placeholder="搜索~" ref={(c) => { this.searchElem = c }} onFocus={this.enterIntoSearch} />
             <span></span>
           </div>
 
           <hr />
           {/* 好友列表盒子 */}
           <div className={style.listBox}>
-            {/* 状态栏 */}
-            <div className={style.statusBar}>
-              <span>当前在线: {this.state.onlineNum}</span>
-              <span>好友数: {this.state.friends.length}</span>
-            </div>
             {/* 好友列表 */}
             <ul className={style.friendList}>
               {
-                // [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14].map((item, index) => {
-                //   return (
-                //         <li onClickCapture={this.selectFriend.bind()} key={index}>
-                //           {/* 头像和用户昵称 */}
-                //           <img src={avatarUrl}/>
-                //           <div className={style.rightBox}>
-                //             <h3>hhhh</h3>
-                //             <p>喵呜~</p>
-                //           </div>
-                //         </li>
-                //       )
-                // })
                 this.state.friends.map((friend, index) => {
                   return (
                     <li onClickCapture={this.selectFriend.bind(this, friend)} key={friend._id}>
                       {/* 头像和用户昵称 */}
                       <img src={friend.avatar_url === "" ? avatarUrl : baseImgURL + "/user/avatar?uid=" + friend._id} />
                       <div className={style.rightBox}>
-                        <h3>{friend.user_name}</h3>
+                        <h4>{friend.user_name}</h4>
                         <p>{friend.signature === "" ? "这个好友还没有签名噢~" : friend.signature}</p>
                       </div>
                     </li>

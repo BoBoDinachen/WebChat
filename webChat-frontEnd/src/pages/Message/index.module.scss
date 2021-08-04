@@ -4,33 +4,37 @@
   flex-direction: column;
   justify-content: start;
   align-items: center;
-  width: 100%;
+  width: 100vw;
   // 消息标题栏
   .messageTitle{
     width: 100%;
-    height: 90px;
+    height: 75px;
     background-color: #FFFFFF;
     margin-bottom: 10px;
     display: flex;
     justify-content: space-around;
     .titleItem{
-      width: 70px;
-      height: 85px;
+      width: 50px;
+      height: 70px;
       padding-bottom: 5px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
       // background-color: palevioletred;
       span{
        display: inline-block;
        margin-top: 5px;
-       width: 60px;
-       height: 60px;
+       width: 50px;
+       height: 50px;
        background-color: #99CCFF;
        border-radius: 25px;
        background-image: url("../../assets/img/好友消息.png");
        background-position: center;
-       background-size: 50px;
+       background-size: 30px;
        background-repeat: no-repeat;
       }
       &::after{
+        width: 70px;
         font-size: 13px;
         font-weight: bold;
         display: block;
@@ -44,20 +48,20 @@
       @extend .titleItem;
       span{
        background-color: #FFFFCC;
-       background-image: url("../../assets/img/喜欢.png");
+       background-image: url("../../assets/img/好友申请.png");
       }
       &::after{
-        content: "收到的喜欢";
+        content: "好友申请";
       }
     }
     .titleItem3{
       @extend .titleItem;
       span{
         background-color: #FFCC99;
-        background-image: url("../../assets/img/点赞.png");
+        background-image: url("../../assets/img/喜欢.png");
       }
       &::after{
-        content: "收到的点赞";
+        content: "收到的喜欢";
       }
     }
   }

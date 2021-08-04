@@ -13,15 +13,15 @@
     // line-height: 40px;
     // color: black;
     color: lavender;
-    font-weight: bold;
+    // font-weight: bold;
     text-decoration: none; //文本装饰
     transition: all .2s linear;
     border-radius: 5px;
   }
     // 点击时的样式
   .active{
+    font-weight: bold;
     color: #FF6600;
-    background-color: skyblue;
     border-radius: 5px;
   }
   img{

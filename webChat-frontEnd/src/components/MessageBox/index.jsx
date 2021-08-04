@@ -1,9 +1,8 @@
-import React, {useRef,useEffect} from 'react'
+import React, { useRef, useEffect } from 'react'
 import style from './index.module.scss'
-import successImg_url from '../../assets/img/正确.png'
 import closeImg_url from '../../assets/img/取消.png'
 function MessageBox(props) {
-  const { type, time, text, position,isShow} = props;
+  const { type, time, text, position, isShow } = props;
   // 根据props自定义的样式
   let customStyle = {
     type: "",
@@ -25,15 +24,17 @@ function MessageBox(props) {
     box.current.style.transform = "none";
   }
   // 关闭box
-  function closeBox(){
+  function closeBox() {
     // box.current.style.display = "none";
     box.current.style.transform = "translateY(-200%)";
   }
   return (
     <div className={style.messageBox} ref={box}>
-      <img src={successImg_url}></img>
+      <svg className="icon" aria-hidden="true">
+        <use xlinkHref={type==="success"?'#icon-chenggong':type==="warning"?'#icon-jinggao':'#icon-shibai'}></use>
+      </svg>
       <div className={style.content}>
-        <h3>{type==="success"?"成功":"提醒"}</h3>
+        <h3>{type === "success" ? "成功" : "提醒"}</h3>
         <p>{text}</p>
       </div>
       <img className={style.close} src={closeImg_url} onTouchEnd={closeBox}></img>

@@ -1,319 +1,242 @@
 .container{
-  width: 100%;
-}
-.containerInfo{
   display: flex;
   flex-direction: column;
-  // justify-content: space-around;
+  justify-content: flex-start;
   align-items: center;
-  width: 100%;
-  padding-top: 2%;
-  // background-color: #CCCCCC;
-  // 信息展示框
-  .showInfo{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    // background-color: aquamarine;
-    img{
-      background-color: #ffff;
-      border-radius: 50%;
-      width: 150px;
-      height: 150px;
-      object-fit: cover;
-      border: 2px solid palevioletred;
-      transition: all .1s linear;
-      &:active{
-        background-color: black;
-      }
-      @media screen and(max-height:750px){
-        width: 95px;
-        height: 95px;
-      }
-    }
-    // 上传头像
-    span:nth-of-type(1){
-      display: inline-block;
-      width: 50px;
-      height: 50px;
-      // background-color: aqua;
+  width: 100vw;
+  box-sizing: border-box;
+  // 菜单按钮
+  .menuButton{
+    margin: 10px 0 10px;
+    svg{
       position: absolute;
-      // transform: translateY(5%);
-      border-radius: 20px;
-      transition: all .2s linear;
-      right: 23%;
-      background-image: url("../../assets/img/上传头像.png");
-      background-repeat: no-repeat;
-      background-size: 40px;
-      background-position: center;
-      @media screen and(max-height:750px){
-        right: 30%;
-        width: 30px;
-        height: 30px;
-        transform: translateY(-50%);
-        background-size: 30px;
-      }
-      &:active{
-        background-color: #CCCCCC;
-      }
-      input{
-        position: absolute;
-        border: none;
-        outline: none;
-        box-sizing: border-box;
-        transform: translateX(-50%);
-        opacity: 0;
-        width: 50px;
-        height: 50px;
-      }
-    }
-    span:nth-of-type(2){
-      margin-top: 5px;
-      font-weight: bold;
-      font-size: 35px;
-      @media screen and(max-height:750px){
-        font-size: 25px;
-      }
-    }
-    label{
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-size: 15px;
-      width: 100px;
-      img{
-        margin-right: 5%;
-        width: 25px;
-        height: 25px;
-        // max-width: 10%;
-        // max-height: 10%;
-        border: none;
-        background: none;
-      }
-    }
-    span:nth-of-type(3){
-      display: inline-block;
-      width: 70%;
-      height: 90px;
-      border-bottom: 1px solid black;
-      padding: 0 40px 0;
-      max-height: 45px;
-      padding-bottom: 1px;
-      overflow: hidden;
-      font-size: 15px;
-      text-indent: 2px;
-      letter-spacing: 2px;
-      text-overflow: ellipsis;
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
+      right: 20px;
+      width: 20px;
+      height: 20px;
     }
   }
-  // 记录卡片样式
-  .recordList{
-    list-style: none;
+  // 头像框
+  .avatarBox{
     display: flex;
-    justify-content: space-around;
-    align-items: center;
-    margin-top: 5%;
+    margin: 10px 0 15px;
+    padding: 0 10px 0;
+    box-sizing: border-box;
     width: 100%;
-    height: 60px;
-    // border-radius: 5px;
-    @media screen and(max-height:750px){
-      margin-top: 1%;
-    }
-    background-color: rgba($color: #0000, $alpha: 0.6);
-    li{
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
+    // 头像
+    .avatar{
       width: 100px;
-      height: 50px;
-     
-      label{
-        font-weight: bold;
+      height: 100px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+    .tagList{
+      flex: 1;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      div{
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+        span{
+          &:nth-of-type(1){
+            font-weight: bold;
+            font-size: 20px;     
+          }
+          &:nth-of-type(2){
+            font-weight: bold;
+            color:rgba($color: #000000, $alpha: .4);
+            font-size: 14px;     
+          }
+        }
+      }
+    }
+  }
+  // 资料
+  .profileInfo{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    padding: 0 10px 0;
+    box-sizing: border-box;
+    width: 100%;
+    // 信息
+    .infoBox{
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      .info{
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        // 昵称和个性签名
+        span{
+          &:nth-of-type(1){
+            font-size: 23px;
+            font-weight: bold;
+          }
+          &:nth-of-type(2){
+            margin-top:5px;
+            // width: 250px;
+            width: 60vw;
+            text-align: left;
+            font-weight: bold;
+            color:rgba($color: #000000, $alpha: .4);
+            font-size: 14px; 
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+          }
+        }
+      }
+      // 编辑资料按钮
+      .editButton{   
+        padding: 5px 10px 5px;
+        background-color: rgba($color: #000000, $alpha: .1);
+        border-radius: 20px;
         font-size: 15px;
       }
-      &:nth-of-type(1){
-        border-radius: 5px;
-        background-color: #FFCC99;
-      }
-      &:nth-of-type(2){
-        border-radius: 5px;
-        background-color: #99CCFF;
-      }
-      &:nth-of-type(3){
-        border-radius: 5px;
-        background-color: #CCFF99;
-      }
     }
-  }
-  .menuList{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    list-style: none;
-    transform: translateY(-5%);
-    @media screen and(max-height:750px){
-      width: 95%;
-    }
-    li{
-      margin-top: 5%;
-      width: 80%;
-      text-align: left;
+    .infoTag{
+      margin-top: 10px;
       display: flex;
-      justify-content: start;
-      align-items: center;
-      font-weight: bold;
-      border-bottom: 2px black solid;
-      border-radius: 10px 10px 0 0;
-      letter-spacing: 5px;
-      padding: 0 5px 0;
-      // text-indent: 10px;
-      &:active{
-        background-color: rgba($color: #000000, $alpha: 0.3);
-      }
-      background: {
-        image: url("../../assets/img/向右.png");
-        repeat: no-repeat;
-        size: 25px;
-        position: right;
-      };
       span{
-        display: inline-block;
-        height: 45px;
-        width: 40px;
-      }
-    }
-    li:nth-child(1){
-      span{
-        background: {
-          image: url("../../assets/img/改用户名.png");
-          repeat: no-repeat;
-          size: 30px;
-          position: left;
-        };
-      }
-    }
-    li:nth-child(2){
-      span{
-        background: {
-          image: url("../../assets/img/编辑.png");
-          repeat: no-repeat;
-          size: 30px;
-          position: left;
-        };
-      }
-    }
-    li:nth-child(3){
-      span{
-        background: {
-          image: url("../../assets/img/改背景.png");
-          repeat: no-repeat;
-          size: 30px;
-          position: left;
-        };
-      }
-    }li:nth-child(4){
-      span{
-        background: {
-          image: url("../../assets/img/设置密码.png");
-          repeat: no-repeat;
-          size: 30px;
-          position: left;
-        };
+        padding: 2px 10px 2px;
+        background-color: rgba($color: #000000, $alpha: .1);
+        border-radius: 20px;
+        font-size: 15px;
+        line-height: 20px;
+        margin-right: 5px;
+        &:nth-of-type(1){
+          display: flex;
+          align-items: center;
+          img{
+            width: 20px;
+            height: 20px;
+            margin-right: 5px;
+          }
+        }
       }
     }
   }
-  .backLogin{
-    outline: none;
-    border: none;
-    border-radius: 10px;
-    width: 70%;
-    font-size: 20px;
-    font-weight: bold;
-    height: 50px;
-    background-color: #FF6666;
-    transition: all .2s linear;
-    &:active{
-      background-color: rgba($color: #000000, $alpha: 0.3);
-    }
-    @media screen and(max-height:750px){
-      position: absolute;
-      top: 2px;
-      right: 10px;
-      width: 20%;
-      font-size: 15px;
-      height: 40px;
-    }
-  }
-}
-
-//设置昵称的输入框
-.input_box{
-  outline: none;
-  border: none;
-  max-width: 80%;
-  height: 35px;
-  font-size: 20px;
-  padding-left: 5%;
-  box-sizing: border-box;
-  border-radius: 5px;
-  margin-top: 10px;
-  margin-bottom: 10px;
-}
-// 设置年龄的输入框
-.age_box{
-  width: 80%;
-  display: flex;
-  justify-content: start;
-  label{
-    margin: 0;
-    padding: 0;
-    text-align: start;
-    font-weight: bold;
-    margin-right: 8%;
-  }
-  .input_box_age{
-    width:40%;
+  // 弹出的菜单栏
+  .menuBar{
+    position: absolute;
+    right: 20px;
+    top: 90px;
+    width: 25vw;
+    background-color: white;
+    box-shadow: 0 0 10px 0.1px #666666;
+    padding: 10px 20px 10px;
     border-radius: 5px;
-    outline: none;
-    border: none;
-    padding-left: 5%;
-    font-size: 16px;
-    &:focus{
-      border: #99CCFF solid 3px;
+    display: none;
+    flex-direction: column;
+    justify-content: flex-start;
+    span{
+      box-sizing: border-box;
+      padding: 5px;
+      margin: 5px 0 5px;
+      font-size: 16px;
+      font-weight: bold;
+      &:active{
+        color: #FF9966;
+      }
+      &:nth-of-type(1){
+        display: inline-block;
+        input{
+          position: absolute;
+          left: 0;
+          right: 0;
+          width: 100px;
+          margin: auto;
+          opacity: 0;
+        }
+      }
     }
   }
-}
-.radio_box{
-  margin-top: 10px;
-  width: 80%;
-  display: flex;
-  justify-content: start;
-  text-align: start;
-  font-weight: bold;
-  label{
-    color: #ffff;
-    margin-left: 8%;
+  // 标题
+  .cardTitle{
+    margin-top: 20px;
+    padding: 0 10px 0;
+    box-sizing: border-box;
+    text-align: left;
+    font-size: 20px;
+    width: 100%;
   }
-}
-.textarea_box{
-  outline: none;
-  border-radius: 5px;
-  border: none;
-  padding: 2% 5% 5%;
-  // padding-left: 5%;
-  box-sizing: border-box;
-  margin-top: 10px;
-  width: 100%;
-  height: 80px;
-  font-size: 15px;
-  &:focus{
-    border: #99CCFF solid 3px;
+  // 卡片
+  .cardBox{
+    flex: 1;
+    width: 100%;
+    height: 40px;
+    padding: 10px 10px 10px;
+    box-sizing: border-box;
+    border-radius: 5px;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    align-content: flex-start;
+    .card{
+      width: 48%;
+      height: 100px;
+      // background-color: #CCCCCC;
+      background-color: #99CC66;
+      border-radius: 5px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 15px;
+      div{
+        margin: 0 5px 0;
+        &:nth-of-type(1){
+          width: 60px;
+          height: 60px;
+          // background-color: rgba($color: , $alpha: 1.0);
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          border-radius: 25px;
+          svg{
+            width: 35px;
+            height: 35px;
+          }
+        }
+        &:nth-of-type(2){
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          color: white;
+          span{
+            &:nth-of-type(2){
+              font-weight: bold;
+            }
+          }
+        }
+      }
+    }
+    // 钱袋
+    .cardFirst{
+      div{
+        &:nth-of-type(1){
+          background-color: #FFCC99;
+        }
+      }
+    }
+    // 任务
+    .cardSecond{
+      div{
+        &:nth-of-type(1){
+          background-color: #99CCFF;
+        }
+      }
+    }
+    // 宠物
+    .cardThirdly{
+      div{
+        &:nth-of-type(1){
+          background-color: #CCCCFF;
+        }
+      }
+    }
   }
 }

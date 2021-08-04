@@ -1,0 +1,97 @@
+.container {
+  position: absolute;
+  height: 100vh;
+  width: 100vw;
+  background-color: white;
+  box-sizing: border-box;
+  padding: 5px 10px 5px;
+  z-index: 999;
+  // 标题栏
+  .titleBar {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin-bottom: 15px;
+
+    span {
+      position: absolute;
+      display: flex;
+      align-items: center;
+      font-size: 18px;
+      font-weight: bold;
+      z-index: 10000;
+
+      &::before {
+        content: "";
+        display: inline-block;
+        width: 25px;
+        height: 25px;
+        background-image: url("../../assets/img/返回.png");
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: 25px;
+      }
+    }
+
+    h3 {
+      width: 100%;
+      text-align: center;
+    }
+  }
+  // 设置密码框
+  .formBox{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 20px 25px 20px;
+    box-sizing: border-box;
+    background-color: #f9fafc;
+    &>div{
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 30px;
+      label{
+        width: 100%;
+        text-align: left;
+        // font-weight: bold;
+        font-size: 18px;
+        margin-bottom: 10px;
+      }
+      &>div{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        input{
+          width: 100%;
+          height: 40px;
+          font-size: 18px;
+          padding-left: 15px;
+          border-radius: 5px;
+          box-sizing: border-box;
+          // background-color: #99CC99;
+          &:focus{
+            border: 1px solid #99CC99;
+          }
+        }
+        svg{
+          position: absolute;
+          width: 20px;
+          height: 20px;
+          right: 50px;
+        }
+      }
+    }
+  }
+  button{
+    width: 70%;
+    height: 40px;
+    background-color: #339933;
+    letter-spacing: 20px;
+    text-indent: 20px;
+    font-size: 18px;
+    color: white;
+  }
+}

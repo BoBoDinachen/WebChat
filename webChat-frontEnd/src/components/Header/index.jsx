@@ -12,21 +12,24 @@ class Header extends Component {
   render() {
     let title = "";
     const { pathname } = this.props.location;
+    if (pathname.search("/home") != -1) {
+      title = "广场";
+    }
     switch (pathname) {
-      case "/home":
-        title = "广场";
-        break;
       case "/profile":
         title = "个人中心";
+        break;
+      case "/profile/edit":
+        title = "编辑资料";
+        break;
+      case "/profile/updatePassword":
+        title = "修改密码";
         break;
       case "/friends":
         title = "我的好友";
         break;
       case "/privateChat":
         title = "";
-        break;
-      case "/message":
-        title = "我的消息";
         break;
       case "/message/friendMsg":
         title = "好友消息";

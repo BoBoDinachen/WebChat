@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import style from './index.module.scss'
 import Register from '../../pages/Register'
+import toast from '../../components/MessageBox/Toast'
 import { request } from '../../utils/request'
 export default class Login extends Component {
   state = {
@@ -39,7 +40,11 @@ export default class Login extends Component {
         }).then((res) => {
           console.log(res);
           if (res.data.isLogin) {
-            alert("OK!");
+            toast({
+              type: "success",
+              text: "登录成功!",
+              time:3000
+            })
             const {_id} = res.data.data;
             // 将用户信息保存在本地
             let { sessionStorage } = window;
@@ -50,7 +55,9 @@ export default class Login extends Component {
             } else {
               localStorage.setItem("user_login", JSON.stringify({ _id, account,password:""}));
             }
-            window.location.reload(); //刷新网页
+            setTimeout(() => {
+              window.location.reload(); //刷新网页
+            },1000)
           } else {
             alert("请检查账号和密码~");
           }

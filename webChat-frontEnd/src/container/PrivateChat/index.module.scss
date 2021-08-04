@@ -42,18 +42,12 @@
       background-position: center;
       background-size: 30px;
       transition: all .2s;
-      &:active{
-        width: 40px;
-        height: 40px;
-        background-color: #666666;
-        border-radius: 10px;
-      }
     }
     // 悬浮菜单
     .floatMenus{
       position: absolute;
-      right: 0px;
-      top: 90%;
+      right: 10px;
+      top: 55px;
       background-color: whitesmoke;
       z-index: 1000;
       font-size: 16px;
@@ -66,8 +60,7 @@
         border-radius: 10px;
         font-weight: bold;
         &:active{
-          background-color: #666666;
-          color: white;
+          color: #FF9966;
         }
       }
     }

@@ -1,119 +1,152 @@
-.container{
-  position: absolute;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  padding: 20px;
-  margin: auto;
-  margin-top: 20%;
-  left: 0;right: 0;
-  width: 80%;
-  height: 60%;
-  border-radius: 10px;
-  background-color: #99CCCC;
-  // 资料卡
-  .infoBox{
+.containerShell {
+  position: absolute;   
+  display: block;
+  width: 100%;
+  height: 100%;
+  background-color: rgba($color: #000000, $alpha: .2);
+  .container {
+    position: absolute;
     display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    width: 100%;
-    height: 120px;
-    border-bottom: 2px solid black;
-    // background-color: aliceblue;
-    & > img{
-      width: 100px;
-      height: 100px;
-      object-fit: cover;
-      border-radius: 50%;
-    }
-    .rightBox{
+    flex-direction: column;
+    // justify-content: space-between;
+    padding: 20px;
+    margin: auto;
+    margin-top: 30%;
+    left: 0;
+    right: 0;
+    width: 80%;
+    height: 60%;
+    border-radius: 10px;
+    background-color: #99CCCC;
+
+    // 资料卡
+    .infoBox {
       display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: flex-start;
-      width: 50%;
-      height: 100px;
-      margin-left: 5%;
-      // background-color: palegreen;
-      label{
+      justify-content: flex-start;
+      align-items: center;
+      width: 100%;
+      height: 120px;
+      border-bottom: 2px solid black;
+
+      // background-color: aliceblue;
+      &>img {
+        width: 80px;
+        height: 80px;
+        object-fit: cover;
+        border-radius: 50%;
+      }
+
+      .rightBox {
         display: flex;
+        flex-direction: column;
         justify-content: center;
-        align-items: center;
-        img{
-          margin-right: 10px;
-          width: 20px;        
-          height: 20px;
+        align-items: flex-start;
+        width: 50%;
+        height: 100px;
+        margin-left: 5%;
+
+        // background-color: palegreen;
+        label {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+
+          img {
+            margin-right: 10px;
+            width: 20px;
+            height: 20px;
+          }
+        }
+
+        span {
+          width: 95%;
+          margin-top: 5px;
+          font-size: 14px;
+          text-align: start;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
         }
       }
-      span{
-        width: 95%;
-        margin-top: 5px;
-        font-size: 14px;
-        text-align: start;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-      }
     }
-  }
-  // 操作选项
-  .menuList{
-    display: flex;
-    margin-bottom: 5%;
-    list-style: none;
-    .menu1{
+
+    // 操作选项
+    .menuList {
       display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      width: 200px;
-      height: 70px;
-      border-radius: 10px;
-      background-color: #99CCFF;
-      margin: 10px;
-      transition: all .2s;
-      span{
-        display: inline-block;
-        width: 40px;
-        height: 40px;
-        background-image: url("../../assets/img/聊天.png");
-        background-repeat: no-repeat;
-        background-position: center;
-        background-size: 40px;
+      margin-top: 5%;
+      list-style: none;
+      justify-content: space-around;
+      .menu1 {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        width: 100px;
+        height: 70px;
+        border-radius: 10px;
+        background-color: #99CCFF;
+        margin: 10px;
+        transition: all .2s;
+
+        span {
+          display: inline-block;
+          width: 30px;
+          height: 30px;
+          background-image: url("../../assets/img/聊天.png");
+          background-repeat: no-repeat;
+          background-position: center;
+          background-size: 30px;
+        }
+
+        label {
+          margin-top: 5px;
+          font-weight: bold;
+          font-size: 15px;
+          color: black;
+        }
+
+        &:active {
+          box-shadow: 0 0 15px .1px #996699;
+        }
       }
-      label{
-        margin-top: 5px;
-        font-weight: bold;
-        font-size: 15px;
+
+      .menu2 {
+        @extend .menu1;
+        background-color: #FFCCCC;
+
+        span {
+          background-image: url("../../assets/img/删除.png");
+        }
       }
-      &:active{
-        box-shadow: 0 0 5px 4px #996699;
+
+      .menu3 {
+        @extend .menu1;
+        background-color: #FFFFCC;
+
+        span {
+          background-image: url("../../assets/img/喜欢.png");
+        }
+      }
+      .menu4{
+        @extend .menu1;
+        background-color: #CCCCFF;
+
+        span {
+          background-image: url("../../assets/img/喜欢.png");
+        }
       }
     }
-    .menu2{
-      @extend .menu1;
-      background-color: #FFCCCC;
-      span{
-        background-image: url("../../assets/img/删除.png");
-      }
+
+    &>span {
+      display: inline-block;
+      position: absolute;
+      top: 5px;
+      right: 5px;
+      width: 40px;
+      height: 40px;
+      background-image: url("../../assets/img/取消.png");
+      background-repeat: no-repeat;
+      background-size: 40px;
     }
-    .menu3{
-      @extend .menu1;
-      background-color: #FFFFCC;
-      span{
-        background-image: url("../../assets/img/点赞.png");
-      }
-    }
-  }
-  & > span{
-    display: inline-block;
-    position: absolute;
-    top: 5px;
-    right: 5px;
-    width: 40px;
-    height: 40px;
-    background-image: url("../../assets/img/取消.png");
-    background-repeat: no-repeat;
-    background-size: 40px;
   }
 }

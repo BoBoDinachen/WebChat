@@ -1,0 +1,108 @@
+.container{
+  position: absolute;
+  height: 100vh;
+  width: 100vw;
+  background-color: white;
+  // background-color: #f9fafc;
+  box-sizing: border-box;
+  padding: 5px 10px 5px;
+  z-index: 9999;
+  .titleBar{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin-bottom: 15px;
+    span{
+      position: absolute;
+      display: flex;
+      align-items: center;
+      font-size: 18px;
+      font-weight: bold;
+      z-index: 10000;
+      &::before{
+        content: "";
+        display: inline-block;
+        width: 25px;
+        height: 25px;
+        background-image: url("../../assets/img/返回.png");
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: 25px;
+      }
+    }
+    h3{
+      width: 100%;
+      text-align: center;
+    }
+  }
+  // 编辑框
+  .formBox{
+    flex: 1;
+    width: 100%;
+    padding: 20px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    div{
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      margin-bottom: 15px;
+      label{
+        text-align: left;
+        margin-bottom: 5px;
+        font-size: 18px;
+        font-weight: bold;
+      }
+      input{
+        background-color: #f9fafc;
+        height: 50px;
+        font-size: 18px;
+        padding-left: 20px;
+        border-radius: 25px;
+      }
+      textarea{
+        height: 70px;
+        padding: 10px;
+        font-size: 16px;
+        color: #FF9966;
+        font-weight: bold;
+        border: unset;
+        border-radius: 10px;
+        outline: unset;
+        background-color: #f9fafc;
+        text-indent: 10px;
+      }
+      ul{
+        display: flex;
+        justify-content: center;
+        li{
+          width: 30%;
+          line-height: 30px;
+          background-color: #f9fafc;
+          margin:0 20px 0;
+          padding: 5px 0 5px;
+          border-radius: 25px;
+        }
+        .activeItem{
+          background-color: lightcoral;
+          color: white;
+        }
+      }
+    }
+    button{
+      margin-top: 15px;
+      width: 80%;
+      height: 45px;
+      border-radius: 25px;
+      background-color: #333333;
+      color: white;
+      font-weight: bold;
+      letter-spacing: 10px;
+      text-indent: 10px;
+    }
+  }
+}
