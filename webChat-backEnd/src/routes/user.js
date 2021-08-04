@@ -7,12 +7,18 @@ const {
   userRegister,
   saveAvatar,
   getAvatar,
+  getUserInfo,
   setName,
   getFriendsInfo,
   addFriend,
   deleteFriend,
   updateProfile,
-  searchFriend
+  updatePassword,
+  searchFriend,
+  clickLike,
+  checkLike,
+  getLikeNumbers,
+  cancelLike
 } = require("../service/userService/index");  // 导入业务操作模块
 
 const {
@@ -83,7 +89,13 @@ router.get("/avatar", (request, response, next) => {
   });
 
 })
-
+// 获取用户资料
+router.get("/profile", (request, response,) => {
+  const { uid } = request.query;
+  getUserInfo({ uid }).then((res) => {
+    response.send({ "status": 200, "success": true, "msg": "获取用户信息成功", "data": res })
+  })
+})
 // 设置用户名
 router.post("/profile/setName", (request, response) => {
   const { uid, user_name } = request.body;
@@ -158,9 +170,9 @@ router.post('/deleteFriend', (request, response) => {
 // 修改用户资料接口
 router.post("/updateProfile", (request, response) => {
   // 拿到请求数据
-  const { uid, sex, age, signature } = request.body;
+  const { uid,uname, sex, age, signature } = request.body;
   // 调用业务层
-  updateProfile({ uid, sex, age, signature }).then((res) => {
+  updateProfile({ uid,uname,sex, age, signature }).then((res) => {
     if (res) {
       response.send({ "status": 200, "success": true, "msg": "更新用户资料成功", "isUpdate": true });
     } else {
@@ -169,6 +181,19 @@ router.post("/updateProfile", (request, response) => {
   })
 })
 
+//更新密码接口
+router.post("/updatePassword", (request, response) => {
+  // 拿到请求数据
+  const { uid,pwd } = request.body;
+  // 调用业务层
+  updatePassword({ uid,pwd }).then((res) => {
+    if (res) {
+      response.send({ "status": 200, "success": true, "msg": "更新密码成功", "isUpdate": true });
+    } else {
+      response.send({ "status": 200, "success": true, "msg": "更新密码失败", "isUpdate": false });
+    }
+  })
+})
 // 根据用户uid获取对应的消息记录
 router.get("/getMessages", (request, response) => {
   const { uid, fid } = request.query;
@@ -201,6 +226,51 @@ router.get('/searchFriend', (request, response) => {
       response.send({ "status": 200, "success": true, "msg": "搜索的结果...", "data": res })
     })
   }
+})
+
+// 用户喜欢好友的接口
+router.post('/clickLike', (request,response) => {
+  const { uid, fid } = request.body;
+  clickLike({ uid, fid }).then((res) => {
+    if (res.status) {
+      response.send({ "status": 200, "success": true, "msg": "喜欢成功" });
+    } else {
+      response.send({ "status": 233, "success": false, "msg": "失败" });
+    }
+  })
+})
+// 用户取消喜欢好友的接口
+router.post('/cancelLike', (request,response) => {
+  const { uid, fid } = request.body;
+  cancelLike({ uid, fid }).then((res) => {
+    if (res.status) {
+      response.send({ "status": 200, "success": true, "msg": "取消喜欢成功" });
+    } else {
+      response.send({ "status": 233, "success": false, "msg": "失败" });
+    }
+  })
+})
+// 检测好友是否被喜欢
+router.post("/checkLike", (request, response) => {
+  const { uid, fid } = request.body;
+  checkLike({ uid, fid }).then((res) => {
+    // console.log(res);
+    if (res.status) {
+      response.send({ "status": 200, "success": true, "msg": res.msg });
+    } else {
+      response.send({ "status": 233, "success": false, "msg": res.msg });
+    }
+  })
+})
+// 返回好友的喜欢数与被喜欢数
+router.get("/getLikeNumbers", (request, response) => {
+  const { uid } = request.query;
+  getLikeNumbers({ uid }).then((res) => {
+    // console.log(res);
+    if (res.status) {
+      response.send({ "status": 200, "success": true, "msg": res.msg,"data":res.data });
+    }
+  })
 })
 // 3. 导出路由
 module.exports = router;

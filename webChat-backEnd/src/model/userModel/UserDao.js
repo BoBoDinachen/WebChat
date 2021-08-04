@@ -144,14 +144,14 @@ async function setFriendList(params) {
   })
 }
 
-// 修改用户性别、年龄、签名
+// 修改用户昵称，性别、年龄、签名
 async function setUserInfo(params) {
-  const { uid, sex,age,signature } = params;
+  const { uid,uname, sex,age,signature } = params;
   // 1.连接数据库
   const db = await connect.createDB();
   const collection = db.collection("users");
   return new Promise((resolve, reject) => {
-    collection.updateOne({ _id: ObjectId(uid) }, { $set: { sex, age, signature } }, (err,result) => {
+    collection.updateOne({ _id: ObjectId(uid) }, { $set: { user_name:uname,sex, age, signature } }, (err,result) => {
       if (err) throw err;
       resolve(result);
       connect.close(); //关闭连接
@@ -159,7 +159,75 @@ async function setUserInfo(params) {
   })
 }
 
-// 查找用户 查找已有联系人的账号和昵称 和
+// 修改用户密码
+async function setUserPwd(params) {
+  const { uid,pwd } = params;
+  // 1.连接数据库
+  const db = await connect.createDB();
+  const collection = db.collection("users");
+  return new Promise((resolve, reject) => {
+    collection.updateOne({ _id: ObjectId(uid) }, { $set: { password:pwd } }, (err,result) => {
+      if (err) throw err;
+      resolve(result);
+      connect.close(); //关闭连接
+    })
+  })
+}
+// 获取用户喜欢的列表
+async function getUserLikeList(params) {
+  const { uid } = params;
+  // 1.连接数据库
+  const db = await connect.createDB();
+  const collection = db.collection("users");
+  return new Promise((resolve, reject) => {
+    collection.find({ _id: ObjectId(uid) }).project({ like_list: 1 }).toArray(function (err, result) {
+      if (err) throw err;
+      resolve(result[0]);
+      connect.close(); //关闭连接
+    })
+  })
+}
+// 获取用户粉丝的列表
+async function getUserFollowList(params) {
+  const { uid } = params;
+  // 1.连接数据库
+  const db = await connect.createDB();
+  const collection = db.collection("users");
+  return new Promise((resolve, reject) => {
+    collection.find({ _id: ObjectId(uid) }).project({ follow_list: 1 }).toArray(function (err, result) {
+      if (err) throw err;
+      resolve(result[0]);
+      connect.close(); //关闭连接
+    })
+  })
+}
+// 用户点击喜欢
+async function handleLike(params) {
+  const { uid,fid,like_list,follow_list } = params;
+  // 1.连接数据库
+  const db = await connect.createDB();
+  const collection = db.collection("users");
+  function likeTask() {
+    return new Promise((resolve,reject) => {
+      collection.updateOne({ _id: ObjectId(uid) }, { $set: { like_list } }, (err,result) => {
+        if (err) throw err;
+        resolve(result);
+        connect.close(); //关闭连接
+      })
+    })
+  }
+  function followTask() {
+    return new Promise((resolve,reject) => {
+      collection.updateOne({ _id: ObjectId(fid) }, { $set: { follow_list } }, (err,result) => {
+        if (err) throw err;
+        resolve(result);
+        connect.close(); //关闭连接
+      })
+    })
+  }
+  return Promise.all([likeTask(),followTask()])
+}
+
 
 module.exports = {
   findUserById,
@@ -171,5 +239,9 @@ module.exports = {
   setUserName,
   getFriendList,
   setFriendList,
-  setUserInfo
+  setUserInfo,
+  setUserPwd,
+  handleLike,
+  getUserLikeList,
+  getUserFollowList
 };
