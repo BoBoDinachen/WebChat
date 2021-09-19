@@ -1,4 +1,4 @@
-const {writeInfo,writeUserRecord} = require("../../service/messageService");
+const {writeInfo,insertRequestRecord} = require("../../service/messageService");
 var io;
 const users = []; //线上的用户列表
 const user_status = ["ON_LINE", "OFF_LINE"]; //用户在在线状态
@@ -37,7 +37,7 @@ const initChat = function (http) {
       socket.disconnect(true);
     })
 
-    // 私聊
+    // 私聊信息
     socket.on("private_chat", (data,saveData) => {
       const {uid,uname,message, time, receiver_uid,receiver_name,status} = data; // 拿到发送方的数据
       const receiver = users[receiver_uid];
@@ -53,6 +53,42 @@ const initChat = function (http) {
       }
     })
 
+    // 世界信息
+    socket.on("world_chat", (data) => {
+      console.log(data);
+      const { uid, uname, time, message } = data;
+      // 遍历map用户列表，给每个用户发送信息
+      for(const key of Object.keys(users)) {
+        if (users[key] && users[key].status === "ON_LINE" && users[key].socketID !== users[uid].socketID) {
+          // 如果用户在线，发送给用户,除自己外
+          socket.to(users[key].socketID).emit("reply_world_chat", { uid, uname, message, time });
+        }
+      }
+      // 将数据写入文件
+      console.log("写入文件");
+    })
+    // 好友申请通知
+    socket.on("friend_request", (data) => {
+      const { uid, uname, fid, fname, time } = data;
+      // console.log(data);
+      const receiver = users[fid];
+      if (receiver && receiver.status === "ON_LINE") {
+        socket.to(receiver.socketID).emit("reply_friend_request", data);
+        insertRequestRecord(data);
+      } else {
+        insertRequestRecord(data);
+      }
+      // 添加用户的申请记录和好友的申请记录
+    })
+
+    // 申请结果通知
+    socket.on("request_result", (data) => {
+      const { uid, fid, status } = data;
+      const receiver = users[fid];
+      if (receiver && receiver.status === "ON_LINE") {
+        socket.to(receiver.socketID).emit("reply_request_result", data);
+      }
+    })
     // 内置事件
     socket.on("disconnect", (reason) => {
       for (const key in users) {

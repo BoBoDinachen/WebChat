@@ -1,0 +1,39 @@
+{
+	"uid": "6128fec42fb94e4a086cd47a",
+	"uname": "一只小猫咪😽",
+	"friendList": [
+		{
+			"fid": "6072a0a56407193a4029409e",
+			"fname": "薛定谔の猫er",
+			"messageList": [
+				{
+					"uid": "6072a0a56407193a4029409e",
+					"uname": "薛定谔の猫er",
+					"receiver_uid": "6128fec42fb94e4a086cd47a",
+					"receiver_name": "一只小猫咪😽",
+					"message": "哈哈哈",
+					"time": "2021-09-09 23:59",
+					"status": "0"
+				},
+				{
+					"uid": "6072a0a56407193a4029409e",
+					"uname": "薛定谔の猫er",
+					"receiver_uid": "6128fec42fb94e4a086cd47a",
+					"receiver_name": "一只小猫咪😽",
+					"message": "emmm...",
+					"time": "2021-09-10 00:00",
+					"status": "0"
+				},
+				{
+					"uid": "6072a0a56407193a4029409e",
+					"uname": "薛定谔の猫er",
+					"receiver_uid": "6128fec42fb94e4a086cd47a",
+					"receiver_name": "一只小猫咪😽",
+					"message": "emmm...",
+					"time": "2021/09/15 23:01",
+					"status": "0"
+				}
+			]
+		}
+	]
+}

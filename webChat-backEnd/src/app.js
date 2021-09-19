@@ -29,8 +29,9 @@ app.all('*', function (req, res, next) {
 
 // 处理路由
 const userRouter = require("./routes/user");
+const messageRouter = require("./routes/message");
 app.use("/WebChat/user", userRouter);
-
+app.use("/WebChat/message", messageRouter);
 initChat(http);  //启动socket.io服务
 
 // 匹配到不正确的路径时，重定向到首页

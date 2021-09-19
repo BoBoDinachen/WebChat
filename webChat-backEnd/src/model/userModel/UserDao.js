@@ -1,17 +1,17 @@
 const connect = require("../../utils/db_utils");
 const ObjectId = require('mongodb').ObjectId
-const {DB_NAME} = require("../../config/db_config");
-
+const { DB_NAME } = require("../../config/db_config");
+const { User } = require('./User');
 // 查询用户-id
 async function findUserById(params) {
   // 1.连接数据库
   const db = await connect.createDB();
   // 使用数据库对象，获取集合对象
   const collection = db.collection('users');
-  const {uid} = params;
+  const { uid } = params;
   // or 条件查询 用户名或者账号
   return new Promise((resolve, reject) => {
-    collection.find({ _id: ObjectId(uid) }).project({ password: 0, friend_list: 0 }).toArray((err,result) => {
+    collection.find({ _id: ObjectId(uid) }).project({ friend_list: 0 }).toArray((err, result) => {
       if (err) throw err;
       resolve(result[0]);
       connect.close();
@@ -29,11 +29,21 @@ async function findUserByNameOrAccount(params) {
 
   // or 条件查询 用户名或者账号
   return new Promise((resolve, reject) => {
-    collection.find({ $or: [{ "account": new RegExp(account) }, { "user_name": new RegExp(userName) }] }).toArray((err,result) => {
-      if (err) throw err;
-      resolve(result);
-      connect.close();
-    })
+    if (userName === "all") {
+      collection.find({}).toArray((err, result) => {
+        if (err) {
+          throw err;
+        }
+        resolve(result);
+        connect.close();
+      })
+    } else {
+      collection.find({ $or: [{ "account": new RegExp(account) }, { "user_name": new RegExp(userName) }] }).toArray((err, result) => {
+        if (err) throw err;
+        resolve(result);
+        connect.close();
+      })
+    }
   })
 }
 
@@ -54,13 +64,13 @@ async function findUserByAccountAndPassword(params) {
 }
 
 // 添加用户
-async function addUser(User) {
+async function addUser(params) {
   // 1.连接数据库
   const db = await connect.createDB();
   const collection = db.collection("users");
-  const { account, password, age, sex } = User;
+  const { account, password } = params;
   return new Promise((resolve, reject) => {
-    collection.insertOne({ account, password, age, sex, user_name: "", avatar_url: "",signature:"",friend_list:[]}, (err, res) => {
+    collection.insertOne(User(account, password), (err, res) => {
       if (err) throw err;
       resolve(res);
       connect.close();
@@ -90,12 +100,16 @@ async function getUserAvatar(params) {
   const db = con.db(DB_NAME);
   const collection = db.collection("users");
   const { uid } = params;
+  // console.log(uid);
   return new Promise((resolve, reject) => {
-    collection.find({ _id: ObjectId(uid) }).project({ avatar_url: 1 }).toArray(function (err, result) {
-      if (err) throw err;
-      resolve(result[0]);
-      con.close();
-    })
+    // 防止频繁出现undefined，导致异常
+    if (uid !== "undefined") {
+      collection.find({ _id: ObjectId(uid) }).project({ avatar_url: 1 }).toArray(function (err, result) {
+        if (err) throw err;
+        resolve(result[0]);
+        con.close();
+      })
+    }
   })
 }
 
@@ -131,12 +145,12 @@ async function getFriendList(params) {
 
 // 修改好友列表
 async function setFriendList(params) {
-  const { friend_list,uid } = params;
+  const { friend_list, uid } = params;
   // 1.连接数据库
   const db = await connect.createDB();
   const collection = db.collection("users");
   return new Promise((resolve, reject) => {
-    collection.updateOne({ _id: ObjectId(uid) }, { $set: { friend_list } }, (err,result) => {
+    collection.updateOne({ _id: ObjectId(uid) }, { $set: { friend_list } }, (err, result) => {
       if (err) throw err;
       resolve(result);
       connect.close(); //关闭连接
@@ -146,12 +160,12 @@ async function setFriendList(params) {
 
 // 修改用户昵称，性别、年龄、签名
 async function setUserInfo(params) {
-  const { uid,uname, sex,age,signature } = params;
+  const { uid, uname, sex, age, signature } = params;
   // 1.连接数据库
   const db = await connect.createDB();
   const collection = db.collection("users");
   return new Promise((resolve, reject) => {
-    collection.updateOne({ _id: ObjectId(uid) }, { $set: { user_name:uname,sex, age, signature } }, (err,result) => {
+    collection.updateOne({ _id: ObjectId(uid) }, { $set: { user_name: uname, sex, age, signature } }, (err, result) => {
       if (err) throw err;
       resolve(result);
       connect.close(); //关闭连接
@@ -161,12 +175,12 @@ async function setUserInfo(params) {
 
 // 修改用户密码
 async function setUserPwd(params) {
-  const { uid,pwd } = params;
+  const { uid, pwd } = params;
   // 1.连接数据库
   const db = await connect.createDB();
   const collection = db.collection("users");
   return new Promise((resolve, reject) => {
-    collection.updateOne({ _id: ObjectId(uid) }, { $set: { password:pwd } }, (err,result) => {
+    collection.updateOne({ _id: ObjectId(uid) }, { $set: { password: pwd } }, (err, result) => {
       if (err) throw err;
       resolve(result);
       connect.close(); //关闭连接
@@ -203,13 +217,13 @@ async function getUserFollowList(params) {
 }
 // 用户点击喜欢
 async function handleLike(params) {
-  const { uid,fid,like_list,follow_list } = params;
+  const { uid, fid, like_list, follow_list } = params;
   // 1.连接数据库
   const db = await connect.createDB();
   const collection = db.collection("users");
   function likeTask() {
-    return new Promise((resolve,reject) => {
-      collection.updateOne({ _id: ObjectId(uid) }, { $set: { like_list } }, (err,result) => {
+    return new Promise((resolve, reject) => {
+      collection.updateOne({ _id: ObjectId(uid) }, { $set: { like_list } }, (err, result) => {
         if (err) throw err;
         resolve(result);
         connect.close(); //关闭连接
@@ -217,15 +231,15 @@ async function handleLike(params) {
     })
   }
   function followTask() {
-    return new Promise((resolve,reject) => {
-      collection.updateOne({ _id: ObjectId(fid) }, { $set: { follow_list } }, (err,result) => {
+    return new Promise((resolve, reject) => {
+      collection.updateOne({ _id: ObjectId(fid) }, { $set: { follow_list } }, (err, result) => {
         if (err) throw err;
         resolve(result);
         connect.close(); //关闭连接
       })
     })
   }
-  return Promise.all([likeTask(),followTask()])
+  return Promise.all([likeTask(), followTask()])
 }
 
 

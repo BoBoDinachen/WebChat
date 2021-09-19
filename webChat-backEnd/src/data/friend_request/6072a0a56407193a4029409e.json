@@ -1,0 +1,24 @@
+{
+	"uid": "6072a0a56407193a4029409e",
+	"uname": "薛定谔の猫er",
+	"request_list": [
+		{
+			"fid": "608159d52f158f0588b1dbf5",
+			"fname": "我是柚子",
+			"request_time": "2021-09-12 10:24",
+			"request_status": 0
+		},
+		{
+			"fid": "6092b566ae1e8540bc95b178",
+			"fname": "薛定谔の猫2号",
+			"request_time": "2021-09-12 00:33",
+			"request_status": 2
+		},
+		{
+			"fid": "608530b30ad7004ab0de188d",
+			"fname": "剑上一滴血",
+			"request_time": "2021-09-14 00:01",
+			"request_status": 2
+		}
+	]
+}

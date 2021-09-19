@@ -4,24 +4,51 @@
 	"friendList": [
 		{
 			"fid": "6072a0a56407193a4029409e",
-			"fname": "薛定谔の猫",
+			"fname": "薛定谔の猫er",
 			"messageList": [
 				{
+					"uid": "6092b566ae1e8540bc95b178",
+					"uname": "薛定谔の猫2号",
+					"receiver_uid": "6072a0a56407193a4029409e",
+					"receiver_name": "薛定谔の猫er",
+					"message": "avatar_url: \"uploads/img/userAvatar/6092b566ae1e8540bc95b178.png\"",
+					"time": "2021/09/19 01:31",
+					"status": "1"
+				},
+				{
+					"uid": "6092b566ae1e8540bc95b178",
+					"uname": "薛定谔の猫2号",
+					"receiver_uid": "6072a0a56407193a4029409e",
+					"receiver_name": "薛定谔の猫er",
+					"message": "fdsafdsafffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+					"time": "2021/09/19 01:31",
+					"status": "1"
+				},
+				{
 					"uid": "6072a0a56407193a4029409e",
-					"uname": "薛定谔の猫",
+					"uname": "薛定谔の猫er",
 					"receiver_uid": "6092b566ae1e8540bc95b178",
 					"receiver_name": "薛定谔の猫2号",
-					"message": "222",
-					"time": "2021/7/21下午8:01:55",
+					"message": "emmm...",
+					"time": "2021/09/19 01:32",
 					"status": "0"
 				},
 				{
 					"uid": "6072a0a56407193a4029409e",
-					"uname": "薛定谔の猫",
+					"uname": "薛定谔の猫er",
 					"receiver_uid": "6092b566ae1e8540bc95b178",
 					"receiver_name": "薛定谔の猫2号",
-					"message": "晚上好呀",
-					"time": "2021/7/21下午8:02:42",
+					"message": "不会吧，接电话的互粉互粉火车坚持坚持初八发货锦绣华城下半场不行不行成绩不错不错不错内搭你",
+					"time": "2021/09/19 01:33",
+					"status": "0"
+				},
+				{
+					"uid": "6072a0a56407193a4029409e",
+					"uname": "薛定谔の猫er",
+					"receiver_uid": "6092b566ae1e8540bc95b178",
+					"receiver_name": "薛定谔の猫2号",
+					"message": "xhhxhxhdhfhfhhfhfhfhfjjcjcfjjjhhjdjcjfjcjjcjccjjfjcjfcjckdkdjrjjdnfbcjfjfjfjchcnc",
+					"time": "2021/09/19 01:33",
 					"status": "0"
 				}
 			]

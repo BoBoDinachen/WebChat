@@ -1,0 +1,21 @@
+{
+	"uid": "609f9e651aa10908e0fc18a7",
+	"uname": "李茂军",
+	"friendList": [
+		{
+			"fid": "6072a0a56407193a4029409e",
+			"fname": "薛定谔の猫er",
+			"messageList": [
+				{
+					"uid": "6072a0a56407193a4029409e",
+					"uname": "薛定谔の猫er",
+					"receiver_uid": "609f9e651aa10908e0fc18a7",
+					"receiver_name": "李茂军",
+					"message": "在吗在吗",
+					"time": "2021/09/15 23:02",
+					"status": "0"
+				}
+			]
+		}
+	]
+}

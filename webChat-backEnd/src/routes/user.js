@@ -25,7 +25,7 @@ const {
   getMessagesById,
   clearMessage,
   getMessageTotalById,
-  insertFriendData,
+  deleteRequestRecord,
   deleteFriendData
 } = require("../service/messageService/index");
 
@@ -48,8 +48,9 @@ router.post("/login", (request, response) => {
 // 处理注册
 router.post("/register", (request, response) => {
   // 获取请求参数
-  const { account, password, sex, age } = request.body;
-  userRegister({ account, password, sex, age }).then((result) => {
+  const { account, password } = request.body;
+  userRegister({ account, password }).then((result) => {
+    // console.log(result);
     if (result) {
       response.json({ "status": 200, "isRegister": true, "msg": "注册成功" });
     } else {
@@ -84,8 +85,11 @@ router.get("/avatar", (request, response, next) => {
   const { uid } = request.query;
   getAvatar({ uid }).then((result) => {
     const rootPath = path.join(__dirname, "../");
-    response.sendFile(rootPath + result);
-    // response.send(result);
+    if (result.status) {
+      response.sendFile(rootPath + result.url);
+    } else {
+      response.sendFile(rootPath + "uploads/img/userAvatar/default-avatar.jpg");
+    }
   });
 
 })
@@ -119,34 +123,6 @@ router.get("/getFriends", (request, response) => {
   })
 })
 
-// 添加好友接口
-router.post("/addFriend", (request, response) => {
-  const { uid, incr_uid, fname } = request.body; //请求数据
-  // 调用接口
-  if (uid !== "" && incr_uid !== "") {
-    addFriend({ uid, incr_uid, fname }).then((res) => {
-      let flag = res.data;
-      switch (flag) {
-        case "exist":
-          response.send({ "status": 200, "success": false, "msg": "该好友已添加" })
-          break;
-        case "success":
-          // 往消息记录文件里面添加好友的记录
-          insertFriendData({ uid, fid: incr_uid, fname }).then((result) => {
-            console.log(result);
-          }).catch((err) => {
-            console.log(err);
-          });
-          response.send({ "status": 200, "success": true, "msg": "好友添加成功" });
-          break;
-        case "fail":
-          response.send({ "status": 200, "success": false, "msg": "好友添加失败,数据库错误" });
-          break;
-      }
-    })
-  }
-
-})
 // 删除好友的接口
 router.post('/deleteFriend', (request, response) => {
   const { uid, fid } = request.body;
@@ -156,6 +132,13 @@ router.post('/deleteFriend', (request, response) => {
       if (flag === "success") {
         // 2. 清除好友的整个消息记录
         deleteFriendData({ uid, fid }).then((res) => {
+          console.log(res);
+        }, (err) => {
+          console.log(err);
+        })
+        // 3.清除对应好友的申请记录
+        // 删除对应的申请记录
+        deleteRequestRecord({ uid, fid }).then((res) => {
           console.log(res);
         }, (err) => {
           console.log(err);
@@ -170,9 +153,9 @@ router.post('/deleteFriend', (request, response) => {
 // 修改用户资料接口
 router.post("/updateProfile", (request, response) => {
   // 拿到请求数据
-  const { uid,uname, sex, age, signature } = request.body;
+  const { uid, uname, sex, age, signature } = request.body;
   // 调用业务层
-  updateProfile({ uid,uname,sex, age, signature }).then((res) => {
+  updateProfile({ uid, uname, sex, age, signature }).then((res) => {
     if (res) {
       response.send({ "status": 200, "success": true, "msg": "更新用户资料成功", "isUpdate": true });
     } else {
@@ -184,9 +167,9 @@ router.post("/updateProfile", (request, response) => {
 //更新密码接口
 router.post("/updatePassword", (request, response) => {
   // 拿到请求数据
-  const { uid,pwd } = request.body;
+  const { uid, pwd } = request.body;
   // 调用业务层
-  updatePassword({ uid,pwd }).then((res) => {
+  updatePassword({ uid, pwd }).then((res) => {
     if (res) {
       response.send({ "status": 200, "success": true, "msg": "更新密码成功", "isUpdate": true });
     } else {
@@ -229,7 +212,7 @@ router.get('/searchFriend', (request, response) => {
 })
 
 // 用户喜欢好友的接口
-router.post('/clickLike', (request,response) => {
+router.post('/clickLike', (request, response) => {
   const { uid, fid } = request.body;
   clickLike({ uid, fid }).then((res) => {
     if (res.status) {
@@ -240,7 +223,7 @@ router.post('/clickLike', (request,response) => {
   })
 })
 // 用户取消喜欢好友的接口
-router.post('/cancelLike', (request,response) => {
+router.post('/cancelLike', (request, response) => {
   const { uid, fid } = request.body;
   cancelLike({ uid, fid }).then((res) => {
     if (res.status) {
@@ -268,9 +251,27 @@ router.get("/getLikeNumbers", (request, response) => {
   getLikeNumbers({ uid }).then((res) => {
     // console.log(res);
     if (res.status) {
-      response.send({ "status": 200, "success": true, "msg": res.msg,"data":res.data });
+      response.send({ "status": 200, "success": true, "msg": res.msg, "data": res.data });
+    } else {
+      response.send({ "status": 200, "success": false, "msg": res.msg });
     }
   })
 })
+
+//返回用户发送消息的总条数
+router.get("/getMessageTotal", (request, response) => {
+  const { uid } = request.query;
+  getMessageTotalById({ uid }).then((res) => {
+    // console.log(res);
+    if (res.status) {
+      response.send({ "status": 200, "success": true, "msg": res.msg, "total": res.data });
+    } else {
+      response.send({ "status": 200, "success": false, "msg": res.msg, "total": 0 });
+    }
+  }, (err) => {
+    response.send({ "status": 200, "success": false, "msg": "没有获取到数据", "total": 0 });
+  })
+})
+
 // 3. 导出路由
 module.exports = router;

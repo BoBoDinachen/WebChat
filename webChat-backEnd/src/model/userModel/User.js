@@ -1,10 +1,18 @@
-class User {
-  constructor(account,userName,age) {
-    this.accout = account;
-    this.userName = userName;
-    this.age = age;
+function User(account, password) {
+  return {
+    account,
+    password,
+    age: 18,
+    sex: "女",
+    user_name: "一只小猫咪😽",
+    avatar_url: "",
+    signature: "还没有设置个性签名噢~",
+    friend_list: [],
+    like_list: [],
+    follow_list: [],
+    room_id: ""
   }
-  toString() {
-    console.log(`{account:${this.accout},userName:${this.userName},age:${this.age}}`);
-  }
+}
+module.exports = {
+  User
 }

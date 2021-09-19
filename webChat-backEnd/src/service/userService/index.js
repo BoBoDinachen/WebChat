@@ -22,7 +22,8 @@ const {
 async function userRegister(params) {
   const { account } = params;
   const user = await findUserByNameOrAccount({ account, "userName": null });
-  if (user !== null) {
+  if (user.length != 0) {
+    // console.log(user);
     // 如果查找的账号不为空,则返回false
     console.log("该账号已存在");
     return false;
@@ -71,8 +72,10 @@ async function getAvatar(params) {
   // 拿到用户头像地址
   const CommandResult = await getUserAvatar(params);
   // console.log(CommandResult.avatar_url);
-  if (CommandResult != null) {
-    return CommandResult.avatar_url
+  if (CommandResult.avatar_url != "") {
+    return {status:true,url:CommandResult.avatar_url}
+  } else {
+    return {status:false,url:""}
   }
 }
 // 获取用户信息
@@ -94,8 +97,6 @@ async function setName(params) {
   }
 }
 
-
-
 // 获取用户好友列表信息
 async function getFriendsInfo(params) {
   // 返回的数据
@@ -116,7 +117,10 @@ async function addFriend(params) {
   const { uid, incr_uid, fname } = params;
   console.log(params);
   const CommandResult = await getFriendList({ uid }); // 获取好友列表
+  const CommandResult2 = await getFriendList({ "uid": incr_uid });
   let { friend_list } = CommandResult;
+  let { friend_list: friend_list2 } = CommandResult2;
+
   //拿到该用户的好友列表 去除空字符串 和 重复的uid
   // 判断重复的uid
   friend_list.forEach((item, index) => {
@@ -131,10 +135,13 @@ async function addFriend(params) {
     return { data: "exist" }
   } else {
     friend_list.push(incr_uid); // 往数组里面添加uid
+    friend_list2.push(uid);
     friend_list = friend_list.filter(item => item !== ""); //过滤数组
+    friend_list2 = friend_list2.filter(item => item !== ""); //过滤数组
     // console.log(friend_list);
-    const CommandResult = await setFriendList({ uid, friend_list }); // 设置好友列表
-    if (CommandResult.result.n === 1 && CommandResult.result.ok === 1) {
+    let Command1 = await setFriendList({ uid, friend_list }); // 设置好友列表
+    let Command2 = await setFriendList({ "uid": incr_uid, "friend_list": friend_list2 }); // 设置好友列表
+    if (Command1.result.n === 1 && Command2.result.n === 1) {
       return { data: "success" }
     } else {
       return { data: "fail" }
@@ -160,17 +167,23 @@ async function searchFriend(params) {
 
 // 删除好友
 async function deleteFriend(params) {
-  let { uid, fid } = params;
+  const { uid, fid } = params;
   // 1.获取好友列表，从列表中删除对应的id，然后将好友列表重新替换为删除后的列表
   const CommandResult = await getFriendList({ uid }); // 获取好友列表
+  const CommandResult2 = await getFriendList({ "uid": fid });
   let { friend_list } = CommandResult;
+  let { friend_list: friend_list2 } = CommandResult2;
   console.log("uid：" + uid + " 当前好友列表：" + friend_list);
   const new_friends = friend_list.filter((id) => {
     return id !== fid
   })
+  const new_friends2 = friend_list2.filter((id => {
+    return id !== uid
+  }))
   console.log("删除后的好友列表：" + new_friends);
-  const CommandResult2 = await setFriendList({ uid, friend_list: new_friends }); // 设置好友列表
-  if (CommandResult2.result.n === 1 && CommandResult2.result.ok === 1) {
+  const Command1 = await setFriendList({ uid, friend_list: new_friends }); // 设置好友列表
+  const Command2 = await setFriendList({ "uid": fid, friend_list: new_friends2 }); // 设置好友列表
+  if (Command1.result.n === 1 && Command2.result.n === 1) {
     return { data: "success" }
   } else {
     return { data: "fail" }
@@ -187,6 +200,7 @@ async function updateProfile(params) {
     return false;
   }
 }
+
 // 设置密码
 async function updatePassword(params) {
   const CommandResult = await setUserPwd(params);
@@ -261,7 +275,7 @@ async function checkLike(params) {
 async function getLikeNumbers(params) {
   const { uid } = params;
   const CommandResult1 = await getUserLikeList({ uid });
-  const CommandResult2 = await getUserFollowList({uid});
+  const CommandResult2 = await getUserFollowList({ uid });
   let likeList = CommandResult1.like_list;
   let followList = CommandResult2.follow_list;
   // console.log(res);
@@ -270,7 +284,8 @@ async function getLikeNumbers(params) {
       status: true, msg: "获取成功", data: {
         likeList,
         followList
-    } }
+      }
+    }
   } else {
     return { status: false, msg: "没有喜欢与被喜欢" }
   }

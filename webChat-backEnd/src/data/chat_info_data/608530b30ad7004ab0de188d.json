@@ -1,10 +1,10 @@
 {
-	"uid": "608159d52f158f0588b1dbf5",
-	"uname": "我是柚子",
+	"uid": "608530b30ad7004ab0de188d",
+	"uname": "剑上一滴血",
 	"friendList": [
 		{
-			"fid": "608530b30ad7004ab0de188d",
-			"fname": "剑上一滴血",
+			"fid": "608159d52f158f0588b1dbf5",
+			"fname": "我是柚子",
 			"messageList": [
 				{
 					"uid": "608530b30ad7004ab0de188d",
@@ -13,7 +13,7 @@
 					"receiver_name": "我是柚子",
 					"message": "222",
 					"time": "2021/9/6下午10:20:59",
-					"status": "0"
+					"status": "1"
 				},
 				{
 					"uid": "608159d52f158f0588b1dbf5",
@@ -22,7 +22,7 @@
 					"receiver_name": "剑上一滴血",
 					"message": "你好",
 					"time": "2021/9/6 下午10:21:31",
-					"status": "1"
+					"status": "0"
 				},
 				{
 					"uid": "608530b30ad7004ab0de188d",
@@ -31,7 +31,7 @@
 					"receiver_name": "我是柚子",
 					"message": "晚上好呀",
 					"time": "2021/9/6下午10:21:55",
-					"status": "0"
+					"status": "1"
 				},
 				{
 					"uid": "608530b30ad7004ab0de188d",
@@ -40,7 +40,7 @@
 					"receiver_name": "我是柚子",
 					"message": "emmm...",
 					"time": "2021-09-14 00:03",
-					"status": "0"
+					"status": "1"
 				},
 				{
 					"uid": "608530b30ad7004ab0de188d",
@@ -49,9 +49,14 @@
 					"receiver_name": "我是柚子",
 					"message": "emmm...",
 					"time": "2021/09/14 00:03",
-					"status": "0"
+					"status": "1"
 				}
 			]
+		},
+		{
+			"fid": "6072a0a56407193a4029409e",
+			"fname": "薛定谔の猫er",
+			"messageList": []
 		}
 	]
 }

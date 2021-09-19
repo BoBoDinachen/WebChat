@@ -1,0 +1,18 @@
+{
+	"uid": "6092b566ae1e8540bc95b178",
+	"uname": "薛定谔の猫2号",
+	"request_list": [
+		{
+			"fid": "6072a0a56407193a4029409e",
+			"fname": "薛定谔の猫er",
+			"request_time": "2021-09-12 00:33",
+			"request_status": 2
+		},
+		{
+			"fid": "608159d52f158f0588b1dbf5",
+			"fname": "我是柚子",
+			"request_time": "2021-09-12 00:57",
+			"request_status": 3
+		}
+	]
+}
