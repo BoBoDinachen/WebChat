@@ -3,13 +3,16 @@ import { useEffect, useRef, useState } from 'react'
 import { withRouter } from 'react-router-dom'
 
 import UserList from './UserList'
+import Spin from '../../components/Spin/index'
 import { request } from '../../utils/request'
 import style from './index.module.scss'
 function SearchFriend(props) {
   const inputElem = useRef(null);
+  const listElem = useRef(null);
   const [userList, setUserList] = useState([]);
+  const [isLoading, setIsLoading] = useState(false)
   useEffect(() => {
-
+    listElem.current.style.height = document.body.clientHeight - (45 + 55) + 'px';
   }, []);
   // 返回
   const back = () => {
@@ -17,6 +20,7 @@ function SearchFriend(props) {
   }
   // 监听输入的内容
   const monitorInput = (e) => {
+    setIsLoading(true);
     debounceSearch(inputElem.current.value)
   }
   // 防抖函数
@@ -44,10 +48,12 @@ function SearchFriend(props) {
           uid: JSON.parse(window.sessionStorage['user_info'])._id
         }
       }).then((res) => {
-        console.log(res.data);
+        // console.log(res.data);
         setUserList(res.data.data);
+        setIsLoading(false);
       })
     } else {
+      setIsLoading(false);
       setUserList([]);
     }
   }
@@ -64,7 +70,8 @@ function SearchFriend(props) {
         </div>
         <a href="#" onClick={back}>返回</a>
       </div>
-      <ul className={style.searchListBox}>
+      <ul className={style.searchListBox} ref={listElem}>
+        <Spin loading={isLoading}></Spin>
         <UserList userList={userList}></UserList>
       </ul>
     </div>

@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import style from './index.module.scss'
 import LogUrl from '../../assets/img/Log.jpg'
+import toast from '../../components/ToastBox/Toast';
 import { request } from '../../utils/request'
 export default class Register extends Component {
   componentDidMount() {
@@ -11,8 +12,6 @@ export default class Register extends Component {
     const account = this.accountElem.value;
     const password = this.pwdElem.value;
     const confirm_pwd = this.repwdElem.value;
-    const sex = this.sexElem.value;
-    const age = this.ageElem.value;
     // 判断为空和格式
     if (account === "") {
       alert("请输入账号~")
@@ -20,8 +19,6 @@ export default class Register extends Component {
       alert("请输入密码~");
     } else if (confirm_pwd === "") {
       alert("请确认密码~");
-    } else if (age === "") {
-      alert("请输入年龄~");
     } else {
       // 验证账号格式,发送注册请求
       if (!/^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/.test(account)) {
@@ -35,18 +32,23 @@ export default class Register extends Component {
         request({
           url: "/user/register",
           method: "post",
-          data: { account, password, sex, age}
+          data: { account, password }
         }).then((res) => {
+          console.log(res);
           if (res.data.isRegister) {
-            alert("注册成功!");
             // 将账号发送给登录页
             this.props.setAccount(account);
             // 清空表单数据
             this.clearRegisterData();
             // 返回登录页面
             this.props.goToLogin();
+            toast({
+              type: "success",
+              text: "注册成功!",
+              time:2000
+            })
           }
-          
+
         }).catch((err) => {
           console.log(err);
         })
@@ -58,8 +60,6 @@ export default class Register extends Component {
     this.accountElem.value = "";
     this.pwdElem.value = "";
     this.repwdElem.value = "";
-    this.sexElem.value = "男";
-    this.ageElem.value = "";
   }
   render() {
     return (
@@ -87,17 +87,6 @@ export default class Register extends Component {
             <li>
               <label>确认密码</label>
               <input ref={c => { this.repwdElem = c }} type="text" placeholder="请确认密码" />
-            </li>
-            <li>
-              <label>性别</label>
-              <select ref={c => { this.sexElem = c }}>
-                <option value="男">男</option>
-                <option value="女">女</option>
-              </select>
-            </li>
-            <li>
-              <label>年龄</label>
-              <input ref={c => { this.ageElem = c }} type="number" placeholder="输入年龄" />
             </li>
           </ul>
         </div>

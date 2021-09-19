@@ -3,7 +3,9 @@ import style from './index.module.scss'
 import { connect } from 'react-redux';
 import { baseImgURL, request } from '../../utils/request'
 import Confirm from '../../components/ConfirmBox/index'
-import Toast from '../../components/MessageBox/Toast'
+import Toast from '../../components/ToastBox/Toast'
+import Spin from '../../components/Spin/index'
+import { formatTime} from '../../utils/base'
 import {
   createSendMessageAction,
   createInitMessageAction,
@@ -12,7 +14,8 @@ import {
 
 class PrivateChat extends Component {
   state = {
-    showMenus: false
+    showMenus: false,
+    isLoading: true
   }
   // 组件完成加载
   componentDidMount() {
@@ -29,16 +32,35 @@ class PrivateChat extends Component {
       console.log(res.data);
       if (res.data.success) {
         // 从store中加载聊天信息
-        this.props.initMessage({ "messages": res.data.data });
+        this.props.initMessage({
+          "messages": res.data.data, "callback": () => {
+            this.setState({
+              isLoading: false
+            })
+          }
+        });
       } else {
         Toast({
           type: "warning",
-          time: 2000,
+          time: 1000,
           text: "消息记录为空..."
         })
       }
+      if (res.data.data) {
+        if (res.data.data.length === 0) {
+          Toast({
+            type: "warning",
+            time: 1000,
+            text: "消息记录为空..."
+          })
+        }
+      }
     })
     // console.log("所有的聊天信息:", this.props.chatInfo);
+  }
+  // 每当数据发生变化的时候调用
+  componentDidUpdate() {
+    // 等到数据加载完成之后，滚动到底部
     this.scrollToBottom();
   }
   // 菜单按钮1  清除聊天消息记录
@@ -62,7 +84,7 @@ class PrivateChat extends Component {
                 showMenus: !this.state.showMenus
               })
               this.props.clearMessage(); //清除消息记录
-              Toast({type:"success",time:"2000",text:"清除成功..."})
+              Toast({ type: "success", time: "2000", text: "清除成功..." })
             }
           })
         }
@@ -97,15 +119,14 @@ class PrivateChat extends Component {
       receiver_name: friend_name,
       uname: user_name,
       message: content === "" ? "emmm..." : content, // 信息
-      time: new Date().toLocaleString(), //  时间
+      time: formatTime(new Date(),"yyyy/MM/dd HH:mm"), //  时间
       status: "1" // 0-发送者   1-接受者
     });
     this.inputElem.value = "";
-    this.scrollToBottom(); // 滑动到最底部
   }
   render() {
     const { chatInfo } = this.props;
-    const { fid, friend_name } = this.props.location.state;
+    const { fid, friend_name, uname } = this.props.location.state;
     return (
       <div className={style.container} >
         {/* 顶部栏 */}
@@ -122,6 +143,7 @@ class PrivateChat extends Component {
         </div>
         <ul className={style.messageList} ref={c => { this.listBoxElem = c }} onClick={() => { this.setState({ showMenus: false }) }}>
           {/* 消息框 */}
+          <Spin loading={this.state.isLoading}></Spin>
           {
             chatInfo.map((item, index) => {
               // if (this.messageBox !== undefined && this.messageBox !== null) {
@@ -133,11 +155,30 @@ class PrivateChat extends Component {
               return (
                 <li ref={c => { this.listBox = c }} className={item.status === "1" ? style.rightMessageBox : style.leftMessageBox} key={index}>
                   {/* <img src="https://www.keaidian.com/uploads/allimg/190415/15110727_19.jpg"></img> */}
-                  <img src={baseImgURL + "/user/avatar?uid=" + (item.status === "1" ? item.uid : fid)} alt="" />
-                  <div className={style.infoBox}>
-                    <label><span>{item.uname}</span>{item.time}</label>
-                    <div ref={c => { this.messageBox = c }}>{item.message}</div>
-                  </div>
+                  {
+                    item.status === "1" ?
+                      <>
+                        <div className={style.infoBox}>
+                          <label>
+                            <span>{item.time}</span>
+                            <span>{uname}</span>
+                          </label>
+                          <div ref={c => { this.messageBox = c }}>{item.message}</div>
+                        </div>
+                        <img src={baseImgURL + "/user/avatar?uid=" + (item.status === "1" ? item.uid : fid)} alt="" />
+                      </>
+                      :
+                      <>
+                        <img src={baseImgURL + "/user/avatar?uid=" + (item.status === "1" ? item.uid : fid)} alt="" />
+                        <div className={style.infoBox}>
+                          <label>
+                            <span>{friend_name}</span>
+                            <span>{item.time}</span>
+                          </label>
+                          <div ref={c => { this.messageBox = c }}>{item.message}</div>
+                        </div>
+                      </>
+                  }
                 </li>
               )
             })

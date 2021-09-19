@@ -1,5 +1,6 @@
 import io from 'socket.io-client';
-const URL = "http://192.168.43.203:5000"; // 服务器地址
+import host from './host'
+const URL = "http://"+host.devHost; // 服务器地址
 export default {
   // 创建连接
   currSocket: null,
@@ -25,7 +26,20 @@ export default {
   },
   
   // 发送私聊信息
-  privateChat: function (params) {
-    this.currSocket.emit("private_chat", params);
+  privateChat: function (data) {
+    this.currSocket.emit("private_chat", data);
   },
+
+  // 发送大世界信息
+  sendWorldMessage: function (data) {
+    this.currSocket.emit("world_chat",data);
+  },
+  // 好友申请
+  friendRequest: function (data) {
+    this.currSocket.emit("friend_request",data);
+  },
+  // 好友申请通知
+  requestInform: function (data) {
+    this.currSocket.emit("request_result",data);
+  }
 }

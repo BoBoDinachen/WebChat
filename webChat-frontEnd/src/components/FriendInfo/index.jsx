@@ -1,13 +1,11 @@
 import React, { Component } from 'react'
 import style from './index.module.scss'
 import avatarUrl from '../../assets/img/默认头像.png'
-import SexMan_url from '../../assets/img/性别男.png';
 import { withRouter } from 'react-router-dom'
-import SexWoman_url from '../../assets/img/性别女.png';
 import { baseImgURL, request } from '../../utils/request'
 import PubSub from "pubsub-js"
 import confirm from '../../components/ConfirmBox'
-import toast from '../../components/MessageBox/Toast'
+import toast from '../../components/ToastBox/Toast'
 class FriendInfo extends Component {
   state = {
     friendInfo: {},
@@ -18,6 +16,7 @@ class FriendInfo extends Component {
     // 获取当前好友信息
     this.token = PubSub.subscribe("currSelectFriend", (msg, data) => {
       const friend = JSON.parse(data);
+      console.log(friend);
       this.setState({
         friendInfo: friend
       }, () => {
@@ -39,7 +38,8 @@ class FriendInfo extends Component {
       this.props.history.push("/privateChat", {
         uid: JSON.parse(sessionStorage['user_info'])._id,
         fid: _id,
-        "friend_name": user_name
+        "friend_name": user_name,
+        "uname": JSON.parse(sessionStorage['user_info']).user_name
       });
     }, 300);
   }
@@ -131,34 +131,36 @@ class FriendInfo extends Component {
 
   // 取消喜欢
   cancelLike = () => {
-    confirm.open({
-      title: "取消喜欢",
-      content: "确定要取消吗?",
-      hanleConfirm: () => {
-        request({
-          url: "/user/cancelLike",
-          method: "post",
-          data: {
-            uid: JSON.parse(sessionStorage['user_info'])._id,
-            fid: this.state.friendInfo._id
-          }
-        }).then((res) => {
-          console.log(res);
-          if (res.data.success) {
-            toast({
-              type: "success",
-              text: "已取消喜欢",
-              time: 1000
-            })
-            this.setState({
-              isLike: false
-            })
-          }
-        }, (err) => {
-          console.log(err);
-        })
-      }
-    })
+    setTimeout(() => {
+      confirm.open({
+        title: "取消喜欢",
+        content: "确定要取消吗?",
+        hanleConfirm: () => {
+          request({
+            url: "/user/cancelLike",
+            method: "post",
+            data: {
+              uid: JSON.parse(sessionStorage['user_info'])._id,
+              fid: this.state.friendInfo._id
+            }
+          }).then((res) => {
+            console.log(res);
+            if (res.data.success) {
+              toast({
+                type: "success",
+                text: "已取消喜欢",
+                time: 1000
+              })
+              this.setState({
+                isLike: false
+              })
+            }
+          }, (err) => {
+            console.log(err);
+          })
+        }
+      })
+    }, 300)
   }
   // 关闭信息盒子
   closeBox = () => {
@@ -176,15 +178,15 @@ class FriendInfo extends Component {
           <div className={style.container} ref={c => { this.boxElem = c }}>
             {/* 资料卡 */}
             <div className={style.infoBox}>
-              {
-                friendInfo.avatar_url === undefined ?
-                  <img src={avatarUrl} alt="" />
-                  :
-                  <img src={baseImgURL + "/user/avatar?uid=" + friendInfo._id} />
-              }
+              <img src={baseImgURL + "/user/avatar?uid=" + friendInfo._id} />
               <div className={style.rightBox}>
                 <h2>{friendInfo.user_name}</h2>
-                <label><img src={friendInfo.sex === "男" ? SexMan_url : SexWoman_url}></img>{friendInfo.age}岁</label>
+                <span>{friendInfo.account}</span>
+                <label>
+                  <svg className="icon" aria-hidden="true">
+                    <use xlinkHref={friendInfo.sex === '女' ? '#icon-nv' : '#icon-nan1'}></use>
+                  </svg>
+                  {friendInfo.age}岁</label>
                 <span>{friendInfo.signature === "" ? "这个好友还没有设置签名噢~" : friendInfo.signature}</span>
               </div>
             </div>
@@ -192,17 +194,17 @@ class FriendInfo extends Component {
             <ul className={style.menuList}>
               <li className={style.menu1} onTouchEnd={this.goToChat}>
                 <span></span>
-                <label>和他聊天</label>
+                <label>聊天</label>
               </li>
               <li className={style.menu2} onClick={this.deleteFriend}>
                 <span></span>
-                <label>删除好友</label>
+                <label>删除</label>
               </li>
               {
                 isLike ?
                   <li className={style.menu4} onClick={this.cancelLike}>
                     <span></span>
-                    <label>X取消喜欢</label>
+                    <label>取消喜欢</label>
                   </li>
                   :
                   <li className={style.menu3} onClick={this.clickLike}>
@@ -211,6 +213,9 @@ class FriendInfo extends Component {
                   </li>
               }
             </ul>
+            <div className={style.photoWall}>
+              <label>照片墙,待开发....</label>
+            </div>
             {/* 关闭按钮 */}
             <span onTouchEnd={this.closeBox}></span>
           </div>

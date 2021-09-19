@@ -1,11 +1,16 @@
-import React from 'react'
+import React, { useEffect} from 'react'
 import style from './index.module.scss'
-import {withRouter} from 'react-router-dom'
+import { withRouter } from 'react-router-dom'
 import confirm from '../../components/ConfirmBox'
 import { baseImgURL, request } from '../../utils/request'
-import toast from '../../components/MessageBox/Toast';
-import avatarUrl from '../../assets/img/默认头像.png'
+import toast from '../../components/ToastBox/Toast';
+import socketIO from '../../utils/socket';
+import { formatTime} from '../../utils/base'
 function UserList(props) {
+  useEffect(() => {
+    console.log("组件加载");
+  },[])
+  // 添加好友的方法
   function addFriend(user) {
     confirm.open({
       title: "添加好友",
@@ -17,7 +22,8 @@ function UserList(props) {
           data: {
             uid: JSON.parse(sessionStorage['user_info'])._id,
             incr_uid: user._id,
-            fname: user.user_name
+            fname: user.user_name,
+            uname: JSON.parse(sessionStorage['user_info']).user_name
           }
         }).then((res) => {
           console.log(res);
@@ -29,7 +35,7 @@ function UserList(props) {
             });
             props.location.callback(user); // 调用路由中的方法，改变父组件中的状态
             props.history.replace('/friends');
-          }else if (res.data.msg === "该好友已添加") {
+          } else if (res.data.msg === "该好友已添加") {
             toast({
               type: "warning",
               time: 1000,
@@ -40,7 +46,27 @@ function UserList(props) {
       }
     })
   }
-
+  // 发送好友申请
+  function sendRequest(friend) {
+    confirm.open({
+      title: "添加好友",
+      content: "你的诉求将传递给对方~",
+      hanleConfirm: () => {
+        socketIO.friendRequest({
+          uid: JSON.parse(sessionStorage['user_info'])._id,
+          uname: JSON.parse(sessionStorage['user_info']).user_name,
+          fid: friend._id,
+          fname: friend.user_name,
+          time:  formatTime(new Date(),"yyyy-MM-dd HH:mm") 
+        });
+        toast({
+          type: "success",
+          time: 1000,
+          text:"发送申请成功~"
+        })
+      }
+    })
+  }
   if (props.userList.length === 0) {
     return (
       <li className={style.showNull}>搜索结果为空</li>
@@ -48,12 +74,12 @@ function UserList(props) {
   } else {
     return (
       <>
-        <div className={style.title}>查找人</div>
+        <div className={style.title}>搜索结果</div>
         {
           props.userList.map((user) => {
             return (
               <li key={user._id} className={style.resultBox}>
-                <img src={user.avatar_url === "" ? avatarUrl : baseImgURL + "/user/avatar?uid=" + user._id} />
+                <img src={baseImgURL + "/user/avatar?uid=" + user._id} />
                 <div className={style.userInfo}>
                   <span>{`${user.user_name}(${user.account.split('@')[0]})`}</span>
                   <div>
@@ -70,7 +96,7 @@ function UserList(props) {
                       已添加
                     </div>
                     :
-                    <div className={style.UserBox} onClick={addFriend.bind(this,user)}>
+                    <div className={style.UserBox} onClick={sendRequest.bind(this, user)}>
                       <svg className="icon" aria-hidden="true">
                         <use xlinkHref="#icon-jia"></use>
                       </svg>

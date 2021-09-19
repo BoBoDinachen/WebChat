@@ -1,44 +1,44 @@
-import React, { useRef, useEffect } from 'react'
-import style from './index.module.scss'
-import closeImg_url from '../../assets/img/取消.png'
+import React, { useEffect,useRef } from 'react'
+import style from './index.module.scss';
+
+import {avatarUrl} from '../../utils/request'
 function MessageBox(props) {
-  const { type, time, text, position, isShow } = props;
-  // 根据props自定义的样式
-  let customStyle = {
-    type: "",
-    position: ""
-  }
-  const box = useRef(null);
+  const messageBox = useRef(null)
   useEffect(() => {
-    // 判断是否显示 和 自动关闭
-    if (isShow) {
-      showBox();
-      setTimeout(() => {
-        closeBox();
-      }, time);
+    // 让盒子往下滑;
+    console.log(props);
+    messageBox.current.style.top = "5px";
+    const timer = setTimeout(() => {
+      messageBox.current.style.top = "-94px";
+    }, 2500);
+    return () => {
+      clearTimeout(timer);
     }
-  })
-  // 显示MessageBox
-  function showBox() {
-    // box.current.style.display = "flex";
-    box.current.style.transform = "none";
-  }
-  // 关闭box
-  function closeBox() {
-    // box.current.style.display = "none";
-    box.current.style.transform = "translateY(-200%)";
+  }, [])
+  // 点击关闭
+  function handleColse() {
+    messageBox.current.style.top = "-95px";
   }
   return (
-    <div className={style.messageBox} ref={box}>
-      <svg className="icon" aria-hidden="true">
-        <use xlinkHref={type==="success"?'#icon-chenggong':type==="warning"?'#icon-jinggao':'#icon-shibai'}></use>
-      </svg>
-      <div className={style.content}>
-        <h3>{type === "success" ? "成功" : "提醒"}</h3>
-        <p>{text}</p>
+    <div className={style.container} ref={messageBox}>
+      <div className={style.topBar}>
+        <svg className="icon" aria-hidden="true">
+          <use xlinkHref="#icon-xiaoxi1"></use>
+        </svg>
+        <label>{props.title}</label>
+        <svg className="icon" aria-hidden="true">
+          <use xlinkHref="#icon-a-tishi"></use>
+        </svg>
       </div>
-      <img className={style.close} src={closeImg_url} onTouchEnd={closeBox}></img>
+      <div className={style.messageBox}>
+        <img src={avatarUrl+'?uid='+props.uid} alt="" />
+        <span>{props.uname}: {props.content}~</span>
+      </div>
+      <svg className={`icon ${style.colse}`} aria-hidden="true" onClick={handleColse}>
+        <use xlinkHref="#icon-guanbi"></use>
+      </svg>
     </div>
   )
 }
-export default MessageBox;
+
+export default MessageBox

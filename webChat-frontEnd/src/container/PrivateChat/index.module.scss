@@ -1,4 +1,4 @@
-.container{
+.container {
   position: absolute;
   display: flex;
   flex-direction: column;
@@ -7,15 +7,17 @@
   width: 100%;
   height: 100%;
   background-color: #CCCCCC;
+
   // 顶部栏
-  .topBar{
+  .topBar {
     position: relative;
     width: 100%;
     line-height: 50px;
     text-align: center;
     font-size: 25px;
     background-color: #FFFFFF;
-    .close{
+
+    .close {
       position: absolute;
       left: 10px;
       top: 50%;
@@ -29,7 +31,8 @@
       background-size: 25px;
       transition: all .2s;
     }
-    .iconMore{
+
+    .iconMore {
       position: absolute;
       right: 20px;
       top: 50%;
@@ -43,8 +46,9 @@
       background-size: 30px;
       transition: all .2s;
     }
+
     // 悬浮菜单
-    .floatMenus{
+    .floatMenus {
       position: absolute;
       right: 10px;
       top: 55px;
@@ -53,124 +57,152 @@
       font-size: 16px;
       border-radius: 10px;
       padding: 5px;
-      li{
+
+      li {
         padding: 5px 5px 5px;
         letter-spacing: 3px;
         text-indent: 3px;
         border-radius: 10px;
         font-weight: bold;
-        &:active{
+
+        &:active {
           color: #FF9966;
         }
       }
     }
-    .menusHide{
+
+    .menusHide {
       display: none;
     }
   }
+
   // 消息列表
-  .messageList{
+  .messageList {
     flex: 1;
     width: 100%;
     overflow: scroll;
     padding: 10px 0 10px;
     background-color: #363749;
-    li{
-      margin-bottom: 60px;
+
+    li {
+      margin-bottom: 20px;
     }
+
     // 左边消息框
-    .leftMessageBox{
+    .leftMessageBox {
       display: flex;
       justify-content: flex-start;
+      align-items: flex-start;
       box-sizing: border-box;
       padding-left: 10px;
       padding-right: 10px;
       margin-top: 5px;
-      position: relative;
-      img{
-        position: absolute;
+
+      img {
         width: 50px;
         height: 50px;
         border-radius: 59%;
         object-fit: cover;
         border: #FFFFFF 2px solid;
+        margin-right: 5px;
       }
-      .infoBox{
-        margin-left: 60px;
-        position: relative;
-        width: 100%;
+
+      .infoBox {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: flex-start;
         // 信息框的头信息
-        label{
+        label {
           color: #FFFFFF;
           width: 100%;
-          display: inline-block;
-          text-align: center;
           font-size: 13px;
           line-height: 16px;
-          position: relative;
-          display: inline-block;
+          padding: 0 5px 0px 0px;
           box-sizing: border-box;
-          span{
-            position: absolute;
-            width: 95px;
-            height: 16px;
-            display: inline-block;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            left: 0;
-            text-align: left;
-            font-weight: bold;
-            font-size: 16px;
-            line-height: 16px;
+          display: flex;
+          justify-content: flex-start;
+          align-items: center;
+          span {
+            &:nth-of-type(1) {
+              width: 120px;
+              height: 16px;
+              display: inline-block;
+              white-space: nowrap;
+              overflow: hidden;
+              text-overflow: ellipsis;
+              text-align: left;
+              font-weight: bold;
+              font-size: 16px;
+              line-height: 16px;
+            }
           }
-          margin-bottom: 5px;
+
+          margin-bottom: 8px;
         }
-        div{
-          position: absolute;
-          line-height: 25px;
+        // 消息框
+        div {
           padding: 10px 20px 10px;
-          width:auto;
+          width: auto;
+          height: auto;
           // height: 30px;
           text-align: left;
           font-weight: bold;
+          word-break: break-all; // 解决字母不换行问题
           margin: 0;
           // background-color: white;
-          background-image: linear-gradient(to right,#ee9ca7,#ffdde1);
+          background-image: linear-gradient(to right, #ee9ca7, #ffdde1);
           border-radius: 0 20px 20px 20px;
         }
       }
     }
+
     // 右边消息框
-    .rightMessageBox{
+    .rightMessageBox {
       @extend .leftMessageBox;
-      justify-content: flex-end;
-      padding-right: 58px;
       img{
-        right: 7px;
+        margin: 0 0 0 5px;
       }
-      .infoBox{
-        margin: 0 10px 0;
+      .infoBox {
         // 信息框的头信息
-        label{
-          
-          span{
-            left: unset;
-            right: 0;
-            text-align: right;
+        align-items: flex-end;
+        label {
+          padding: 0 0 0 5px;
+          justify-content: flex-end;
+          span {
+            &:nth-of-type(1) {
+              width: unset;
+              font-size: 13px;
+              font-weight: unset;
+              white-space: unset;
+              overflow: unset;
+              text-overflow: unset;
+            }
+            &:nth-of-type(2) {
+              width: 120px;
+              height: 16px;
+              text-align: right;
+              display: inline-block;
+              white-space: nowrap;
+              overflow: hidden;
+              text-overflow: ellipsis;
+              font-weight: bold;
+              font-size: 16px;
+              line-height: 16px;
+            }
           }
-          margin-bottom: 5px;
         }
         div{
-          right: 0;
-          background-image: linear-gradient(to right,#7F7FD5,#86A8E7,#91EAE4);
-          border-radius: 20px 0 20px 20px;
+          border-radius: 20px 0px 20px 20px;
+          background-image: linear-gradient(to right, #77A1D3, #79CBCA);
         }
       }
     }
   }
+
   // 底部栏
-  .bottomBar{
+  .bottomBar {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -179,8 +211,9 @@
     height: 65px;
     box-sizing: border-box;
     background-color: #FFFFFF;
+
     // box-shadow:0 0 5px 3px #6666CC;
-    input{
+    input {
       width: 60%;
       height: 40px;
       border-radius: 20px;
@@ -190,32 +223,38 @@
       outline: none;
       font-size: 16px;
       font-weight: bold;
-      padding:0 5% 0;
-      &:focus{
-        border: 1px solid #3399CC;
+      padding: 0 5% 0;
+
+      &:focus {
+        // border: 2px solid #3399CC;
       }
     }
-    span{
+
+    span {
       display: inline-block;
       width: 30px;
       height: 30px;
       margin: 0 5px 0;
       background-position: center;
       background-repeat: no-repeat;
-      background-size:30px;
+      background-size: 30px;
       transition: all .2s;
-      &:active{
+
+      &:active {
         border-radius: 50%;
         background-color: #666666;
       }
     }
-    span:nth-of-type(1){
+
+    span:nth-of-type(1) {
       background-image: url("../../assets/img/图片.png");
     }
-    span:nth-of-type(2){
+
+    span:nth-of-type(2) {
       background-image: url("../../assets/img/表情.png");
     }
-    span:nth-of-type(3){
+
+    span:nth-of-type(3) {
       background-image: url("../../assets/img/发送.png");
     }
   }

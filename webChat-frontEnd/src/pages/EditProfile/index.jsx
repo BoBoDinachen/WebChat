@@ -3,7 +3,7 @@ import style from './index.module.scss'
 import { withRouter } from 'react-router-dom';
 
 import { request } from '../../utils/request'
-import Toast from '../../components/MessageBox/Toast';
+import Toast from '../../components/ToastBox/Toast';
 function EditProfile(props) {
   const containerBox = useRef();
   const inputName = useRef();

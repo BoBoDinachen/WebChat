@@ -1,0 +1,265 @@
+.container{
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  background-color: lightblue;
+  // background-image: url("../../assets/bj/world_bj.jpg");
+  // background-position: center;
+  // background-repeat: no-repeat;
+  // background-size: cover;
+  // 顶部栏
+  .topBar {
+    position: relative;
+    width: 100%;
+    line-height: 50px;
+    text-align: center;
+    font-size: 19px;
+    font-weight: bold;
+    color: black;
+    background-color: skyblue;
+    .close {
+      position: absolute;
+      left: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      display: inline-block;
+      width: 40px;
+      height: 25px;
+      background-image: url("../../assets/img/返回.png");
+      background-repeat: no-repeat;
+      background-position: left;
+      background-size: 25px;
+      transition: all .2s;
+    }
+
+    .iconMore {
+      position: absolute;
+      right: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+      display: inline-block;
+      width: 30px;
+      height: 30px;
+      background-image: url("../../assets/img/更多.png");
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: 30px;
+      transition: all .2s;
+    }
+
+    // 悬浮菜单
+    .floatMenus {
+      position: absolute;
+      right: 10px;
+      top: 55px;
+      background-color: whitesmoke;
+      z-index: 1000;
+      font-size: 16px;
+      border-radius: 10px;
+      padding: 5px;
+
+      li {
+        padding: 5px 5px 5px;
+        letter-spacing: 3px;
+        text-indent: 3px;
+        border-radius: 10px;
+        font-weight: bold;
+
+        &:active {
+          color: #FF9966;
+        }
+      }
+    }
+
+    .menusHide {
+      display: none;
+    }
+  }
+
+  // 消息列表
+  .messageList {
+    flex: 1;
+    width: 100%;
+    overflow: scroll;
+    padding: 10px 0 10px;
+    background-color: #363749;
+
+    li {
+      margin-bottom: 20px;
+    }
+
+    // 左边消息框
+    .leftMessageBox {
+      display: flex;
+      justify-content: flex-start;
+      align-items: flex-start;
+      box-sizing: border-box;
+      padding-left: 10px;
+      padding-right: 10px;
+      margin-top: 5px;
+
+      img {
+        width: 50px;
+        height: 50px;
+        border-radius: 59%;
+        object-fit: cover;
+        border: #FFFFFF 2px solid;
+        margin-right: 5px;
+      }
+
+      .infoBox {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: flex-start;
+        // 信息框的头信息
+        label {
+          color: #FFFFFF;
+          width: 100%;
+          font-size: 13px;
+          line-height: 16px;
+          padding: 0 5px 0px 0px;
+          box-sizing: border-box;
+          display: flex;
+          justify-content: flex-start;
+          align-items: center;
+          span {
+            &:nth-of-type(1) {
+              width: 120px;
+              height: 16px;
+              display: inline-block;
+              white-space: nowrap;
+              overflow: hidden;
+              text-overflow: ellipsis;
+              text-align: left;
+              font-weight: bold;
+              font-size: 16px;
+              line-height: 16px;
+            }
+          }
+
+          margin-bottom: 8px;
+        }
+
+        div {
+          padding: 10px 20px 10px;
+          width: auto;
+          height: auto;
+          // height: 30px;
+          text-align: left;
+          font-weight: bold;
+          margin: 0;
+          word-break: break-all;
+          // background-color: white;
+          background-image: linear-gradient(to right, #ee9ca7, #ffdde1);
+          border-radius: 0 20px 20px 20px;
+        }
+      }
+    }
+
+    // 右边消息框
+    .rightMessageBox {
+      @extend .leftMessageBox;
+      img{
+        margin: 0 0 0 5px;
+      }
+      .infoBox {
+        // 信息框的头信息
+        align-items: flex-end;
+        label {
+          padding: 0 0 0 5px;
+          justify-content: flex-end;
+          span {
+            &:nth-of-type(1) {
+              width: unset;
+              font-size: 13px;
+              font-weight: unset;
+              white-space: unset;
+              overflow: unset;
+              text-overflow: unset;
+            }
+            &:nth-of-type(2) {
+              width: 120px;
+              height: 16px;
+              text-align: right;
+              display: inline-block;
+              white-space: nowrap;
+              overflow: hidden;
+              text-overflow: ellipsis;
+              font-weight: bold;
+              font-size: 16px;
+              line-height: 16px;
+            }
+          }
+        }
+        div{
+          border-radius: 20px 0px 20px 20px;
+          background-image: linear-gradient(to right, #77A1D3, #79CBCA);
+        }
+      }
+    }
+  }
+
+  // 底部栏
+  .bottomBar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px 0 10px;
+    width: 100%;
+    height: 65px;
+    box-sizing: border-box;
+    background-color: skyblue;
+
+    // box-shadow:0 0 5px 3px #6666CC;
+    input {
+      width: 60%;
+      height: 40px;
+      border-radius: 20px;
+      background-color: white;
+      // box-shadow:0 0 10px 1px #3399CC;
+      border: none;
+      outline: none;
+      font-size: 16px;
+      font-weight: bold;
+      padding: 0 5% 0;
+
+      &:focus {
+        // border: 2px solid #3399CC;
+      }
+    }
+
+    span {
+      display: inline-block;
+      width: 30px;
+      height: 30px;
+      margin: 0 5px 0;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: 30px;
+      transition: all .2s;
+
+      &:active {
+        border-radius: 50%;
+        background-color: #666666;
+      }
+    }
+
+    span:nth-of-type(1) {
+      background-image: url("../../assets/img/图片.png");
+    }
+
+    span:nth-of-type(2) {
+      background-image: url("../../assets/img/表情.png");
+    }
+
+    span:nth-of-type(3) {
+      background-image: url("../../assets/img/发送.png");
+    }
+  }
+}

@@ -4,7 +4,7 @@ import { adaptionContainerHeight } from '../../utils/dom_utils'
 import style from './index.module.scss'
 import FriendInfo from '../../components/FriendInfo'
 import SearchFriend from '../../pages/SearchFriend'
-import avatarUrl from '../../assets/img/默认头像.png'
+import Spin from '../../components/Spin/index';
 import PubSub from 'pubsub-js'
 import { request, baseImgURL } from '../../utils/request'
 class Friends extends Component {
@@ -13,13 +13,14 @@ class Friends extends Component {
   state = {
     friends: [],
     isShowInfo: false,
+    isLoading: true
   }
   // 组件加载前
   componentDidMount() {
     console.log("Friends组件触发");
     // 自适应高度变化
     adaptionContainerHeight(this.containerElem);
-    // 加载用户信息
+    // 加载好友列表
     request({
       url: "/user/getFriends",
       method: "get",
@@ -27,12 +28,12 @@ class Friends extends Component {
         uid: this.uid
       }
     }).then((res) => {
-      const { data } = res.data;
-      const friends = data;
-      // console.log(friends);
+      const { data:friends } = res.data;
+      console.log("好友列表",friends);
       // 更新state
       this.setState({
-        friends
+        friends,
+        isLoading: false
       })
     }).catch((err) => {
       console.log(err);
@@ -96,27 +97,37 @@ class Friends extends Component {
             <input type="text" placeholder="搜索~" ref={(c) => { this.searchElem = c }} onFocus={this.enterIntoSearch} />
             <span></span>
           </div>
-
-          <hr />
           {/* 好友列表盒子 */}
           <div className={style.listBox}>
+            <span>好友列表( {this.state.friends.length} )</span>
+            <Spin loading={this.state.isLoading} ></Spin>
             {/* 好友列表 */}
-            <ul className={style.friendList}>
-              {
-                this.state.friends.map((friend, index) => {
-                  return (
-                    <li onClickCapture={this.selectFriend.bind(this, friend)} key={friend._id}>
-                      {/* 头像和用户昵称 */}
-                      <img src={friend.avatar_url === "" ? avatarUrl : baseImgURL + "/user/avatar?uid=" + friend._id} />
-                      <div className={style.rightBox}>
-                        <h4>{friend.user_name}</h4>
-                        <p>{friend.signature === "" ? "这个好友还没有签名噢~" : friend.signature}</p>
-                      </div>
-                    </li>
-                  )
-                })
-              }
-            </ul>
+            {
+              this.state.friends.length === 0 ?
+                <div className={style.nullBox}>
+                  <svg className="icon" aria-hidden="true">
+                    <use xlinkHref="#icon-lvyou"></use>
+                  </svg>
+                  <span>快去添加好友叭~</span>
+                </div>
+                :
+                <ul className={style.friendList}>
+                  {
+                    this.state.friends.map((friend, index) => {
+                      return (
+                        <li onClickCapture={this.selectFriend.bind(this, friend)} key={friend._id}>
+                          {/* 头像和用户昵称 */}
+                          <img src={baseImgURL + "/user/avatar?uid=" + friend._id} />
+                          <div className={style.rightBox}>
+                            <h4>{friend.user_name}</h4>
+                            <p>{friend.signature === "" ? "这个好友还没有签名噢~" : friend.signature}</p>
+                          </div>
+                        </li>
+                      )
+                    })
+                  }
+                </ul>
+            }
           </div>
         </div>
       </>

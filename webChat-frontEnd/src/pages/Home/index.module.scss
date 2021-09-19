@@ -23,10 +23,12 @@
     }
     ul{
       display: flex;
+      align-items: center;
       a{
         color: unset;
-        font-size: 18px;
-        margin: 0 15px 0;
+        font-size: 16px;
+        font-weight: bold;
+        margin: 0 10px 0;
         border-radius: 5px;
         padding-bottom: 5px;
         // -webkit-tap-highlight-color: rgba(255, 255, 255, 0); 
@@ -37,7 +39,7 @@
       .activeItem{
         font-size: 20px;
         font-weight: bold;
-        border-bottom: 2px solid #99CC66;
+        color: #99CC00;
       }
     }
   }

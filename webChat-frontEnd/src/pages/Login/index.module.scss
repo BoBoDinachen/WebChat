@@ -2,8 +2,8 @@
   position: absolute;
   top: 0;
   bottom: 0;
-  width: 100%;
-  height:inherit;
+  width: 100vw;
+  height:100vh;
   background-image: url("../../assets/img/登录背景2.jpg");
   background-position: bottom;
   background-repeat: no-repeat;
@@ -61,7 +61,7 @@
       background-color: #FFFFFF;
       font-size: 16px;
       padding-left: 20px;
-      border-radius: 25px;
+      border-radius: 10px;
       margin-bottom: 5%;
       transition: all .15s linear;
       &:focus{
@@ -73,7 +73,7 @@
         position: right;
         position-x: 97%;
         repeat: no-repeat;
-        size: 40px;
+        size: 25px;
       }
     }
     // 输入密码框
@@ -86,12 +86,13 @@
     // 登录按钮
     .btn_login{
       width: 70%;
-      height: 40px;
+      height: 45px;
+      color: white;
       outline: none;
       border: none;
-      border-radius: 20px;
+      border-radius: 10px;
       margin-bottom: 5%;
-      background-color: #66CC99;
+      background-color: #7cb305;
       font: {
         size: 18px;
         weight: bold;

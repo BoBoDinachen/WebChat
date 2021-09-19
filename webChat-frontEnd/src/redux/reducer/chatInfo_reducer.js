@@ -1,6 +1,6 @@
 import socketIO from '../../utils/socket'
 const initState = []; // 初始状态
-function chatInfoReducer(preState = initState,action) {
+function chatInfoReducer(preState = initState, action) {
   const { type, data } = action;
   // 根据type类型加工state
   switch (type) {
@@ -17,6 +17,8 @@ function chatInfoReducer(preState = initState,action) {
     case "initMessage":
       //....
       preState = data.messages;
+      // 执行回调函数
+      data.callback();
       return preState;
     case "clearMessage":
       preState = [];

@@ -13,6 +13,7 @@
     margin-bottom: 10px;
     display: flex;
     justify-content: space-around;
+    border-radius: 5px;
     .titleItem{
       width: 50px;
       height: 70px;
@@ -38,7 +39,7 @@
         font-size: 13px;
         font-weight: bold;
         display: block;
-        content: "好友消息";
+        content: "消息";
       }
     }
     .active{
@@ -47,11 +48,11 @@
     .titleItem2{
       @extend .titleItem;
       span{
-       background-color: #FFFFCC;
+       background-color: #99CCCC;
        background-image: url("../../assets/img/好友申请.png");
       }
       &::after{
-        content: "好友申请";
+        content: "新朋友";
       }
     }
     .titleItem3{

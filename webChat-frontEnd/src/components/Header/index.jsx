@@ -28,8 +28,14 @@ class Header extends Component {
       case "/friends":
         title = "我的好友";
         break;
+      case "/friends/search":
+        title = "搜索好友";
+        break;
       case "/privateChat":
         title = "";
+        break;
+      case "/message":
+        title = "Message";
         break;
       case "/message/friendMsg":
         title = "好友消息";
@@ -37,8 +43,8 @@ class Header extends Component {
       case "/message/likeMsg":
         title = "收到的喜欢";
         break;
-      case "/message/tagsMsg":
-        title = "收到的点赞";
+      case "/message/requestMsg":
+        title = "好友申请";
         break;
     }
     return (

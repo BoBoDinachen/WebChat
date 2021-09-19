@@ -4,7 +4,7 @@ import { Switch, Route, withRouter } from 'react-router-dom'
 import {adaptionContainerHeight} from '../../utils/dom_utils'
 import FriendMessage from '../../components/MessageList/FriendMessage'
 import LikeMessage from '../../components/MessageList/LikeMessage'
-import TagsMessage from '../../components/MessageList/TagsMessage'
+import RequestMessage from '../../components/MessageList/RequestMessage'
 
 class MessageList extends Component {
   uid = JSON.parse(sessionStorage["user_info"])._id;
@@ -32,14 +32,14 @@ class MessageList extends Component {
         this.setState({
           currentIndex: "title2"
         }, () => {
-          this.props.history.push("/message/likeMsg");
+          this.props.history.push("/message/requestMsg");
         })
         break;
       case "item3":
         this.setState({
           currentIndex: "title3"
         }, () => {
-          this.props.history.push("/message/tagsMsg");
+          this.props.history.push("/message/likeMsg");
         })
         break;
     }
@@ -63,7 +63,7 @@ class MessageList extends Component {
         <Switch>
           <Route path="/message/friendMsg" component={FriendMessage}></Route>
           <Route path="/message/likeMsg" component={LikeMessage}></Route>
-          <Route path="/message/tagsMsg" component={TagsMessage}></Route>
+          <Route path="/message/requestMsg" component={RequestMessage}></Route>
         </Switch>
       </div>
     )

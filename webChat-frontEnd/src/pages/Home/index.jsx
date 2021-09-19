@@ -6,13 +6,14 @@ import Canteen from '../Canteen/index';
 import FruitStand from '../FruitStand/index'
 import PhotoWall from '../PhotoWall/index'
 import Record from '../Record/index'
+import BigWorld from '../BigWorld/index'
 class Home extends Component {
   state = {
-    activeItem: 1,
+    activeItem: 0,
   }
   componentDidMount() {
     adaptionContainerHeight(this.containerBox);
-    this.props.history.push("/home/photo");
+    this.props.history.push("/home/world");
   }
   render() {
     return (
@@ -24,6 +25,7 @@ class Home extends Component {
             </svg>
           </span>
           <ul>
+            <Link to="/home/world"  className={this.state.activeItem === 0 ? style.activeItem : ''} onClick={() => { this.setState({ activeItem: 0 }) }}>大世界</Link>
             <Link to="/home/photo"  className={this.state.activeItem === 1 ? style.activeItem : ''} onClick={() => { this.setState({ activeItem: 1 }) }}>
               晒皂片
             </Link>
@@ -37,6 +39,7 @@ class Home extends Component {
           </span>
         </div>
         <Switch>
+          <Route path="/home/world" component={BigWorld}></Route>
           <Route path="/home/photo" component={PhotoWall}></Route>
           <Route path="/home/fruit" component={FruitStand}></Route>
           <Route path="/home/canteen" component={Canteen}></Route>

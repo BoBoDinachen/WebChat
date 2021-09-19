@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import style from './index.module.scss'
 import Register from '../../pages/Register'
-import toast from '../../components/MessageBox/Toast'
+import toast from '../../components/ToastBox/Toast'
 import { request } from '../../utils/request'
 export default class Login extends Component {
   state = {

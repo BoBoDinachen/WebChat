@@ -1,9 +1,10 @@
 import React from 'react'
 import style from './index.module.scss'
+import Spin from '../../components/Spin/index'
 export default function PhotoWall() {
   return (
     <div className={style.container}>
-      <h2>这是照片墙</h2>
+      <Spin loading={true}></Spin>
     </div>
   )
 }

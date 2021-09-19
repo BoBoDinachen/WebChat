@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react'
 import style from './index.module.scss';
 import { withRouter } from 'react-router-dom'
 import confirm from '../../components/ConfirmBox/index'
-import toast from '../../components/MessageBox/Toast'
+import toast from '../../components/ToastBox/Toast'
 import { request } from '../../utils/request'
 import socketIO from '../../utils/socket'
 function UpdatePassword(props) {

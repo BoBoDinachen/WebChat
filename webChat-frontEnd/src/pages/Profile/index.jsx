@@ -2,10 +2,7 @@ import React, { Component } from 'react'
 import { Switch, Route, withRouter } from 'react-router-dom'
 import { adaptionContainerHeight } from '../../utils/dom_utils';
 import style from './index.module.scss'
-import localAvatar from '../../assets/img/默认头像.png'
-import SexMan_url from '../../assets/img/性别男.png';
-import SexWoman_url from '../../assets/img/性别女.png';
-import toast from '../../components/MessageBox/Toast'
+import toast from '../../components/ToastBox/Toast'
 import { request, avatarUrl } from '../../utils/request'
 import socketIO from '../../utils/socket'
 import confirm from '../../components/ConfirmBox/index'
@@ -26,7 +23,8 @@ class Profile extends Component {
       // signature: this.userInfo.signature
     },
     likeList: [],
-    followList: []
+    followList: [],
+    messageTotal: []
   }
   // 组件state更新的时候
   componentDidUpdate(prevProps, prevState) {
@@ -35,6 +33,7 @@ class Profile extends Component {
     const { user } = this.state; // 用户信息
     if (user.avatar_url !== "") {
       // 获取新头像
+      console.log(user);
       this.getAvatar(user.uid);
     }
   }
@@ -42,8 +41,8 @@ class Profile extends Component {
   componentDidMount() {
     console.log("组件加载");
     adaptionContainerHeight(this.containerBox);
-    // 组件加载的时候，获取用户信息和头像
-    this.getUserInfo();
+    // 组件加载的时候,初始化信息
+    this.initializeInfo();
   }
   // 触摸头像
   HandleAvatar = () => {
@@ -69,68 +68,111 @@ class Profile extends Component {
     })
   }
 
-  // 获取用户信息
-  getUserInfo = () => {
-
-    // 加载用户的基本信息
-    request({
-      url: "/user/profile",
-      method: "get",
-      params: {
-        uid: this.userInfo._id
-      }
-    }).then((res) => {
-      // console.log(res.data.data);
-      let user_info = res.data.data;
-      if (user_info.avatar_url !== "") {
-        this.setState({
-          user: {
-            uid: user_info._id,
-            account: user_info.account,
-            user_name: user_info.user_name,
-            age: user_info.age,
-            sex: user_info.sex,
-            avatar_url: user_info.avatar_url,
-            signature: user_info.signature
-          }
-        })
-      } else {
-        // 默认头像
-        this.setState({
-          user: {
-            uid: user_info._id,
-            account: user_info.account,
-            user_name: user_info.user_name,
-            age: user_info.age,
-            sex: user_info.sex,
-            avatar_url: "",
-            signature: user_info.signature
-          }
-        }, () => {
-          this.avatarElem.src = localAvatar;
-        })
-      }
-    }, (err) => {
-      console.log(err);
+  // 初始化信息
+  initializeInfo = () => {
+    Promise.all([this.getUserInfo(), this.getLikeList(), this.getMessageTotal()]).then((results) => {
+      results.forEach((res) => {
+        console.log(res);
+      })
     })
-    // 加载喜欢与被喜欢的人数
-    request({
-      url: "/user/getLikeNumbers",
-      method: "get",
-      params: {
-        uid: this.userInfo._id
-      }
-    }).then((res) => {
-      if (res.data.success) {
-        let result = res.data.data;
-        console.log(result);
-        this.setState({
-          likeList: result.likeList,
-          followList: result.followList
-        })
-      }
-    }, (err) => {
-      console.log(err);
+  }
+  // 加载用户信息
+  getUserInfo() {
+    return new Promise((resolve, reject) => {
+      // 加载用户的基本信息
+      request({
+        url: "/user/profile",
+        method: "get",
+        params: {
+          uid: this.userInfo._id
+        }
+      }).then((res) => {
+        // console.log(res.data.data);
+        let user_info = res.data.data;
+        console.log("用户信息", user_info);
+        if (user_info) {
+          this.setState({
+            user: {
+              uid: user_info._id,
+              account: user_info.account,
+              user_name: user_info.user_name,
+              age: user_info.age,
+              sex: user_info.sex,
+              avatar_url: user_info.avatar_url,
+              signature: user_info.signature
+            }
+          }, () => {
+            resolve("基本信息加载完成...")
+            //更新sessionStorage
+            sessionStorage.setItem('user_info', JSON.stringify(user_info));
+          })
+        }
+      }, (err) => {
+        reject(err);
+      })
+    })
+  }
+  // 加载喜欢与被喜欢
+  getLikeList() {
+    return new Promise((resolve, reject) => {
+      // 加载喜欢与被喜欢的人数
+      request({
+        url: "/user/getLikeNumbers",
+        method: "get",
+        params: {
+          uid: this.userInfo._id
+        }
+      }).then((res) => {
+        if (res.data.success) {
+          let result = res.data.data;
+          // console.log(result);
+          this.setState({
+            likeList: result.likeList,
+            followList: result.followList
+          }, () => {
+            resolve("加载喜欢与被喜欢列表完成...")
+          })
+        } else {
+          this.setState({
+            likeList: [],
+            followList: []
+          }, () => {
+            resolve("加载喜欢与被喜欢列表完成...")
+          })
+        }
+      }, (err) => {
+        reject(err);
+      })
+    })
+  }
+  // 加载消息条数
+  getMessageTotal() {
+    return new Promise((resolve, reject) => {
+      // 加载消息的条数
+      request({
+        url: "/user/getMessageTotal",
+        method: "get",
+        params: {
+          uid: this.userInfo._id
+        }
+      }).then((res) => {
+        // console.log(res);
+        if (res.data.success) {
+          this.setState({
+            messageTotal: res.data.total
+          }, () => {
+            resolve("加载消息条数完成...")
+          })
+        } else {
+          this.setState({
+            messageTotal: res.data.total
+          }, () => {
+            resolve("加载消息条数完成...");
+          })
+        }
+      }, (err) => {
+        reject(err);
+      })
     })
   }
   // 上传头像
@@ -194,7 +236,6 @@ class Profile extends Component {
       alert("请选择jpg或者png格式的图片,并且不大于2MB噢~");
     }
   }
-
   // 去编辑
   goToEdit = () => {
     this.props.history.push("/profile/edit")
@@ -254,7 +295,7 @@ class Profile extends Component {
               <span>喜欢我</span>
             </div>
             <div>
-              <span>467</span>
+              <span>{this.state.messageTotal}</span>
               <span>发消息</span>
             </div>
           </div>
@@ -264,6 +305,7 @@ class Profile extends Component {
           <div className={style.infoBox}>
             <div className={style.info}>
               <span>{user.user_name}</span>
+              <span>{user.account}</span>
               <span>{user.signature}</span>
             </div>
             <span className={style.editButton} onClick={this.goToEdit}>
@@ -276,7 +318,10 @@ class Profile extends Component {
           </div>
           <div className={style.infoTag}>
             <span>
-              <img src={user.sex === "男" ? SexMan_url : SexWoman_url} alt="" />
+              {/* <img src={user.sex === "男" ? SexMan_url : SexWoman_url} alt="" /> */}
+              <svg className="icon" aria-hidden="true">
+                <use xlinkHref={user.sex === '女' ? '#icon-nv' : '#icon-nan1'}></use>
+              </svg>
               {user.sex}
             </span>
             <span>{user.age}</span>
@@ -289,7 +334,7 @@ class Profile extends Component {
             更换头像
             <input type="file" ref={(c) => { this.uploadElem = c }} onChange={this.uploadAvatar} />
           </span>
-          <span onClick={() => { this.props.history.push("/profile/updatePassword") }}>
+          <span onClick={() => { setTimeout(() => { this.props.history.push("/profile/updatePassword") }, 300) }}>
             修改密码
           </span>
           <span onClick={this.backLogin}>

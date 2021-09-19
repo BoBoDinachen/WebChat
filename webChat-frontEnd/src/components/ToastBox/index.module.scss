@@ -1,0 +1,35 @@
+.messageBox{
+  position: absolute;
+  margin: 2%;
+  top: 0;
+  transform: translateY(-200%);
+  right: 0;
+  display: flex;
+  justify-content:space-between;
+  // justify-items: start;
+  width: 210px;
+  height: 50px;
+  padding: 10px 10px 10px;
+  background-color: #FFFFFF;
+  box-shadow: 0 0 15px 0.5px;
+  border-radius: 10px;
+  transition: all .5s ease;
+  z-index: 10000;
+  svg{
+    width: 30px;
+    height: 30px;
+  }
+  img{
+    width: 30px;
+    height: 30px;
+  }
+  .content{
+    h3{
+      text-align: left;
+    }
+  }
+  .close{
+    width: 25px;
+    height: 25px;
+  }
+}
