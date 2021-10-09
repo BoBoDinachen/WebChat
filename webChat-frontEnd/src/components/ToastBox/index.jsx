@@ -38,7 +38,7 @@ function ToastBox(props) {
         <use xlinkHref={type==="success"?'#icon-chenggong':type==="warning"?'#icon-jinggao':'#icon-shibai'}></use>
       </svg>
       <div className={style.content}>
-        <h3>{type === "success" ? "成功" : "提醒"}</h3>
+        <h3>{type === "success" ? "成功" : type==="warning"?"警告":"错误"}</h3>
         <p>{text}</p>
       </div>
       <img className={style.close} src={closeImg_url} onTouchEnd={closeBox}></img>

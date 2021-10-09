@@ -39,6 +39,7 @@ class Home extends Component {
           </span>
         </div>
         <Switch>
+          <Route path="/home/" exact component={BigWorld}></Route>
           <Route path="/home/world" component={BigWorld}></Route>
           <Route path="/home/photo" component={PhotoWall}></Route>
           <Route path="/home/fruit" component={FruitStand}></Route>

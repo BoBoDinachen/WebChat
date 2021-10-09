@@ -9,7 +9,6 @@ function chatInfoReducer(preState = initState, action) {
       return [...preState, data];
     // 添加数据的同时，向后端发送
     case "sendMessage":
-      console.log(data);
       // 向后端发送请求
       socketIO.privateChat(data);
       return [...preState, data];

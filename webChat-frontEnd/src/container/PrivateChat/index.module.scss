@@ -14,7 +14,7 @@
     width: 100%;
     line-height: 50px;
     text-align: center;
-    font-size: 25px;
+    font-size: 20px;
     background-color: #FFFFFF;
 
     .close {
@@ -54,16 +54,16 @@
       top: 55px;
       background-color: whitesmoke;
       z-index: 1000;
-      font-size: 16px;
+      font-size: 14px;
       border-radius: 10px;
       padding: 5px;
 
       li {
-        padding: 5px 5px 5px;
+        padding: 0px 5px 0px;
         letter-spacing: 3px;
         text-indent: 3px;
         border-radius: 10px;
-        font-weight: bold;
+        // font-weight: bold;
 
         &:active {
           color: #FF9966;
@@ -145,15 +145,24 @@
         div {
           padding: 10px 20px 10px;
           width: auto;
-          height: auto;
-          // height: 30px;
+          line-height: auto;
           text-align: left;
-          font-weight: bold;
+          // font-weight: bold;
+          font-size: 15px;
           word-break: break-all; // 解决字母不换行问题
           margin: 0;
           // background-color: white;
           background-image: linear-gradient(to right, #ee9ca7, #ffdde1);
           border-radius: 0 20px 20px 20px;
+          & > img{
+            border: unset;
+            width: 22px;
+            height: 22px; 
+            object-fit: cover;
+            margin-right: unset;
+            margin-left: unset;
+            vertical-align:middle;
+          }
         }
       }
     }
@@ -204,40 +213,38 @@
   // 底部栏
   .bottomBar {
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
-    padding: 10px 0 10px;
+    flex-wrap: wrap;
+    padding: 8px 10px 8px;
     width: 100%;
-    height: 65px;
+    height: auto;
     box-sizing: border-box;
     background-color: #FFFFFF;
 
     // box-shadow:0 0 5px 3px #6666CC;
-    input {
+    .inputBox {
       width: 60%;
-      height: 40px;
-      border-radius: 20px;
-      background-color: #cccccc;
-      // box-shadow:0 0 10px 1px #3399CC;
+      border-radius: 5px;
+      background-color: lightgrey;
       border: none;
       outline: none;
       font-size: 16px;
-      font-weight: bold;
-      padding: 0 5% 0;
-
-      &:focus {
-        // border: 2px solid #3399CC;
-      }
+      // font-weight: bold;
+      text-align: left;
+      padding:  8px 10px 8px;
+      overflow-y: hidden;
+      resize: none;
     }
 
     span {
       display: inline-block;
       width: 30px;
       height: 30px;
-      margin: 0 5px 0;
+      margin: 5px;
       background-position: center;
       background-repeat: no-repeat;
-      background-size: 30px;
+      background-size: 25px;
       transition: all .2s;
 
       &:active {
@@ -254,8 +261,15 @@
       background-image: url("../../assets/img/表情.png");
     }
 
-    span:nth-of-type(3) {
-      background-image: url("../../assets/img/发送.png");
+    button{
+      padding: 3px 10px 3px;
+      border-radius: 5px;
+      background-color: #009966;
+      color: white;
+      transition: all .3s ease-in-out;
+      &:active{
+        background-color: white;
+      }
     }
   }
 }

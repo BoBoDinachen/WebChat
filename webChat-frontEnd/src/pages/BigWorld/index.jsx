@@ -8,7 +8,7 @@ function BigWorld(props) {
     if (activeStatus) {
       warpBox.current.style.height = '100%';
     } else {
-      warpBox.current.style.height = '35%';
+      warpBox.current.style.height = '40%';
     }
     return () => {
 
@@ -30,7 +30,10 @@ function BigWorld(props) {
           <span></span>
           <span></span>
         </div>
-        <button onClick={() => { setTimeout(() => {props.history.replace("/worldChat")},300)}}>进入</button>
+        <div className={style.btnBox} onClick={() => { setTimeout(() => { props.history.replace("/worldChat") }, 300) }}>
+          进入
+          <div className={style.box2}></div>
+        </div>
       </div>
       <div className={style.bjBottom} ref={warpBox}>
         {/* 显示状态的盒子 */}

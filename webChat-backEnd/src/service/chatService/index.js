@@ -65,7 +65,7 @@ const initChat = function (http) {
         }
       }
       // 将数据写入文件
-      console.log("写入文件");
+      // console.log("写入文件");
     })
     // 好友申请通知
     socket.on("friend_request", (data) => {

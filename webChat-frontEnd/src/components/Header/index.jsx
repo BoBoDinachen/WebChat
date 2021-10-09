@@ -31,11 +31,8 @@ class Header extends Component {
       case "/friends/search":
         title = "搜索好友";
         break;
-      case "/privateChat":
-        title = "";
-        break;
       case "/message":
-        title = "Message";
+        title = "好友消息";
         break;
       case "/message/friendMsg":
         title = "好友消息";

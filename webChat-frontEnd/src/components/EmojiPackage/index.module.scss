@@ -1,0 +1,46 @@
+.container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+  height: 200px;
+
+  // border: 2px solid black;
+  label {
+    font-size: 14px;
+    padding: 5px;
+    color: #666666;
+    // color: white;
+  }
+
+  .emojiBox {
+    display: grid;
+    justify-content: space-between;
+    grid-template-columns: repeat(auto-fill, 35px);
+    grid-gap: 15px;
+    padding: 0 20px 0;
+    overflow: scroll;
+    box-sizing: border-box;
+    width: 100%;
+    img {
+      width: 35px;
+      height: 35px;
+    }
+  }
+  .menus{
+    display: flex;
+    padding: 0 18px 0;
+    svg{
+      width: 1.3em;
+      height: 1.3em;
+      background-color: #666666;
+      border-radius: 10px;
+      padding: 3px 10px 3px;
+    }
+  }
+}
+
+.hiddenContainer {
+  display: none;
+}

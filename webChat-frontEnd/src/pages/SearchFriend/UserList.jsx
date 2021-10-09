@@ -10,47 +10,11 @@ function UserList(props) {
   useEffect(() => {
     console.log("组件加载");
   },[])
-  // 添加好友的方法
-  function addFriend(user) {
-    confirm.open({
-      title: "添加好友",
-      content: "确定要添加此人为好友吗?",
-      hanleConfirm: () => {
-        request({
-          url: "/user/addFriend",
-          method: "post",
-          data: {
-            uid: JSON.parse(sessionStorage['user_info'])._id,
-            incr_uid: user._id,
-            fname: user.user_name,
-            uname: JSON.parse(sessionStorage['user_info']).user_name
-          }
-        }).then((res) => {
-          console.log(res);
-          if (res.data.success && res.data.msg === "好友添加成功") {
-            toast({
-              type: "success",
-              time: 1000,
-              text: "添加成功!"
-            });
-            props.location.callback(user); // 调用路由中的方法，改变父组件中的状态
-            props.history.replace('/friends');
-          } else if (res.data.msg === "该好友已添加") {
-            toast({
-              type: "warning",
-              time: 1000,
-              text: res.data.msg
-            });
-          }
-        })
-      }
-    })
-  }
   // 发送好友申请
   function sendRequest(friend) {
     confirm.open({
       title: "添加好友",
-      content: "你的诉求将传递给对方~",
+      content: "将发送申请给对方噢~",
       hanleConfirm: () => {
         socketIO.friendRequest({
           uid: JSON.parse(sessionStorage['user_info'])._id,

@@ -3,11 +3,6 @@ import style from './index.module.scss'
 import {withRouter} from 'react-router-dom'
 import MyNav from '../MyNav'
 class Footer extends Component {
-  goToShare = () => {
-    const { replace } = this.props.history;
-    // 前往share组件
-    replace("/share");
-  }
   render() {
     const Navs = [
       { id: "001", path: "/home", name: "广场" },

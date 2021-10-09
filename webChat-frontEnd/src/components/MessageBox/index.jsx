@@ -6,10 +6,10 @@ function MessageBox(props) {
   const messageBox = useRef(null)
   useEffect(() => {
     // 让盒子往下滑;
-    console.log(props);
+    // console.log(props);
     messageBox.current.style.top = "5px";
     const timer = setTimeout(() => {
-      messageBox.current.style.top = "-94px";
+      messageBox.current.style.top = "-100px";
     }, 2500);
     return () => {
       clearTimeout(timer);
@@ -32,7 +32,7 @@ function MessageBox(props) {
       </div>
       <div className={style.messageBox}>
         <img src={avatarUrl+'?uid='+props.uid} alt="" />
-        <span>{props.uname}: {props.content}~</span>
+        <span>{props.uname}：{props.content}</span>
       </div>
       <svg className={`icon ${style.colse}`} aria-hidden="true" onClick={handleColse}>
         <use xlinkHref="#icon-guanbi"></use>

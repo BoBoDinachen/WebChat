@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import style from './index.module.scss'
-import avatarUrl from '../../assets/img/默认头像.png'
 import { withRouter } from 'react-router-dom'
 import { baseImgURL, request } from '../../utils/request'
 import PubSub from "pubsub-js"
@@ -35,7 +34,7 @@ class FriendInfo extends Component {
   goToChat = () => {
     const { _id, user_name } = this.state.friendInfo;
     setTimeout(() => {
-      this.props.history.push("/privateChat", {
+      this.props.history.replace("/privateChat", {
         uid: JSON.parse(sessionStorage['user_info'])._id,
         fid: _id,
         "friend_name": user_name,

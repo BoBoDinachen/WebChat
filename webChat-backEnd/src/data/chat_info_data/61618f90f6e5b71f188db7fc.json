@@ -1,0 +1,111 @@
+{
+	"uid": "61618f90f6e5b71f188db7fc",
+	"uname": "一只小猫咪😽",
+	"friendList": [
+		{
+			"fid": "6072a0a56407193a4029409e",
+			"fname": "薛定谔の猫er",
+			"messageList": [
+				{
+					"uid": "6072a0a56407193a4029409e",
+					"uname": "薛定谔の猫er",
+					"receiver_uid": "61618f90f6e5b71f188db7fc",
+					"receiver_name": "一只小猫咪😽",
+					"message": "emmm...",
+					"time": "2021/10/09 20:50",
+					"status": "0"
+				},
+				{
+					"uid": "6072a0a56407193a4029409e",
+					"uname": "薛定谔の猫er",
+					"receiver_uid": "61618f90f6e5b71f188db7fc",
+					"receiver_name": "一只小猫咪😽",
+					"message": "emmm...",
+					"time": "2021/10/09 20:50",
+					"status": "0"
+				},
+				{
+					"uid": "61618f90f6e5b71f188db7fc",
+					"uname": "一只小猫咪😽",
+					"receiver_uid": "6072a0a56407193a4029409e",
+					"receiver_name": "薛定谔の猫er",
+					"message": "[doge]",
+					"time": "2021/10/09 20:51",
+					"status": "1"
+				},
+				{
+					"uid": "6072a0a56407193a4029409e",
+					"uname": "薛定谔の猫er",
+					"receiver_uid": "61618f90f6e5b71f188db7fc",
+					"receiver_name": "一只小猫咪😽",
+					"message": "[OK]",
+					"time": "2021/10/09 20:51",
+					"status": "0"
+				},
+				{
+					"uid": "61618f90f6e5b71f188db7fc",
+					"uname": "一只小猫咪😽",
+					"receiver_uid": "6072a0a56407193a4029409e",
+					"receiver_name": "薛定谔の猫er",
+					"message": "<br>",
+					"time": "2021/10/09 20:52",
+					"status": "1"
+				},
+				{
+					"uid": "61618f90f6e5b71f188db7fc",
+					"uname": "一只小猫咪😽",
+					"receiver_uid": "6072a0a56407193a4029409e",
+					"receiver_name": "薛定谔の猫er",
+					"message": "emmm...",
+					"time": "2021/10/09 20:52",
+					"status": "1"
+				},
+				{
+					"uid": "61618f90f6e5b71f188db7fc",
+					"uname": "一只小猫咪😽",
+					"receiver_uid": "6072a0a56407193a4029409e",
+					"receiver_name": "薛定谔の猫er",
+					"message": "emmm...",
+					"time": "2021/10/09 20:52",
+					"status": "1"
+				},
+				{
+					"uid": "61618f90f6e5b71f188db7fc",
+					"uname": "一只小猫咪😽",
+					"receiver_uid": "6072a0a56407193a4029409e",
+					"receiver_name": "薛定谔の猫er",
+					"message": "emmm...",
+					"time": "2021/10/09 20:52",
+					"status": "1"
+				},
+				{
+					"uid": "61618f90f6e5b71f188db7fc",
+					"uname": "一只小猫咪😽",
+					"receiver_uid": "6072a0a56407193a4029409e",
+					"receiver_name": "薛定谔の猫er",
+					"message": "emmm...",
+					"time": "2021/10/09 20:52",
+					"status": "1"
+				},
+				{
+					"uid": "61618f90f6e5b71f188db7fc",
+					"uname": "一只小猫咪😽",
+					"receiver_uid": "6072a0a56407193a4029409e",
+					"receiver_name": "薛定谔の猫er",
+					"message": "emmm...",
+					"time": "2021/10/09 20:52",
+					"status": "1"
+				},
+				{
+					"uid": "61618f90f6e5b71f188db7fc",
+					"uname": "一只小猫咪😽",
+					"receiver_uid": "6072a0a56407193a4029409e",
+					"receiver_name": "薛定谔の猫er",
+					"message": "emmm...",
+					"time": "2021/10/09 20:54",
+					"status": "1"
+				}
+			]
+		}
+	]
+}

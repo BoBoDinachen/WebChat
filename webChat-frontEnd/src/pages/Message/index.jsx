@@ -61,6 +61,7 @@ class MessageList extends Component {
         </div>
         {/* 消息标题列表 */}
         <Switch>
+          <Route path="/message" exact component={FriendMessage}></Route>
           <Route path="/message/friendMsg" component={FriendMessage}></Route>
           <Route path="/message/likeMsg" component={LikeMessage}></Route>
           <Route path="/message/requestMsg" component={RequestMessage}></Route>

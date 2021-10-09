@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Switch, Route, withRouter } from 'react-router-dom'
 import { adaptionContainerHeight } from '../../utils/dom_utils';
 import style from './index.module.scss'
-import toast from '../../components/ToastBox/Toast'
+import Toast from '../../components/ToastBox/Toast'
 import { request, avatarUrl } from '../../utils/request'
 import socketIO from '../../utils/socket'
 import confirm from '../../components/ConfirmBox/index'
@@ -203,7 +203,7 @@ class Profile extends Component {
             // 上传成功
             console.log(result.data);
             if (result.data.setAvatar) {
-              toast({
+              Toast({
                 type: "success",
                 text: "已更换头像",
                 time: 1000
@@ -345,7 +345,7 @@ class Profile extends Component {
         <label className={style.cardTitle}>我的系统</label>
         {/* 我的钱袋和我的任务 */}
         <div className={style.cardBox} onClick={this.hiddenMenuBar}>
-          <div className={`${style.card} ${style.cardFirst}`}>
+          <div className={`${style.card} ${style.cardFirst}`} onClick={() => { Toast({type:"warning",text:"功能待开发...",time:1500})}}>
             <div>
               <svg className="icon" aria-hidden="true">
                 <use xlinkHref="#icon-qiandai2"></use>
@@ -356,7 +356,7 @@ class Profile extends Component {
               <span>999金</span>
             </div>
           </div>
-          <div className={`${style.card} ${style.cardSecond}`}>
+          <div className={`${style.card} ${style.cardSecond}`} onClick={() => { Toast({type:"warning",text:"功能待开发...",time:1500})}}>
             <div>
               <svg className="icon" aria-hidden="true">
                 <use xlinkHref="#icon-renwu"></use>
@@ -367,7 +367,7 @@ class Profile extends Component {
               <span>0/10</span>
             </div>
           </div>
-          <div className={`${style.card} ${style.cardThirdly}`}>
+          <div className={`${style.card} ${style.cardThirdly}`} onClick={() => { Toast({type:"warning",text:"功能待开发...",time:1500})}}>
             <div>
               <svg className="icon" aria-hidden="true">
                 <use xlinkHref="#icon-ziyuan"></use>
